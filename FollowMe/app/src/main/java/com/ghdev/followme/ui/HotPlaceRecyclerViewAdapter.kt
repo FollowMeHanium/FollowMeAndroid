@@ -33,10 +33,12 @@ class HotPlaceRecyclerViewAdapter (
         holder.placename.text = info.name
         holder.address.text = info.address
 
-        /*//glide
-        Glide.with(ctx).load(dataList[position].img)
+        /*Glide.with(ctx).load(dataList[position].img)
             .placeholder(R.drawable.ic_home_black)
-            .into(holder.imgurl)*/
+            .into(holder.imgurl) */
+
+        Glide.with(holder.itemView.context).load(info.img).into(holder.imgurl)
+
 
         holder.container.setOnClickListener {
             //##detailview로 갈 수 있도록 함

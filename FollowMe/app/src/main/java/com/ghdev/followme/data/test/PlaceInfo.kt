@@ -5,7 +5,7 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class PlaceInfo(
-    var img : String,
+    var img : Int,
     var name : String,
     var address : String
 ):Parcelable

@@ -2,6 +2,7 @@ package com.ghdev.followme.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.bumptech.glide.Glide
 import com.ghdev.followme.R
 import com.ghdev.followme.data.test.PlaceInfo
 import com.ghdev.followme.ui.HomeFragment.Companion.PLACE_INFO
@@ -17,6 +18,6 @@ class PlaceDetailActivity : AppCompatActivity() {
 
         tv_place_detail_title.text = place_info.name
         tv_place_detail_name.text = place_info.address
-        //Glide.with(this).load(place_info.img).into(iv_place_detail_main)
+        Glide.with(this).load(place_info.img).into(iv_place_detail_main)
     }
 }

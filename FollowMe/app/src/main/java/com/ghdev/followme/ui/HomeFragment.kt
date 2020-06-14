@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.recyclerview.widget.LinearLayoutManager
 
 import com.ghdev.followme.R
@@ -13,6 +14,8 @@ import com.ghdev.followme.data.test.CourseData
 import com.ghdev.followme.data.test.Place
 import com.ghdev.followme.data.test.PlaceInfo
 import kotlinx.android.synthetic.main.fragment_home.*
+import kotlinx.android.synthetic.main.item_hot_place.*
+import kotlinx.android.synthetic.main.item_mycourse.*
 
 
 /*create gahui*/
@@ -26,10 +29,8 @@ class HomeFragment : Fragment() {
         val PLACE_INFO = "place_info"
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-
+        override fun onCreate(savedInstanceState: Bundle?) {
+            super.onCreate(savedInstanceState)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -39,7 +40,6 @@ class HomeFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-
         setRecyclerView()
     }
 
@@ -89,10 +89,10 @@ class HomeFragment : Fragment() {
         place.add(Place("소울커피"))
         place.add(Place("공차"))
 
-        courseDataList.add(CourseData("2020.01.04", 5, place,"나만의 힙한 장소"))
-        courseDataList.add(CourseData("2020.01.04", 3, place,"나만의 힙한 장소"))
-        courseDataList.add(CourseData("2020.01.04", 2, place, "나만의 힙한 장소"))
-        courseDataList.add(CourseData("2020.01.04", 1, place, "나만의 힙한 장소"))
+        courseDataList.add(CourseData("2020.01.04", 5, place,"나만의 힙한 장소", R.drawable.img1))
+        courseDataList.add(CourseData("2020.04.03", 3, place,"나만의 데이트 장소", R.drawable.img3))
+        courseDataList.add(CourseData("2020.04.26", 2, place, "힐링하기 좋은날", R.drawable.img2))
+        courseDataList.add(CourseData("2020.03.02", 1, place, "친구와 함께한 날", R.drawable.img8))
 
         courseRecyclerViewAdapter = CourseRecyclerViewAdapter(courseDataList)
         rv_follow_course.adapter = courseRecyclerViewAdapter

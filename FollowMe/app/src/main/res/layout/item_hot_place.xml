@@ -33,6 +33,17 @@
         android:layout_marginTop="10dp"
         android:visibility="gone"/>
 
+    <ImageView
+        android:id="@+id/btn_mypick_editmode_checked"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:src="@drawable/mypick_checked"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginLeft="11dp"
+        android:layout_marginTop="10dp"
+        android:visibility="gone"/>
+
     <TextView
         android:id="@+id/tv_place_name_item"
         android:layout_width="wrap_content"
@@ -69,7 +80,7 @@
         />
 
     <ImageView
-        android:id="@+id/cl_hot_place_container_checked"
+        android:id="@+id/iv_hot_place_container_checked"
         android:layout_width="150dp"
         android:layout_height="200dp"
         android:background="@drawable/mypick_checked_item"

@@ -30,6 +30,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/title_course_reco"
+                    android:textColor="@color/colorBlack"
                     android:textSize="24sp"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -80,6 +81,7 @@
                     android:layout_marginStart="4dp"
                     android:text="@string/category"
                     android:textSize="16sp"
+                    android:textColor="@color/colorBlack"
                     app:layout_constraintStart_toEndOf="@+id/ib_category_filter_course_reco_frag"
                     app:layout_constraintTop_toTopOf="parent" />
 

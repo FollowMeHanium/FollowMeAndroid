@@ -19,10 +19,10 @@ import org.jetbrains.anko.verticalLayout
 
 class MypageMypickActivity : AppCompatActivity(), View.OnClickListener{
 
-    var editmode_change = false
 
     companion object{
         val PLACE_INFO = "place_info"
+        var editmode_change = false
     }
 
     override fun onClick(v: View?) {
@@ -33,11 +33,11 @@ class MypageMypickActivity : AppCompatActivity(), View.OnClickListener{
                 //체크박스와 휴지통이미지 visibility
                 if(editmode_change == true){
                     btn_mypick_editmode_delete.visibility = View.GONE
-                    btn_mypick_editmode_unchecked.visibility = View.GONE
+                    //btn_mypick_editmode_unchecked.visibility = View.GONE
                     editmode_change = false
                 }else{
                     btn_mypick_editmode_delete.visibility = View.VISIBLE
-                    btn_mypick_editmode_unchecked.visibility = View.VISIBLE // -> recyclerview의 첫 item에서만 발생
+                    //btn_mypick_editmode_unchecked.visibility = View.VISIBLE // -> recyclerview의 첫 item에서만 발생 -> recycleradapger에서 처리
                     editmode_change = true
                 }
             }

@@ -1,9 +1,8 @@
 package com.ghdev.followme.ui
 
+import android.content.Context
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.fragment.app.DialogFragment
 import com.ghdev.followme.R
 import kotlinx.android.synthetic.main.dialog_course_category.*
@@ -11,8 +10,16 @@ import kotlinx.android.synthetic.main.dialog_course_category.view.*
 
 class CourseDialogFragment : DialogFragment(){
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

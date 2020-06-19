@@ -1,9 +1,12 @@
 package com.ghdev.followme.ui
 
+import android.content.Context
+import android.graphics.Point
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.view.WindowManager
 import android.widget.ImageView
 import com.ghdev.followme.R
 import com.ghdev.followme.ui.base.BasePagerAdapter
@@ -13,6 +16,8 @@ import com.ghdev.followme.ui.mypage.MypageFragment
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,6 +52,14 @@ class MainActivity : AppCompatActivity() {
             getTabAt(4)!!.customView =
                 navigationLayout.findViewById(R.id.img_mypage_main_navi_act) as ImageView
         }
+
+        /*
+        //device 크기 구하기 -> dialogfragment의 크기 지정을 위해 (안하면 크기 이상하게 나옴..ㅠ)
+        val windowManager = this.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+        val display = windowManager.defaultDisplay
+        val size = Point()
+        display.getSize(size)
+        //size.x : 디바이스 가로 길이, size.y : 디바이스 세로 길이*/
     }
 
 }

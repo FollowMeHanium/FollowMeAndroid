@@ -174,10 +174,11 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <ImageView
-                android:layout_width="match_parent"
+                android:layout_width="390dp"
                 android:layout_height="191dp"
                 android:layout_marginTop="30dp"
-                android:background="#000000"/>
+                android:layout_gravity="center"
+                android:src="@drawable/example_map"/>
 
         </LinearLayout>
     </ScrollView>

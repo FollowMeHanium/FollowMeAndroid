@@ -1,5 +1,6 @@
 package com.ghdev.followme.ui.coursereco
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -17,6 +18,8 @@ import com.ghdev.followme.ui.CourseRecyclerViewAdapter
 import kotlinx.android.synthetic.main.dialog_course_category.*
 import kotlinx.android.synthetic.main.dialog_course_category.view.*
 import kotlinx.android.synthetic.main.fragment_course_recommend.*
+import org.jetbrains.anko.linearLayout
+import org.jetbrains.anko.windowManager
 import kotlin.collections.ArrayList
 
 class CourseRecommendFragment : Fragment() {
@@ -42,6 +45,7 @@ class CourseRecommendFragment : Fragment() {
             //val fm = supportFragmentManager.beginTransaction()
             val fm = getFragmentManager()
             dialog.show(fm!!, "TAG_DIALOG_EVENT")
+
         }
         // Inflate the layout for this fragment
         return view

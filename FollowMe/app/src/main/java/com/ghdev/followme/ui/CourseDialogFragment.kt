@@ -1,6 +1,8 @@
 package com.ghdev.followme.ui
 
 import android.content.Context
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.DialogFragment
@@ -18,8 +20,10 @@ class CourseDialogFragment : DialogFragment(){
     }
 
     override fun onResume() {
+        var width = resources.getDimensionPixelSize(R.dimen.course_dialog_width)
+        var height = resources.getDimensionPixelSize(R.dimen.course_dialog_height)
+        dialog?.window?.setLayout(width, height)
         super.onResume()
-
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -48,6 +52,9 @@ class CourseDialogFragment : DialogFragment(){
                 dismiss()
             }
         })
+
+        dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        dialog?.window?.requestFeature(Window.FEATURE_NO_TITLE)
 
         return view
 

@@ -97,7 +97,6 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener{
     }
 
     private fun init() {
-
         btn_look_login_act.setOnClickListener(this)
         btn_signup_login_act.setOnClickListener(this)
         rl_login_act.setOnClickListener(this)
@@ -217,7 +216,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener{
                 response: Response<PostLoginResponse>
             ) {
                 if (response.isSuccessful) {
-                    //response.body()!!.accessToken
+                    response.body()!!.accessToken
                     toast(response.body()!!.message)
                     finish()
                 }

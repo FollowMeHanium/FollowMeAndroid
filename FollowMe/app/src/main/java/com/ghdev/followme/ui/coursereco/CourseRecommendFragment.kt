@@ -1,16 +1,25 @@
 package com.ghdev.followme.ui.coursereco
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ghdev.followme.R
 import com.ghdev.followme.data.test.CourseData
 import com.ghdev.followme.data.test.Place
+import com.ghdev.followme.ui.CourseDialogFragment
 import com.ghdev.followme.ui.CourseRecyclerViewAdapter
+import kotlinx.android.synthetic.main.dialog_course_category.*
+import kotlinx.android.synthetic.main.dialog_course_category.view.*
 import kotlinx.android.synthetic.main.fragment_course_recommend.*
+import org.jetbrains.anko.linearLayout
+import org.jetbrains.anko.windowManager
 import kotlin.collections.ArrayList
 
 class CourseRecommendFragment : Fragment() {
@@ -26,15 +35,28 @@ class CourseRecommendFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
+        val view : View = inflater.inflate(R.layout.fragment_course_recommend, container, false)
+
+        val btn_select_categroy = view.findViewById(R.id.cl_category_filter) as ConstraintLayout
+
+        btn_select_categroy.setOnClickListener{
+            val dialog: CourseDialogFragment = CourseDialogFragment().getInstance()
+            //val fm = supportFragmentManager.beginTransaction()
+            val fm = getFragmentManager()
+            dialog.show(fm!!, "TAG_DIALOG_EVENT")
+
+        }
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_course_recommend, container, false)
+        return view
 
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-
         setRecyclerView()
+
+
     }
 
 

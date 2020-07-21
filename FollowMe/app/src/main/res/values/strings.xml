@@ -67,5 +67,9 @@
     <string name="course_category_rain">비오는 날</string>
     <string name="course_category_out">나들이 가기 좋은날</string>
     <string name="course_category_act">활동적인</string>
+
+    //fg_search
+    <string name="fg_search_contents_1">#맛있는녀석들 출현 특집</string>
+    <string name="fg_search_contents_2">#가성비 갑 분식</string>
 </resources>
 

@@ -306,6 +306,7 @@
             </RelativeLayout>
 
             <Button
+                android:id="@+id/btn_signup_birth"
                 android:layout_width="80dp"
                 android:layout_height="30dp"
                 android:text="입력하기"

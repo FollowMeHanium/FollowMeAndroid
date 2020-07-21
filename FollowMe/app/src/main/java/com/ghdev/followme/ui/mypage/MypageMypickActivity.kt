@@ -19,27 +19,28 @@ import org.jetbrains.anko.verticalLayout
 
 class MypageMypickActivity : AppCompatActivity(), View.OnClickListener{
 
+
     companion object{
         val PLACE_INFO = "place_info"
+        var editmode_change = false
     }
 
-    override fun onClick(v: View?) {
-        when(v){
-            //editmode 전환
-            btn_mypick_editmode -> {
-                Log.d("btn_mypick: ", "안녕??")
-                //체크박스와 휴지통이미지 visibility
-                btn_mypick_editmode_delete.visibility = View.VISIBLE
-                btn_mypick_editmode_unchecked.visibility = View.VISIBLE
-            }
-        }
-    }
 
     lateinit var hotPlaceRecyclerViewAdapter: HotPlaceRecyclerViewAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_mypage_mypick)
+
+        init()
+        MyPickRecyclerView()
+    }
+
+    private fun init(){
+        btn_mypick_editmode.setOnClickListener(this)
+    }
+
+    public fun MyPickRecyclerView(){
 
         var dataList: ArrayList<PlaceInfo> = ArrayList()
 
@@ -53,16 +54,37 @@ class MypageMypickActivity : AppCompatActivity(), View.OnClickListener{
         dataList.add(PlaceInfo(R.drawable.img4, "라공방", "서울특별시 강남구 역삼동 825-20"))
 
         hotPlaceRecyclerViewAdapter = HotPlaceRecyclerViewAdapter(dataList){PlaceInfo->
-            val intent = Intent(this, PlaceDetailActivity::class.java)
-            intent.putExtra(PLACE_INFO, PlaceInfo)
-            startActivity(intent)
+            //editmode가 아닐때만 가게 세부 정보 보기
+            //editmode일때는 itme 클릭시 삭제만
+            if(editmode_change==false){
+                val intent = Intent(this, PlaceDetailActivity::class.java)
+                intent.putExtra(PLACE_INFO, PlaceInfo)
+                startActivity(intent)
+            }
         }
         rv_mypick.adapter = hotPlaceRecyclerViewAdapter
         rv_mypick.layoutManager = GridLayoutManager(this, 2)
 
 
-
     }
 
+    override fun onClick(v: View?) {
+        when(v){
+            //editmode 전환
+            btn_mypick_editmode -> {
+                //체크박스와 휴지통이미지 visibility
+                if(editmode_change == true){
+                    editmode_change = false
+                    btn_mypick_editmode_delete.visibility = View.GONE
+                    //btn_mypick_editmode_unchecked.visibility = View.GONE
+                }else{ //editmode_change == false일때
+                    editmode_change = true
+                    btn_mypick_editmode_delete.visibility = View.VISIBLE
+                    //btn_mypick_editmode_unchecked.visibility = View.VISIBLE // -> recyclerview의 첫 item에서만 발생 -> recycleradapger에서 처리
+                    rv_mypick.adapter?.notifyDataSetChanged()
+                }
+            }
+        }
+    }
 
 }

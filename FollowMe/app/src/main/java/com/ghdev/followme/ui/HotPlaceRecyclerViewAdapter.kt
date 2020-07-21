@@ -4,8 +4,7 @@ import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.GONE
-import android.view.View.VISIBLE
+import android.view.View.*
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
@@ -15,6 +14,7 @@ import com.bumptech.glide.Glide
 import com.ghdev.followme.R
 import com.ghdev.followme.data.test.PlaceInfo
 import com.ghdev.followme.ui.mypage.MypageMypickActivity
+import kotlinx.android.synthetic.main.item_hot_place.view.*
 
 class HotPlaceRecyclerViewAdapter (
     val dataList: ArrayList<PlaceInfo>,
@@ -43,29 +43,15 @@ class HotPlaceRecyclerViewAdapter (
         Glide.with(holder.itemView.context).load(info.img).into(holder.imgurl)
 
 
+
         holder.container.setOnClickListener {
             //##detailview로 갈 수 있도록 함
             dataListClick(info)
-        }
-
-
-        //editmode일때 item에 체크박스 보이게 하기
-        if(MypageMypickActivity.editmode_change==true){
-            Log.e("MyPage", "Hello?")
             holder.btn_unchecked.visibility == VISIBLE
-
-            holder.btn_unchecked.setOnClickListener{
-                holder.btn_unchecked.visibility == GONE
-                holder.btn_checked.visibility == VISIBLE
-            }
-
-            holder.btn_checked.setOnClickListener{
-                holder.btn_checked.visibility == GONE
-                holder.btn_unchecked.visibility == VISIBLE
-            }
-        }else{
-            holder.btn_unchecked.visibility == GONE
         }
+
+
+
     }
 
     inner class Holder(itemView: View) : RecyclerView.ViewHolder(itemView) {

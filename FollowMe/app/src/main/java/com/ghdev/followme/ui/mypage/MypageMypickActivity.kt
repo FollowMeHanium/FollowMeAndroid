@@ -25,24 +25,6 @@ class MypageMypickActivity : AppCompatActivity(), View.OnClickListener{
         var editmode_change = false
     }
 
-    override fun onClick(v: View?) {
-        when(v){
-            //editmode 전환
-            btn_mypick_editmode -> {
-                Log.d("btn_mypick: ", "안녕??")
-                //체크박스와 휴지통이미지 visibility
-                if(editmode_change == true){
-                    btn_mypick_editmode_delete.visibility = View.GONE
-                    //btn_mypick_editmode_unchecked.visibility = View.GONE
-                    editmode_change = false
-                }else{
-                    btn_mypick_editmode_delete.visibility = View.VISIBLE
-                    //btn_mypick_editmode_unchecked.visibility = View.VISIBLE // -> recyclerview의 첫 item에서만 발생 -> recycleradapger에서 처리
-                    editmode_change = true
-                }
-            }
-        }
-    }
 
     lateinit var hotPlaceRecyclerViewAdapter: HotPlaceRecyclerViewAdapter
 
@@ -86,5 +68,23 @@ class MypageMypickActivity : AppCompatActivity(), View.OnClickListener{
 
     }
 
+    override fun onClick(v: View?) {
+        when(v){
+            //editmode 전환
+            btn_mypick_editmode -> {
+                //체크박스와 휴지통이미지 visibility
+                if(editmode_change == true){
+                    editmode_change = false
+                    btn_mypick_editmode_delete.visibility = View.GONE
+                    //btn_mypick_editmode_unchecked.visibility = View.GONE
+                }else{ //editmode_change == false일때
+                    editmode_change = true
+                    btn_mypick_editmode_delete.visibility = View.VISIBLE
+                    //btn_mypick_editmode_unchecked.visibility = View.VISIBLE // -> recyclerview의 첫 item에서만 발생 -> recycleradapger에서 처리
+                    rv_mypick.adapter?.notifyDataSetChanged()
+                }
+            }
+        }
+    }
 
 }

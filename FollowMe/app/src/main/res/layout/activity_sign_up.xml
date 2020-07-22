@@ -88,7 +88,7 @@
         <Button
             android:layout_width="80dp"
             android:layout_height="30dp"
-            android:text="인증하기"
+            android:text="중복확인"
             android:background="@drawable/signup_button_box"
             android:textColor="#ffffff"
             android:textSize="12sp"

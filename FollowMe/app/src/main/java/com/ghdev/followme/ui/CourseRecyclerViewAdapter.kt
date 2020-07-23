@@ -20,9 +20,6 @@ class CourseRecyclerViewAdapter (val dataList: ArrayList<CourseData>)
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): Holder {
         val view: View = LayoutInflater.from(viewGroup.context).inflate(R.layout.item_mycourse, viewGroup, false)
-
-
-
         return Holder(view)
     }
 

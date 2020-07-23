@@ -7,23 +7,44 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.ghdev.followme.R
 import com.ghdev.followme.data.test.PlaceInfo
-import com.ghdev.followme.ui.HotPlaceRecyclerViewAdapter
 
 class MyPickPlaceRecyclerViewAdapter (
     val dataList: ArrayList<PlaceInfo>,
     val dataListClick: (PlaceInfo) -> Unit)
     : RecyclerView.Adapter<MyPickPlaceRecyclerViewAdapter.Holder>() {
 
-    override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): HotPlaceRecyclerViewAdapter.Holder {
+    override fun onCreateViewHolder(
+        viewGroup: ViewGroup,
+        viewType: Int
+    ): MyPickPlaceRecyclerViewAdapter.Holder {
 
-        val view: View = LayoutInflater.from(viewGroup.context).inflate(R.layout.item_hot_place, viewGroup, false)
+        val view: View = LayoutInflater.from(viewGroup.context)
+            .inflate(R.layout.item_hot_place, viewGroup, false)
 
         return Holder(view)
     }
 
     override fun getItemCount(): Int = dataList.size
+
+    override fun onBindViewHolder(holder: MyPickPlaceRecyclerViewAdapter.Holder, position: Int) {
+        val info: PlaceInfo = dataList[position]
+
+        holder.placename.text = info.name
+        holder.address.text = info.address
+
+        /*Glide.with(ctx).load(dataList[position].img)
+            .placeholder(R.drawable.ic_home_black)
+            .into(holder.imgurl) */
+        Glide.with(holder.itemView.context).load(info.img).into(holder.imgurl)
+
+        holder.container.setOnClickListener {
+            //##detailview로 갈 수 있도록 함
+            dataListClick(info)
+        }
+    }
 
     inner class Holder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var imgurl = itemView.findViewById(R.id.img_hot_place_item) as ImageView
@@ -36,5 +57,6 @@ class MyPickPlaceRecyclerViewAdapter (
         var btn_checked = itemView.findViewById(R.id.btn_mypick_editmode_checked) as ImageView
 
         //선택시 itme 빨간 배경
-        var container_checked = itemView.findViewById(R.id.iv_hot_place_container_checked) as ImageView
+        var container_checked = itemView.findViewById(R.id.iv_mypick_container_checked_item) as ImageView
     }
+}

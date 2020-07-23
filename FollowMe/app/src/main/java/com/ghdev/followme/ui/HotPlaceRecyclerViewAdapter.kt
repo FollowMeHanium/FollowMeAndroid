@@ -42,8 +42,6 @@ class HotPlaceRecyclerViewAdapter (
             .into(holder.imgurl) */
         Glide.with(holder.itemView.context).load(info.img).into(holder.imgurl)
 
-
-
         holder.container.setOnClickListener {
             //##detailview로 갈 수 있도록 함
             dataListClick(info)

@@ -10,6 +10,7 @@ class BasePagerAdapter(fm: FragmentManager): FragmentStatePagerAdapter(fm){
     private val setOfFragments: MutableSet<Fragment> = mutableSetOf()
 
     override fun getItem(position: Int): Fragment {
+
         return setOfFragments.elementAt(position)
     }
 

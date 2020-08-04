@@ -4,7 +4,9 @@
     android:layout_height="210dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/login_edittext_round_box"
-    android:layout_marginRight="15dp">
+    android:layout_marginRight="15dp"
+    android:layout_marginBottom="15dp"
+    android:id="@+id/cl_mypick_container">
     
     <ImageView
         android:id="@+id/iv_mypick_item_img"

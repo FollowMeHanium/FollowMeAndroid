@@ -15,6 +15,8 @@ import com.ghdev.followme.ui.PlaceDetailActivity
 import kotlinx.android.synthetic.main.activity_mypage_mypick.*
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.item_hot_place.*
+import kotlinx.android.synthetic.main.item_mypick.*
+import okhttp3.internal.notifyAll
 import org.jetbrains.anko.verticalLayout
 
 class MypageMypickActivity : AppCompatActivity(), View.OnClickListener{
@@ -26,7 +28,7 @@ class MypageMypickActivity : AppCompatActivity(), View.OnClickListener{
     }
 
 
-    lateinit var hotPlaceRecyclerViewAdapter: HotPlaceRecyclerViewAdapter
+    lateinit var myPickPlaceRecyclerViewAdapter: MyPickPlaceRecyclerViewAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,7 +55,7 @@ class MypageMypickActivity : AppCompatActivity(), View.OnClickListener{
         dataList.add(PlaceInfo(R.drawable.img3, "랍스타파티", "서울특별시 마포구 서교동 독막로7길"))
         dataList.add(PlaceInfo(R.drawable.img4, "라공방", "서울특별시 강남구 역삼동 825-20"))
 
-        hotPlaceRecyclerViewAdapter = HotPlaceRecyclerViewAdapter(dataList){PlaceInfo->
+        myPickPlaceRecyclerViewAdapter = MyPickPlaceRecyclerViewAdapter(dataList){PlaceInfo->
             //editmode가 아닐때만 가게 세부 정보 보기
             //editmode일때는 itme 클릭시 삭제만
             if(editmode_change==false){
@@ -62,7 +64,7 @@ class MypageMypickActivity : AppCompatActivity(), View.OnClickListener{
                 startActivity(intent)
             }
         }
-        rv_mypick.adapter = hotPlaceRecyclerViewAdapter
+        rv_mypick.adapter = myPickPlaceRecyclerViewAdapter
         rv_mypick.layoutManager = GridLayoutManager(this, 2)
 
 
@@ -77,11 +79,12 @@ class MypageMypickActivity : AppCompatActivity(), View.OnClickListener{
                     editmode_change = false
                     btn_mypick_editmode_delete.visibility = View.GONE
                     //btn_mypick_editmode_unchecked.visibility = View.GONE
+                    //rv_mypick.adapter?.notifyDataSetChanged()
                 }else{ //editmode_change == false일때
                     editmode_change = true
                     btn_mypick_editmode_delete.visibility = View.VISIBLE
                     //btn_mypick_editmode_unchecked.visibility = View.VISIBLE // -> recyclerview의 첫 item에서만 발생 -> recycleradapger에서 처리
-                    rv_mypick.adapter?.notifyDataSetChanged()
+                    //rv_mypick.adapter?.notifyDataSetChanged()
                 }
             }
         }

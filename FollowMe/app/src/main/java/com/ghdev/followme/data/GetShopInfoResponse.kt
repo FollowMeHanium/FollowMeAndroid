@@ -7,7 +7,6 @@ data class GetShopInfoResponse (
     val address : String,
     val menu : String,
     val operating_time : String,
-    val introduce : String,
     val grade_avg : Float,
     val latitude : Int,
     val longitude : Int,

@@ -102,11 +102,30 @@ class MypageMypickActivity : AppCompatActivity(), View.OnClickListener{
                 //setContentView(R.layout.activity_mypage_mypick)
             }
             btn_mypick_editmode_delete ->{
-                removeData(selectionList)
-                selectionList.clear()
-                rv_mypick.removeAllViews()
+                if(isInEditMode){
+                    removeData(selectionList)
+                    selectionList.clear()
+                    rv_mypick.removeAllViews()
+                }
+
             }
         }
+    }
+
+    override fun onBackPressed() {
+        //만약 isInEditMode가 true인 상태에서 백버튼 클릭시
+        if(isInEditMode){
+            btn_mypick_editmode_true.visibility = View.GONE
+            btn_mypick_editmode_delete.visibility = View.GONE
+            btn_mypick_editmode_false.visibility = View.VISIBLE
+
+            isInEditMode = false
+            selectionList.clear()
+            rv_mypick.removeAllViews()
+        }else{
+            super.onBackPressed()
+        }
+
     }
 
     fun prepareSelection(dataList : PlaceInfo){

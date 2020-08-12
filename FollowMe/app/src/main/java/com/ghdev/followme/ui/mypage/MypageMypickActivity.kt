@@ -27,19 +27,10 @@ class MypageMypickActivity : AppCompatActivity(), View.OnClickListener{
         val PLACE_INFO = "place_info"
         var isInEditMode = false
         var selectionList: ArrayList<PlaceInfo> = ArrayList()
-        fun prepareSelection(position : Int, dataList : ArrayList<PlaceInfo>){
-            if(!selectionList.contains(dataList.get(position)))
-            {
-                //선택된 아이템 리스트에 해당 포지션 추가
-                selectionList.add(dataList.get(position))
-            }else{
-                //선택된 아이템 리스트에 해당 포지션 삭제
-                selectionList.remove(dataList.get(position))
-            }
-        }
     }
 
     lateinit var myPickPlaceRecyclerViewAdapter: MyPickPlaceRecyclerViewAdapter
+    var dataList: ArrayList<PlaceInfo> = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,8 +49,6 @@ class MypageMypickActivity : AppCompatActivity(), View.OnClickListener{
 
     fun MyPickRecyclerView(){
 
-        var dataList: ArrayList<PlaceInfo> = ArrayList()
-
         dataList.add(PlaceInfo(R.drawable.img5, "비트포비아", "서울특별시 강남구 역삼1동 824-30"))
         dataList.add(PlaceInfo(R.drawable.img6, "카페 프레도", "서울특별시 강남구 역삼1동"))
         dataList.add(PlaceInfo(R.drawable.img7, "꽃을피우고", "서울특별시 강남구 역삼동"))
@@ -70,12 +59,13 @@ class MypageMypickActivity : AppCompatActivity(), View.OnClickListener{
         dataList.add(PlaceInfo(R.drawable.img4, "라공방", "서울특별시 강남구 역삼동 825-20"))
 
         myPickPlaceRecyclerViewAdapter = MyPickPlaceRecyclerViewAdapter(dataList){PlaceInfo->
-            //editmode가 아닐때만 가게 세부 정보 보기
-            //editmode일때는 itme 클릭시 삭제만
             if(!isInEditMode){
                 val intent = Intent(this, PlaceDetailActivity::class.java)
                 intent.putExtra(PLACE_INFO, PlaceInfo)
                 startActivity(intent)
+            }else{
+                prepareSelection(PlaceInfo)
+                Log.d("clicked datalist: ", selectionList.toString())
             }
         }
         rv_mypick.adapter = myPickPlaceRecyclerViewAdapter
@@ -95,6 +85,8 @@ class MypageMypickActivity : AppCompatActivity(), View.OnClickListener{
 
                 //editmode활성화
                 isInEditMode = true
+
+                Log.d("초기datalist: ", selectionList.toString())
             }
 
             btn_mypick_editmode_true -> {
@@ -106,14 +98,34 @@ class MypageMypickActivity : AppCompatActivity(), View.OnClickListener{
                 //editmode 비활성화 및 clear
                 isInEditMode = false
                 selectionList.clear()
-                setContentView(R.layout.activity_mypage_mypick)
+                rv_mypick.removeAllViews()
+                //setContentView(R.layout.activity_mypage_mypick)
             }
             btn_mypick_editmode_delete ->{
-
+                removeData(selectionList)
+                selectionList.clear()
+                rv_mypick.removeAllViews()
             }
         }
     }
 
+    fun prepareSelection(dataList : PlaceInfo){
+        if(!selectionList.contains(dataList))
+        {
+            //선택된 아이템 리스트에 해당 포지션 추가
+            selectionList.add(dataList)
+        }else{
+            //선택된 아이템 리스트에 해당 포지션 삭제
+            selectionList.remove(dataList)
+        }
+    }
 
+
+    fun removeData(selectionList: ArrayList<PlaceInfo>){
+        for(i in selectionList){
+            dataList.remove(i)
+            rv_mypick.adapter?.notifyDataSetChanged()
+        }
+    }
 
 }

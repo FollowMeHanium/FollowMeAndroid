@@ -13,6 +13,7 @@ import com.ghdev.followme.R
 import com.ghdev.followme.data.test.CourseData
 import com.ghdev.followme.data.test.Place
 import com.ghdev.followme.data.test.PlaceInfo
+import kotlinx.android.synthetic.main.activity_place_detail.*
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.item_hot_place.*
 import kotlinx.android.synthetic.main.item_mycourse.*

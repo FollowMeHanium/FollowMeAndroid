@@ -174,11 +174,53 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <ImageView
+                android:id="@+id/iv_place_detail_map"
                 android:layout_width="390dp"
                 android:layout_height="191dp"
                 android:layout_marginTop="30dp"
                 android:layout_gravity="center"
                 android:src="@drawable/example_map"/>
+            
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cl_place_detial_review"
+                android:layout_width="380dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:layout_gravity="center">
+
+                <TextView
+                    android:id="@+id/tv_place_detail_review"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="리뷰"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/colorBlack"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"/>
+
+                <TextView
+                    android:id="@+id/btn_place_detail_add_review"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="리뷰추가"
+                    android:textSize="14sp"
+                    android:textColor="@color/colorBlack"
+                    android:clickable="true"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_place_detail_review"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@id/btn_place_detail_add_review"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
 
         </LinearLayout>
     </ScrollView>
@@ -203,6 +245,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_marginBottom="30dp"
         android:layout_marginRight="10dp"/>
+
+
 
 
 

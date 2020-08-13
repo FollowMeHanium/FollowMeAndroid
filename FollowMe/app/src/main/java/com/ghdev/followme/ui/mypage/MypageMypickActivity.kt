@@ -46,7 +46,6 @@ class MypageMypickActivity : AppCompatActivity(), View.OnClickListener{
         btn_mypick_editmode_false.setOnClickListener(this)
         btn_mypick_editmode_true.setOnClickListener(this)
         btn_mypick_editmode_delete.setOnClickListener(this)
-
     }
 
     fun MyPickRecyclerView(){

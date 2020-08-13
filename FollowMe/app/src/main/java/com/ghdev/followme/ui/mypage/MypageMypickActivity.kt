@@ -25,7 +25,9 @@ class MypageMypickActivity : AppCompatActivity(), View.OnClickListener{
 
     companion object{
         val PLACE_INFO = "place_info"
+        //EditMode 구별 위한 변수
         var isInEditMode = false
+        //찜 선택된 item list
         var selectionList: ArrayList<PlaceInfo> = ArrayList()
     }
 
@@ -70,8 +72,6 @@ class MypageMypickActivity : AppCompatActivity(), View.OnClickListener{
         }
         rv_mypick.adapter = myPickPlaceRecyclerViewAdapter
         rv_mypick.layoutManager = GridLayoutManager(this, 2)
-
-
     }
 
     override fun onClick(v: View?) {
@@ -85,8 +85,6 @@ class MypageMypickActivity : AppCompatActivity(), View.OnClickListener{
 
                 //editmode활성화
                 isInEditMode = true
-
-                Log.d("초기datalist: ", selectionList.toString())
             }
 
             btn_mypick_editmode_true -> {
@@ -98,8 +96,8 @@ class MypageMypickActivity : AppCompatActivity(), View.OnClickListener{
                 //editmode 비활성화 및 clear
                 isInEditMode = false
                 selectionList.clear()
+                //레이아웃 초기화
                 rv_mypick.removeAllViews()
-                //setContentView(R.layout.activity_mypage_mypick)
             }
             btn_mypick_editmode_delete ->{
                 if(isInEditMode){
@@ -112,6 +110,7 @@ class MypageMypickActivity : AppCompatActivity(), View.OnClickListener{
         }
     }
 
+    //뒤로가기 버튼
     override fun onBackPressed() {
         //만약 isInEditMode가 true인 상태에서 백버튼 클릭시
         if(isInEditMode){
@@ -123,6 +122,7 @@ class MypageMypickActivity : AppCompatActivity(), View.OnClickListener{
             selectionList.clear()
             rv_mypick.removeAllViews()
         }else{
+            //이전 Activity실행
             super.onBackPressed()
         }
 

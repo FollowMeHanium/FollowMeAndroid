@@ -75,12 +75,5 @@ class MyPickPlaceRecyclerViewAdapter (
         var container_checked = itemView.findViewById(R.id.iv_mypick_container_checked_item) as ImageView
 
     }
-
-    fun removeData(list: ArrayList<PlaceInfo>){
-        for(i in list){
-            dataList.remove(i)
-            notifyDataSetChanged()
-        }
-    }
 }
 

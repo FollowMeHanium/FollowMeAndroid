@@ -1,5 +1,7 @@
 package com.ghdev.followme.ui.mypage
 
+import android.app.Activity
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,14 +14,15 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.ghdev.followme.R
 import com.ghdev.followme.data.test.PlaceInfo
-import com.ghdev.followme.ui.mypage.MypageMypickActivity.Companion.editmode_change
-import okhttp3.internal.notify
-import okhttp3.internal.notifyAll
+import com.ghdev.followme.ui.mypage.MypageMypickActivity.Companion.isInEditMode
+import com.ghdev.followme.ui.mypage.MypageMypickActivity.Companion.selectionList
+import kotlinx.coroutines.selects.select
 
 class MyPickPlaceRecyclerViewAdapter (
     val dataList: ArrayList<PlaceInfo>,
     val dataListClick: (PlaceInfo) -> Unit)
     : RecyclerView.Adapter<MyPickPlaceRecyclerViewAdapter.Holder>() {
+
 
     override fun onCreateViewHolder(
         viewGroup: ViewGroup,
@@ -42,29 +45,22 @@ class MyPickPlaceRecyclerViewAdapter (
         //holder.star.rating = dataList[position].star.toFloat()
         Glide.with(holder.itemView.context).load(info.img).into(holder.imgurl)
 
-        /*if(editmode_change == false) {
-            holder.container_checked.visibility == View.GONE
-            //notifyDataSetChanged()
-        }*/
-
         holder.container.setOnClickListener {
-            if(editmode_change == false){
-                //##detailview로 갈 수 있도록 함
                 dataListClick(info)
-            }
-            else if(editmode_change == true){
-                if(holder.container_checked.visibility == View.VISIBLE){
-                    holder.container_checked.visibility = View.GONE
-                }
-                else if(holder.container_checked.visibility == View.GONE){
+            if(isInEditMode){
+                if(selectionList.contains(info)){
                     holder.container_checked.visibility = View.VISIBLE
+                }else{
+                    holder.container_checked.visibility = View.GONE
                 }
             }
 
         }
+
+
     }
 
-    inner class Holder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class Holder(itemView: View) : RecyclerView.ViewHolder(itemView){
         var imgurl = itemView.findViewById(R.id.iv_mypick_item_img) as ImageView
         var placename = itemView.findViewById(R.id.tv_mypick_item_title) as TextView
         //var star = itemView.findViewById(R.id.rb_star_mycourse_item) as RatingBar
@@ -77,5 +73,7 @@ class MyPickPlaceRecyclerViewAdapter (
 
         //선택시 itme 빨간 배경
         var container_checked = itemView.findViewById(R.id.iv_mypick_container_checked_item) as ImageView
+
     }
 }
+

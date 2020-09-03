@@ -1,5 +1,6 @@
 package com.ghdev.followme.ui.mypage
 
+import android.app.admin.DevicePolicyManager
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -24,11 +25,14 @@ class MypageMypickActivity : AppCompatActivity(), View.OnClickListener{
 
     companion object{
         val PLACE_INFO = "place_info"
-        var editmode_change = false
+        //EditMode 구별 위한 변수
+        var isInEditMode = false
+        //찜 선택된 item list
+        var selectionList: ArrayList<PlaceInfo> = ArrayList()
     }
 
-
     lateinit var myPickPlaceRecyclerViewAdapter: MyPickPlaceRecyclerViewAdapter
+    var dataList: ArrayList<PlaceInfo> = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,12 +43,12 @@ class MypageMypickActivity : AppCompatActivity(), View.OnClickListener{
     }
 
     private fun init(){
-        btn_mypick_editmode.setOnClickListener(this)
+        btn_mypick_editmode_false.setOnClickListener(this)
+        btn_mypick_editmode_true.setOnClickListener(this)
+        btn_mypick_editmode_delete.setOnClickListener(this)
     }
 
-    public fun MyPickRecyclerView(){
-
-        var dataList: ArrayList<PlaceInfo> = ArrayList()
+    fun MyPickRecyclerView(){
 
         dataList.add(PlaceInfo(R.drawable.img5, "비트포비아", "서울특별시 강남구 역삼1동 824-30"))
         dataList.add(PlaceInfo(R.drawable.img6, "카페 프레도", "서울특별시 강남구 역삼1동"))
@@ -56,37 +60,89 @@ class MypageMypickActivity : AppCompatActivity(), View.OnClickListener{
         dataList.add(PlaceInfo(R.drawable.img4, "라공방", "서울특별시 강남구 역삼동 825-20"))
 
         myPickPlaceRecyclerViewAdapter = MyPickPlaceRecyclerViewAdapter(dataList){PlaceInfo->
-            //editmode가 아닐때만 가게 세부 정보 보기
-            //editmode일때는 itme 클릭시 삭제만
-            if(editmode_change==false){
+            if(!isInEditMode){
                 val intent = Intent(this, PlaceDetailActivity::class.java)
                 intent.putExtra(PLACE_INFO, PlaceInfo)
                 startActivity(intent)
+            }else{
+                prepareSelection(PlaceInfo)
+                Log.d("clicked datalist: ", selectionList.toString())
             }
         }
         rv_mypick.adapter = myPickPlaceRecyclerViewAdapter
         rv_mypick.layoutManager = GridLayoutManager(this, 2)
-
-
     }
 
     override fun onClick(v: View?) {
         when(v){
             //editmode 전환
-            btn_mypick_editmode -> {
-                //체크박스와 휴지통이미지 visibility
-                if(editmode_change == true){
-                    editmode_change = false
-                    btn_mypick_editmode_delete.visibility = View.GONE
-                    //btn_mypick_editmode_unchecked.visibility = View.GONE
-                    //rv_mypick.adapter?.notifyDataSetChanged()
-                }else{ //editmode_change == false일때
-                    editmode_change = true
-                    btn_mypick_editmode_delete.visibility = View.VISIBLE
-                    //btn_mypick_editmode_unchecked.visibility = View.VISIBLE // -> recyclerview의 첫 item에서만 발생 -> recycleradapger에서 처리
-                    //rv_mypick.adapter?.notifyDataSetChanged()
-                }
+            btn_mypick_editmode_false -> {
+                //button 나타내기
+                btn_mypick_editmode_false.visibility = View.GONE
+                btn_mypick_editmode_delete.visibility = View.VISIBLE
+                btn_mypick_editmode_true.visibility = View.VISIBLE
+
+                //editmode활성화
+                isInEditMode = true
             }
+
+            btn_mypick_editmode_true -> {
+                //button 나타내기
+                btn_mypick_editmode_true.visibility = View.GONE
+                btn_mypick_editmode_delete.visibility = View.GONE
+                btn_mypick_editmode_false.visibility = View.VISIBLE
+
+                //editmode 비활성화 및 clear
+                isInEditMode = false
+                selectionList.clear()
+                //레이아웃 초기화
+                rv_mypick.removeAllViews()
+            }
+            btn_mypick_editmode_delete ->{
+                if(isInEditMode){
+                    removeData(selectionList)
+                    selectionList.clear()
+                    rv_mypick.removeAllViews()
+                }
+
+            }
+        }
+    }
+
+    //뒤로가기 버튼
+    override fun onBackPressed() {
+        //만약 isInEditMode가 true인 상태에서 백버튼 클릭시
+        if(isInEditMode){
+            btn_mypick_editmode_true.visibility = View.GONE
+            btn_mypick_editmode_delete.visibility = View.GONE
+            btn_mypick_editmode_false.visibility = View.VISIBLE
+
+            isInEditMode = false
+            selectionList.clear()
+            rv_mypick.removeAllViews()
+        }else{
+            //이전 Activity실행
+            super.onBackPressed()
+        }
+
+    }
+
+    fun prepareSelection(dataList : PlaceInfo){
+        if(!selectionList.contains(dataList))
+        {
+            //선택된 아이템 리스트에 해당 포지션 추가
+            selectionList.add(dataList)
+        }else{
+            //선택된 아이템 리스트에 해당 포지션 삭제
+            selectionList.remove(dataList)
+        }
+    }
+
+
+    fun removeData(selectionList: ArrayList<PlaceInfo>){
+        for(i in selectionList){
+            dataList.remove(i)
+            rv_mypick.adapter?.notifyDataSetChanged()
         }
     }
 

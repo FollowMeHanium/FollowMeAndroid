@@ -5,6 +5,7 @@ import com.ghdev.followme.data.PostSignUpResponse
 import com.google.gson.JsonObject
 import retrofit2.Call
 import retrofit2.http.Body
+import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
 
@@ -25,5 +26,12 @@ interface NetworkService {
     ) :Call<PostLoginResponse>
 
 
+    //shop
 
+
+    //course
+  /*  @GET("/course/list")
+    fun getCommunitySmallNewPosts(
+
+    ): Call<>*/
 }

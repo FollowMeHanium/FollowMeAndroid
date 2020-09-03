@@ -1,19 +1,19 @@
-package com.ghdev.followme.ui
+package com.ghdev.followme.ui.mycourse
 
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.RatingBar
 import android.widget.TextView
-import androidx.appcompat.view.menu.MenuView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.ghdev.followme.R
 import com.ghdev.followme.data.test.CourseData
 
-class CourseRecyclerViewAdapter (val dataList: ArrayList<CourseData>)
+class CourseRecyclerViewAdapter (val ctx : Context, val dataList: ArrayList<CourseData>)
     : RecyclerView.Adapter<CourseRecyclerViewAdapter.Holder>() {
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): Holder {
@@ -33,9 +33,9 @@ class CourseRecyclerViewAdapter (val dataList: ArrayList<CourseData>)
 
         //##detailview로 가도록 구현
         holder.container.setOnClickListener {
-
+            val intent = Intent(ctx, MycourseDetailActivity::class.java)
+            ctx.startActivity(intent)
         }
-
     }
 
 

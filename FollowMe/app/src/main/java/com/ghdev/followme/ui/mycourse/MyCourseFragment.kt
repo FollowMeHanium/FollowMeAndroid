@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.ghdev.followme.R
 import com.ghdev.followme.data.test.CourseData
 import com.ghdev.followme.data.test.Place
-import com.ghdev.followme.ui.CourseRecyclerViewAdapter
 import devs.mulham.horizontalcalendar.HorizontalCalendar
 import devs.mulham.horizontalcalendar.HorizontalCalendarView
 import devs.mulham.horizontalcalendar.utils.HorizontalCalendarListener
@@ -98,7 +97,8 @@ class MyCourseFragment : Fragment() {
         courseDataList.add(CourseData("2020.01.04", 2, place, "나만의 힙한 장소"))
         courseDataList.add(CourseData("2020.01.04", 1, place, "나만의 힙한 장소"))
 
-        courseRecyclerViewAdapter = CourseRecyclerViewAdapter(courseDataList)
+        courseRecyclerViewAdapter =
+            CourseRecyclerViewAdapter(requireActivity(), courseDataList)
         rv_my_love_course.adapter = courseRecyclerViewAdapter
         rv_my_love_course.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
 

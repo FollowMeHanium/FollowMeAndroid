@@ -28,10 +28,12 @@
     <string name="title_mycours">나의코스</string>
     <string name="like_mycourse">내가 찜한 코스</string>
 
-
     //fragment 모두의 코스
     <string name="title_course_reco">모두의 코스</string>
     <string name="category">카테고리</string>
+
+    //mycourse detail
+    <string name="mycourse_place">나만의 홍대투어</string>
 
     //mypage_string
     <string name="sign_mypage">로그인 및 회원가입</string>

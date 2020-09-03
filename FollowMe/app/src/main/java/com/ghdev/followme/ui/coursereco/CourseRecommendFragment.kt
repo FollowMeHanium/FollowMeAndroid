@@ -9,10 +9,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.ghdev.followme.R
 import com.ghdev.followme.data.test.CourseData
 import com.ghdev.followme.data.test.Place
-import com.ghdev.followme.ui.CourseRecyclerViewAdapter
+import com.ghdev.followme.ui.mycourse.CourseRecyclerViewAdapter
 import kotlinx.android.synthetic.main.fragment_course_recommend.*
-import okhttp3.internal.notifyAll
-import java.util.*
 import kotlin.collections.ArrayList
 
 class CourseRecommendFragment : Fragment() {
@@ -54,7 +52,9 @@ class CourseRecommendFragment : Fragment() {
         courseDataList.add(CourseData("2020.01.04", 2, place, "나만의 힙한 장소"))
         courseDataList.add(CourseData("2020.01.04", 1, place, "나만의 힙한 장소"))
 
-        courseRecyclerViewAdapter = CourseRecyclerViewAdapter(courseDataList)
+        courseRecyclerViewAdapter =
+
+            CourseRecyclerViewAdapter(requireActivity(), courseDataList)
         rv_course_reco.adapter = courseRecyclerViewAdapter
         rv_course_reco.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
 

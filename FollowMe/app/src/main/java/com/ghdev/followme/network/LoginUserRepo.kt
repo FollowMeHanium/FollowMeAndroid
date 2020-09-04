@@ -1,4 +1,4 @@
-package com.ghdev.followme.repo
+package com.ghdev.followme.network
 
 import android.util.Log
 import androidx.lifecycle.LiveData
@@ -6,7 +6,6 @@ import androidx.lifecycle.MutableLiveData
 import com.ghdev.followme.data.PostLoginResponse
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
-import org.jetbrains.anko.toast
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback

@@ -1,10 +1,7 @@
-package com.ghdev.followme.ui
+package com.ghdev.followme.ui.home
 
-import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.*
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
@@ -13,15 +10,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.ghdev.followme.R
 import com.ghdev.followme.data.test.PlaceInfo
-import com.ghdev.followme.ui.mypage.MypageMypickActivity
-import kotlinx.android.synthetic.main.item_hot_place.view.*
 
 class HotPlaceRecyclerViewAdapter (
     val dataList: ArrayList<PlaceInfo>,
     val dataListClick: (PlaceInfo) -> Unit)
     : RecyclerView.Adapter<HotPlaceRecyclerViewAdapter.Holder>() {
 
-    override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): HotPlaceRecyclerViewAdapter.Holder {
+    override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): Holder {
 
         val view: View = LayoutInflater.from(viewGroup.context).inflate(R.layout.item_hot_place, viewGroup, false)
 
@@ -31,7 +26,7 @@ class HotPlaceRecyclerViewAdapter (
     override fun getItemCount(): Int = dataList.size
 
 
-    override fun onBindViewHolder(holder: HotPlaceRecyclerViewAdapter.Holder, position: Int) {
+    override fun onBindViewHolder(holder: Holder, position: Int) {
         val info : PlaceInfo = dataList[position]
 
         holder.placename.text = info.name

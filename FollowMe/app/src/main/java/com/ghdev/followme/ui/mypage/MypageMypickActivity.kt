@@ -1,24 +1,15 @@
 package com.ghdev.followme.ui.mypage
 
-import android.app.admin.DevicePolicyManager
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.ghdev.followme.R
 import com.ghdev.followme.data.test.PlaceInfo
-import com.ghdev.followme.ui.HomeFragment
-import com.ghdev.followme.ui.HotPlaceRecyclerViewAdapter
 import com.ghdev.followme.ui.PlaceDetailActivity
 import kotlinx.android.synthetic.main.activity_mypage_mypick.*
-import kotlinx.android.synthetic.main.fragment_home.*
-import kotlinx.android.synthetic.main.item_hot_place.*
-import kotlinx.android.synthetic.main.item_mypick.*
-import okhttp3.internal.notifyAll
-import org.jetbrains.anko.verticalLayout
 
 class MypageMypickActivity : AppCompatActivity(), View.OnClickListener{
 

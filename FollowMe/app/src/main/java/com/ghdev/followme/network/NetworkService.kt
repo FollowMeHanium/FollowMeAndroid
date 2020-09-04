@@ -1,11 +1,16 @@
-package com.ghdev.followme.repo
+package com.ghdev.followme.network
 
 import com.ghdev.followme.data.GetShopInfoResponse
 import com.ghdev.followme.data.PostLoginResponse
 import com.ghdev.followme.data.PostShopResponse
 import com.ghdev.followme.data.PostSignUpResponse
+import com.ghdev.followme.network.get.GetAllCourseResponse
 import com.google.gson.JsonObject
 import retrofit2.Call
+import retrofit2.http.Body
+import retrofit2.http.GET
+import retrofit2.http.Header
+import retrofit2.http.POST
 import retrofit2.http.*
 
 interface NetworkService {
@@ -46,4 +51,13 @@ interface NetworkService {
 
 
 
+
+
+    //GEt 모두의 코스
+    @GET("/course/list")
+    fun getAllOurCourse(
+        @Header("authorization") authorization : String
+    ): Call<GetAllCourseResponse>
+
+    //GET 나의 코스
 }

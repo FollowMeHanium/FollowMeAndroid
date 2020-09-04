@@ -14,9 +14,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.ghdev.followme.R
 import com.ghdev.followme.data.test.CourseData
+import com.ghdev.followme.network.get.Course
 import kotlinx.android.synthetic.main.item_mycourse.*
 
-class CourseRecyclerViewAdapter (val ctx : Context, val dataList: ArrayList<CourseData>)
+class CourseRecyclerViewAdapter (val ctx : Context, val dataList: ArrayList<Course>)
     : RecyclerView.Adapter<CourseRecyclerViewAdapter.Holder>() {
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): Holder {
@@ -27,14 +28,17 @@ class CourseRecyclerViewAdapter (val ctx : Context, val dataList: ArrayList<Cour
     override fun getItemCount(): Int = dataList.size
 
     override fun onBindViewHolder(holder: Holder, position: Int) {
-        holder.date.text = dataList[position].date
-        holder.placename1.text = dataList[position].place[0].name
-        holder.placename2.text = dataList[position].place[1].name
-        holder.placename3.text = dataList[position].place[2].name
-        holder.title.text = dataList[position].title
-        holder.star.rating = dataList[position].star.toFloat()
+        //holder.date.text = dataList[position].date
 
-        Glide.with(holder.itemView.context).load(dataList[position].background).into(holder.background)
+        //##shop 의 크기 예외처리
+        //혹시나 서버에서 잘 못 할 수도 있기에에
+       holder.placename1.text = dataList[position].shops[0].shopname
+        holder.placename2.text = dataList[position].shops[1].shopname
+        holder.placename3.text = dataList[position].shops[2].shopname
+        holder.title.text = dataList[position].title
+        holder.star.rating = dataList[position].grade_avg.toFloat()
+
+        //Glide.with(holder.itemView.context).load(dataList[position].background).into(holder.background)
 
         //##detailview로 가도록 구현
         holder.container.setOnClickListener {

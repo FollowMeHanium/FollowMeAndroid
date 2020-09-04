@@ -4,7 +4,7 @@ import android.view.View
 import androidx.lifecycle.ViewModel
 import com.ghdev.followme.data.PostLoginResponse
 import com.ghdev.followme.model.LoginUserModel
-import com.ghdev.followme.repo.LoginUserRepo
+import com.ghdev.followme.network.LoginUserRepo
 import com.ghdev.followme.ui.LoginListener
 
 /*

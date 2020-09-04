@@ -1,23 +1,18 @@
 package com.ghdev.followme.ui
 
-import android.app.DatePickerDialog
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.DatePicker
 import com.ghdev.followme.R
 import com.ghdev.followme.data.PostSignUpResponse
-import com.ghdev.followme.repo.ApplicationController
-import com.ghdev.followme.repo.NetworkService
+import com.ghdev.followme.network.ApplicationController
+import com.ghdev.followme.network.NetworkService
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
 import kotlinx.android.synthetic.main.activity_sign_up.*
-import kotlinx.android.synthetic.main.dialog_sign_up_birth.*
 import org.jetbrains.anko.toast
 import org.json.JSONObject
 import retrofit2.Call

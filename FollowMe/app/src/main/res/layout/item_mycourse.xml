@@ -15,7 +15,7 @@
         android:id="@+id/cl_item_mycourse"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginVertical="8dp"
+        android:layout_marginVertical="10dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -56,12 +56,15 @@
 
         <ImageView
             android:id="@+id/iv_course_item_backgroung"
-            android:layout_width="375dp"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginVertical="4dp"
             android:background="@drawable/ic_course_item_background"
-            android:scaleType="centerCrop"/>
+            android:scaleType="centerCrop"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:layout_editor_absoluteY="0dp" />
 
         <ImageView
             android:id="@+id/img1"
@@ -146,8 +149,7 @@
         android:layout_marginVertical="8dp"
         android:layout_marginStart="16dp"
         android:text="나만의 홍대 투어"
-        android:textColor="@color/colorBlack"
-        android:textSize="12sp"/>
+        android:textColor="@color/colorBlack"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

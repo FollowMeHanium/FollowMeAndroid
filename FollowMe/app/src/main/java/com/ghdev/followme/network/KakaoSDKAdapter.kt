@@ -1,4 +1,4 @@
-package com.ghdev.followme.repo
+package com.ghdev.followme.network
 
 import com.kakao.auth.*
 

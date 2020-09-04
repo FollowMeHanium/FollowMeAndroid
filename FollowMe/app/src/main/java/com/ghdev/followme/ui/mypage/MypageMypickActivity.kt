@@ -1,6 +1,5 @@
 package com.ghdev.followme.ui.mypage
 
-import android.app.admin.DevicePolicyManager
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -9,10 +8,8 @@ import android.view.View
 import androidx.recyclerview.widget.GridLayoutManager
 import com.ghdev.followme.R
 import com.ghdev.followme.data.test.PlaceInfo
-import com.ghdev.followme.ui.HotPlaceRecyclerViewAdapter
 import com.ghdev.followme.ui.PlaceDetailActivity
 import kotlinx.android.synthetic.main.activity_mypage_mypick.*
-import kotlinx.android.synthetic.main.item_hot_place.*
 
 class MypageMypickActivity : AppCompatActivity(), View.OnClickListener{
 

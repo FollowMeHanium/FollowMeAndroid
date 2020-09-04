@@ -1,4 +1,4 @@
-package com.ghdev.followme.repo
+package com.ghdev.followme.network
 
 import android.app.Application
 import com.ghdev.followme.db.PreferenceHelper
@@ -21,9 +21,13 @@ class ApplicationController : Application() {
     override fun onCreate() {
         //onCreate보다 먼저 초기화 해줘야 한다고 함!
         prefs = PreferenceHelper(applicationContext)
+
+
         super.onCreate()
         instance = this
         buildNetWork()
+
+
         KakaoSDK.init(KakaoSDKAdapter())
     }
 
@@ -32,19 +36,12 @@ class ApplicationController : Application() {
         val httpLoggingInterceptor = HttpLoggingInterceptor()
         httpLoggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
 
-        val okHttpClient : OkHttpClient = OkHttpClient().newBuilder().apply{ addInterceptor(httpLoggingInterceptor)
-        }.build()
+        val retrofit: Retrofit = Retrofit.Builder()
+            .baseUrl(baseURL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
 
-        val retrofit: Retrofit = Retrofit.Builder().baseUrl(baseURL).addConverterFactory(
-            GsonConverterFactory.create()
-        ).build()
-
-        networkService = retrofit . create (NetworkService::class.java)
-    }
-
-    override fun onTerminate() {
-        super.onTerminate()
-        //instance = null
+        networkService = retrofit.create(NetworkService::class.java)
     }
 
     //카카오로그인

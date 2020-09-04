@@ -11,7 +11,6 @@ import com.ghdev.followme.R
 import com.ghdev.followme.data.test.CourseData
 import com.ghdev.followme.data.test.Place
 import com.ghdev.followme.data.test.PlaceInfo
-import com.ghdev.followme.ui.HotPlaceRecyclerViewAdapter
 import com.ghdev.followme.ui.PlaceDetailActivity
 import com.ghdev.followme.ui.mycourse.CourseRecyclerViewAdapter
 import kotlinx.android.synthetic.main.fragment_home.*
@@ -95,7 +94,7 @@ class HomeFragment : Fragment() {
 
 
         //코스로 따라와
-        var courseDataList : ArrayList<CourseData> = ArrayList()
+/*        var courseDataList : ArrayList<CourseData> = ArrayList()
 
         var place : ArrayList<Place>  = ArrayList()
         place.add(Place("갬성"))
@@ -110,7 +109,7 @@ class HomeFragment : Fragment() {
         courseRecyclerViewAdapter =
             CourseRecyclerViewAdapter(requireActivity(), courseDataList)
         rv_follow_course.adapter = courseRecyclerViewAdapter
-        rv_follow_course.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
+        rv_follow_course.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)*/
 
     }
 

@@ -5,14 +5,11 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ghdev.followme.R
-import com.ghdev.followme.data.test.CourseData
-import com.ghdev.followme.data.test.Place
 import com.ghdev.followme.data.test.PlaceInfo
-import com.ghdev.followme.ui.HotPlaceRecyclerViewAdapter
+import com.ghdev.followme.ui.home.HotPlaceRecyclerViewAdapter
 import com.ghdev.followme.ui.PlaceDetailActivity
 import com.ghdev.followme.ui.home.HomeFragment
 import kotlinx.android.synthetic.main.activity_mycourse_detail.*
-import kotlinx.android.synthetic.main.fragment_home.*
 
 class MycourseDetailActivity : AppCompatActivity() {
 

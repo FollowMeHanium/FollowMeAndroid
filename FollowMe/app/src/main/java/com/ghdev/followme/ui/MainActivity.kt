@@ -1,9 +1,12 @@
 package com.ghdev.followme.ui
 
+import android.content.Context
+import android.graphics.Point
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.view.WindowManager
 import android.widget.ImageView
 import com.ghdev.followme.R
 import com.ghdev.followme.ui.base.BasePagerAdapter
@@ -15,6 +18,8 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -23,12 +28,11 @@ class MainActivity : AppCompatActivity() {
         viewpager.run {
             adapter = BasePagerAdapter(supportFragmentManager).apply {
                 addFragment(HomeFragment())
-                addFragment(SearchFragment())
                 addFragment(MyCourseFragment())
                 addFragment(CourseRecommendFragment())
                 addFragment(MypageFragment())
             }
-            offscreenPageLimit = 4
+            offscreenPageLimit = 3
         }
 
         // TabLayout
@@ -40,14 +44,13 @@ class MainActivity : AppCompatActivity() {
             getTabAt(0)!!.customView =
                 navigationLayout.findViewById(R.id.img_home_main_navi_act) as ImageView
             getTabAt(1)!!.customView =
-                navigationLayout.findViewById(R.id.img_search_main_navi_act) as ImageView
-            getTabAt(2)!!.customView =
                 navigationLayout.findViewById(R.id.img_course_main_navi_act) as ImageView
-            getTabAt(3)!!.customView =
+            getTabAt(2)!!.customView =
                 navigationLayout.findViewById(R.id.img_course_recommend_main_navi_act) as ImageView
-            getTabAt(4)!!.customView =
+            getTabAt(3)!!.customView =
                 navigationLayout.findViewById(R.id.img_mypage_main_navi_act) as ImageView
         }
+
     }
 
 }

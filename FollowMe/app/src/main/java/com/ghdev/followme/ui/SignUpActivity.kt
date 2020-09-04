@@ -1,5 +1,6 @@
 package com.ghdev.followme.ui
 
+import android.app.DatePickerDialog
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -8,6 +9,7 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.DatePicker
 import com.ghdev.followme.R
 import com.ghdev.followme.data.PostSignUpResponse
 import com.ghdev.followme.repo.ApplicationController
@@ -15,6 +17,7 @@ import com.ghdev.followme.repo.NetworkService
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
 import kotlinx.android.synthetic.main.activity_sign_up.*
+import kotlinx.android.synthetic.main.dialog_sign_up_birth.*
 import org.jetbrains.anko.toast
 import org.json.JSONObject
 import retrofit2.Call
@@ -27,6 +30,7 @@ class SignUpActivity : AppCompatActivity(), View.OnClickListener {
     var year_arr = ArrayList<String>()
     var month_arr = ArrayList<String>()
     var date_arr = ArrayList<String>()
+    private lateinit var calendar: Calendar
 
     val networkService: NetworkService by lazy {
         ApplicationController.instance.networkService
@@ -56,9 +60,10 @@ class SignUpActivity : AppCompatActivity(), View.OnClickListener {
 
                 val type = "type"
                 val pushAllow = "true"
-
-
                 getSignUpResponse()
+            }
+            btn_signup_birth -> {
+                BirthDiarlogCreate(v!!)
             }
 
         }
@@ -76,16 +81,20 @@ class SignUpActivity : AppCompatActivity(), View.OnClickListener {
         //btn_id_check_sign_id_set_act.setOnClickListener(this)
         rl_signup_act.setOnClickListener(this)
         btn_agree_sign_id_set_act.setOnClickListener(this)
-
+        btn_signup_birth.setOnClickListener(this)
 
     }
 
-
+    private fun BirthDiarlogCreate(view: View){
+        val pd: BirthDialogFragment<View> = BirthDialogFragment(view, "tag")
+        pd.show(supportFragmentManager, "BirthDialog")
+    }
     private fun downKeyboard(view: View) {
         val imm: InputMethodManager =
             applicationContext!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
+
 
     //network
     private fun getSignUpResponse() {

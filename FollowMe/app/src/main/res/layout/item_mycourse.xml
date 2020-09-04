@@ -54,6 +54,14 @@
         app:layout_constraintVertical_bias="1.0"
         tools:layout_editor_absoluteX="131dp">
 
+        <ImageView
+            android:id="@+id/iv_course_item_backgroung"
+            android:layout_width="375dp"
+            android:layout_height="match_parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:background="@drawable/ic_course_item_background"
+            android:scaleType="centerCrop"/>
 
         <ImageView
             android:id="@+id/img1"
@@ -72,10 +80,12 @@
             android:layout_height="wrap_content"
             android:text="오카에리"
             android:textSize="10sp"
+            android:textStyle="bold"
+            android:textColor="#000000"
             app:layout_constraintTop_toTopOf="@+id/img1"
             app:layout_constraintBottom_toBottomOf="@+id/img1"
             app:layout_constraintLeft_toLeftOf="@+id/img1"
-            app:layout_constraintRight_toRightOf="@+id/img1"/>
+            app:layout_constraintRight_toRightOf="@+id/img1" />
 
         <ImageView
             android:id="@+id/img2"
@@ -85,7 +95,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/img3"
             app:layout_constraintStart_toEndOf="@+id/img1"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            />
 
         <TextView
             android:id="@+id/tv_place2_mycourse"
@@ -93,6 +104,8 @@
             android:layout_height="wrap_content"
             android:text="오카에리"
             android:textSize="10sp"
+            android:textStyle="bold"
+            android:textColor="#000000"
             app:layout_constraintTop_toTopOf="@+id/img2"
             app:layout_constraintBottom_toBottomOf="@+id/img2"
             app:layout_constraintLeft_toLeftOf="@+id/img2"
@@ -115,6 +128,8 @@
             android:layout_height="wrap_content"
             android:text="오카에리"
             android:textSize="10sp"
+            android:textStyle="bold"
+            android:textColor="#000000"
             app:layout_constraintTop_toTopOf="@+id/img3"
             app:layout_constraintBottom_toBottomOf="@+id/img3"
             app:layout_constraintLeft_toLeftOf="@+id/img3"

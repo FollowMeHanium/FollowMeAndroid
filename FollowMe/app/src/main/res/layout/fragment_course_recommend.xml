@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ui.home.HomeFragment">
+    android:background="@color/colorWhite">
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -21,8 +21,7 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/cl_toolbar_course_reco"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
+                android:layout_height="49dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
@@ -30,8 +29,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/title_course_reco"
+                    android:textColor="@color/colorBlack"
                     android:textSize="24sp"
                     android:textStyle="bold"
+                    android:layout_marginLeft="10dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -40,19 +41,20 @@
                     android:id="@+id/btn_search_course_frag"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/add"
+                    android:src="@drawable/btn_search"
+                    android:layout_marginRight="10dp"
+                    app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginTop="12dp"
-                    android:background="@color/colorMain"
-                    app:layout_constraintTop_toBottomOf="@+id/btn_search_course_frag" />
+                    app:layout_constraintBottom_toBottomOf="parent"/>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <View
+                android:id="@+id/v_course_reco_line"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@color/colorMain"
+                app:layout_constraintTop_toBottomOf="@id/cl_toolbar_course_reco" />
 
             <!--카테고리-->
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -80,6 +82,7 @@
                     android:layout_marginStart="4dp"
                     android:text="@string/category"
                     android:textSize="16sp"
+                    android:textColor="@color/colorBlack"
                     app:layout_constraintStart_toEndOf="@+id/ib_category_filter_course_reco_frag"
                     app:layout_constraintTop_toTopOf="parent" />
 

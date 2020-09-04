@@ -1,8 +1,10 @@
 package com.ghdev.followme.ui
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.*
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
@@ -11,6 +13,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.ghdev.followme.R
 import com.ghdev.followme.data.test.PlaceInfo
+import com.ghdev.followme.ui.mypage.MypageMypickActivity
+import kotlinx.android.synthetic.main.item_hot_place.view.*
 
 class HotPlaceRecyclerViewAdapter (
     val dataList: ArrayList<PlaceInfo>,
@@ -33,15 +37,14 @@ class HotPlaceRecyclerViewAdapter (
         holder.placename.text = info.name
         holder.address.text = info.address
 
-        /*//glide
-        Glide.with(ctx).load(dataList[position].img)
+        /*Glide.with(ctx).load(dataList[position].img)
             .placeholder(R.drawable.ic_home_black)
-            .into(holder.imgurl)*/
+            .into(holder.imgurl) */
+        Glide.with(holder.itemView.context).load(info.img).into(holder.imgurl)
 
         holder.container.setOnClickListener {
             //##detailview로 갈 수 있도록 함
             dataListClick(info)
-
         }
     }
 

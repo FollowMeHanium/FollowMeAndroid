@@ -33,10 +33,10 @@ class MycourseDetailActivity : AppCompatActivity() {
         //모듈화를 시키기(rv_id와 datalist가 들어가는 것 말고는 다른 것은 동일)
         var dataList: ArrayList<PlaceInfo> = ArrayList()
 
-        dataList.add(PlaceInfo("", "하", "서울시 노원구 공릉동 131313"))
-        dataList.add(PlaceInfo("", "하", "서울시 노원구 공릉동 131313"))
-        dataList.add(PlaceInfo("", "하", "서울시 노원구 공릉동 131313"))
-        dataList.add(PlaceInfo("", "하", "서울시 노원구 공릉동 131313"))
+        dataList.add(PlaceInfo(0, "하", "서울시 노원구 공릉동 131313"))
+        dataList.add(PlaceInfo( 0,"하", "서울시 노원구 공릉동 131313"))
+        dataList.add(PlaceInfo(0, "하", "서울시 노원구 공릉동 131313"))
+        dataList.add(PlaceInfo(0, "하", "서울시 노원구 공릉동 131313"))
 
         hotPlaceRecyclerViewAdapter =
             HotPlaceRecyclerViewAdapter(dataList) { PlaceInfo ->

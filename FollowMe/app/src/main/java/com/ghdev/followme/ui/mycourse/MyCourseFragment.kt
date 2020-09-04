@@ -92,10 +92,12 @@ class MyCourseFragment : Fragment() {
         place.add(Place("소울커피"))
         place.add(Place("공차"))
 
-        courseDataList.add(CourseData("2020.01.04", 5, place,"나만의 힙한 장소"))
-        courseDataList.add(CourseData("2020.01.04", 3, place,"나만의 힙한 장소"))
-        courseDataList.add(CourseData("2020.01.04", 2, place, "나만의 힙한 장소"))
-        courseDataList.add(CourseData("2020.01.04", 1, place, "나만의 힙한 장소"))
+
+        courseDataList.add(CourseData("2020.01.04", 5, place,"나만의 힙한 장소", R.drawable.img1))
+        courseDataList.add(CourseData("2020.04.03", 3, place,"나만의 데이트 장소", R.drawable.img3))
+        courseDataList.add(CourseData("2020.04.26", 2, place, "힐링하기 좋은날", R.drawable.img2))
+        courseDataList.add(CourseData("2020.03.02", 1, place, "친구와 함께한 날", R.drawable.img8))
+
 
         courseRecyclerViewAdapter =
             CourseRecyclerViewAdapter(requireActivity(), courseDataList)

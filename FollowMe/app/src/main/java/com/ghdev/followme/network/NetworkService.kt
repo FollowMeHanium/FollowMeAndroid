@@ -60,4 +60,8 @@ interface NetworkService {
     ): Call<GetAllCourseResponse>
 
     //GET 나의 코스
+    @GET("/course/my")
+    fun getMyCourse(
+        @Header("authorization") authorization : String
+    ): Call<GetAllCourseResponse>
 }

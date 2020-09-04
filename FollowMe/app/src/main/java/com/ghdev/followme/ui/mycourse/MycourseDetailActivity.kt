@@ -14,14 +14,19 @@ import kotlinx.android.synthetic.main.activity_mycourse_detail.*
 class MycourseDetailActivity : AppCompatActivity() {
 
     lateinit var hotPlaceRecyclerViewAdapter: HotPlaceRecyclerViewAdapter
+    var courseIdx = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_mycourse_detail)
 
+        init()
         setRecyclerView()
     }
 
+    private fun init() {
+        courseIdx = intent.getIntExtra("course_idx", -1)
+    }
 
     private fun setRecyclerView() {
 

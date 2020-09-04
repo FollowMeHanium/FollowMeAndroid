@@ -43,6 +43,7 @@ class CourseRecyclerViewAdapter (val ctx : Context, val dataList: ArrayList<Cour
         //##detailview로 가도록 구현
         holder.container.setOnClickListener {
             val intent = Intent(ctx, MycourseDetailActivity::class.java)
+            intent.putExtra("course_idx", dataList[position].id)
             ctx.startActivity(intent)
         }
     }

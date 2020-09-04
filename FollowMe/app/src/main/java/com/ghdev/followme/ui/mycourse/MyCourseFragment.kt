@@ -1,5 +1,6 @@
 package com.ghdev.followme.ui.mycourse
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -13,10 +14,12 @@ import com.ghdev.followme.network.ApplicationController
 import com.ghdev.followme.network.NetworkService
 import com.ghdev.followme.network.get.Course
 import com.ghdev.followme.network.get.GetAllCourseResponse
+import org.jetbrains.anko.startActivity
 import devs.mulham.horizontalcalendar.HorizontalCalendar
 import devs.mulham.horizontalcalendar.HorizontalCalendarView
 import devs.mulham.horizontalcalendar.utils.HorizontalCalendarListener
 import kotlinx.android.synthetic.main.fragment_my_course.*
+import kotlinx.android.synthetic.main.fragment_my_course.view.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -45,6 +48,11 @@ class MyCourseFragment : Fragment() {
     ): View? { // Inflate the layout for this fragment
 
         rootView = inflater.inflate(R.layout.fragment_my_course, container, false)
+
+        rootView.btn_add_course_frag.setOnClickListener {
+            var intent = Intent(activity, MycourseAddActivity::class.java)
+            startActivity(intent)
+        }
 
         return rootView
     }
@@ -119,7 +127,6 @@ class MyCourseFragment : Fragment() {
 
     }
 
-
     private fun getMyCourseResponse() {
 
 
@@ -154,6 +161,4 @@ class MyCourseFragment : Fragment() {
             }
         })
     }
-
-
 }

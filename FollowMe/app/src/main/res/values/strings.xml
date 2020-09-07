@@ -14,14 +14,16 @@
     <string name="id_signup">이메일주소를 입력해주세요</string>
     <string name="id_check_signup">중복확인</string>
     <string name="password_signup">패스워드(영문,숫자,특수문자 조합 8자 이상)</string>
+    <string name="password_overlap">비밀번호가 일치하지 않습니다.</string>
+    <string name="password_not_overlap">비밀번호가 일치합니다.</string>
     <string name="nickname_signup">닉네임</string>
     <string name="sex_man_signup">남</string>
     <string name="sex_woman_signup">여</string>
-    <string name="sex_null_signup">선택안함</string>
     <string name="phone_signup">-제외하고 입력</string>
     <string name="birth_signup">생년월일</string>
     <string name="birth_signup_tv">생년월일을 선택하세요</string>
     <string name="btn_sign_signup">가입하기</string>
+
 
 
     //fragment_mycourse

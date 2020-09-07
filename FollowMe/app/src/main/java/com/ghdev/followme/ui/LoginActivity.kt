@@ -9,6 +9,8 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import com.ghdev.followme.R
 import com.ghdev.followme.data.PostLoginResponse
+import com.ghdev.followme.db.PreferenceHelper
+import com.ghdev.followme.db.SharedPreference
 import com.ghdev.followme.network.ApplicationController
 import com.ghdev.followme.network.NetworkService
 import com.google.gson.JsonObject
@@ -36,7 +38,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener{
     }
 
     private val sharedPrefs by lazy{
-        ApplicationController.prefs
+        ApplicationController.instance.prefs
     }
 
     private var callback : SessionCallback = SessionCallback()
@@ -190,7 +192,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener{
         val input_pw: String = et_pw_login_act.text.toString()
 
         var jsonObject = JSONObject()
-        jsonObject.put("id", input_email)
+        jsonObject.put("email", input_email)
         jsonObject.put("password", input_pw)
 
         val gsonObject = JsonParser().parse(jsonObject.toString()) as JsonObject
@@ -212,9 +214,17 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener{
                 response: Response<PostLoginResponse>
             ) {
                 if (response.isSuccessful) {
-                   // response.body()!!.token
+                    //token값 저장
+                    SharedPreference.PREFS_KEY_ACCESS = response.body()!!.token
+
+
+                    sharedPrefs.setString(PreferenceHelper.PREFS_KEY_ACCESS, response.body()!!.token)
+                    sharedPrefs.setString(PreferenceHelper.PREFS_KEY_REF, response.body()!!.refreshToken)
+
+                    Log.d("token_value1: ",sharedPrefs.getString(PreferenceHelper.PREFS_KEY_ACCESS,"0"))
+                    Log.d("token_value2: ",sharedPrefs.getString(PreferenceHelper.PREFS_KEY_REF,"0"))
                     toast(response.body()!!.message)
-                    finish()
+                    startActivity<MainActivity>()
                 }
             }
         })

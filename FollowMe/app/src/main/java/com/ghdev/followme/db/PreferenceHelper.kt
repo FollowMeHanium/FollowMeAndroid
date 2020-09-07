@@ -8,11 +8,14 @@ class PreferenceHelper(context: Context) {
 
     companion object {
         private const val PREFS_FILENAME = "token_data"
-        private const val PREFS_KEY_ACCESS = "token"
-        private const val PREFS_KEY_REF = "refreshToken"
+        public const val PREFS_KEY_ACCESS = "token"
+        public const val PREFS_KEY_REF = "refreshToken"
     }
 
     private val prefs: SharedPreferences = context.getSharedPreferences(PREFS_FILENAME, Context.MODE_PRIVATE)
+
+    var token : String = ""
+    var refreshToken : String =""
 
     fun getString(key: String, defValue:String):String{
         return prefs.getString(key, defValue).toString()

@@ -1,6 +1,7 @@
 package com.ghdev.followme.ui.mycourse
 
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -9,20 +10,29 @@ import com.ghdev.followme.data.test.PlaceInfo
 import com.ghdev.followme.ui.PlaceDetailActivity
 import com.ghdev.followme.ui.home.HomeFragment
 import com.ghdev.followme.ui.home.HotPlaceRecyclerViewAdapter
+import com.naver.maps.geometry.LatLng
+import com.naver.maps.map.CameraUpdate
 import com.naver.maps.map.MapFragment
+import com.naver.maps.map.NaverMap
+import com.naver.maps.map.OnMapReadyCallback
+import com.naver.maps.map.overlay.Marker
+import com.naver.maps.map.overlay.PathOverlay
 import kotlinx.android.synthetic.main.activity_mycourse_detail.*
 
-class MycourseDetailActivity : AppCompatActivity() {
+class MycourseDetailActivity : AppCompatActivity(), OnMapReadyCallback {
 
     lateinit var hotPlaceRecyclerViewAdapter: HotPlaceRecyclerViewAdapter
+    private var naverMap: NaverMap? = null
+    lateinit var path: PathOverlay
+    val mapCoords = mutableListOf<LatLng>()
     var courseIdx = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_mycourse_detail)
 
-
         init()
+        loadCoordinateDatas()
         setRecyclerView()
 
     }
@@ -39,10 +49,10 @@ class MycourseDetailActivity : AppCompatActivity() {
                 fm.beginTransaction().add(R.id.map_naver_mycourse_detail, it).commit()
             }
 
-        //mapvRecDetail.getMapAsync(this)
+        mapvRecDetail.getMapAsync(this)
     }
 
-/*    override fun onMapReady(p0: NaverMap) {
+    override fun onMapReady(p0: NaverMap) {
         this.naverMap = p0
 
         //지도에 경로 뿌리기
@@ -51,98 +61,52 @@ class MycourseDetailActivity : AppCompatActivity() {
             path = PathOverlay()
             path.coords = mapCoords
 
-
             naverMap?.let {
                 path.map = it
 
                 //마커 세팅
                 val marker = Marker()
                 marker.position = path.coords[path.coords.size-1]
-                marker.icon = OverlayImage.fromResource(R.drawable.icon_location)
-                marker.map = naverMap
+                marker.captionText = "Hello"
+                //marker.icon = OverlayImage.fromResource(R.drawable.icon_location)
+                //marker.map = naverMap
 
                 //경로선 커스텀
                 path.width = 20
                 path.outlineWidth = 0
                 path.color = Color.parseColor("#3868ff")
 
+                var la : Double = 0.0
+                var lo : Double = 0.0
                 //카메라 포커스 이동
-                val coord = mapCoords[mapCoords.size - 1]
+                for(coord in mapCoords) {
+                    la += coord.latitude
+                    lo += coord.longitude
+                }
+
+                val map = mutableListOf<LatLng>()
+                map.add(LatLng(la/3, lo/3))
+
+                val coord = map[0]
                 it.moveCamera(CameraUpdate.scrollTo(coord))
             }
         }
-    }*/
+    }
 
-/*
     fun loadCoordinateDatas() {
-        var token = prefs.getString("token", null)
-        requestToServer.service.requestRecordDetail(token, runIdx).customEnqueue(
-            onFailure = { call, t ->
-                Log.d(
-                    "RecDetailActivity",
-                    "requestRecDetail onFailure msg = ${t.message}"
-                )
-            },
-            onResponse = { call, r ->
-                if (r.isSuccessful) {
-                    val body = r.body()
-                    if (body?.status == 200) {
-                        if (body?.success) {
-                            //DateData Setting
-                            tvRecDetailDate.text =
-                                body.result.month.toString() + "월 " + body.result.day.toString() + "일의 러닝"
+       /* val coordsDoubleArr =
+        for (coord in coordsDoubleArr) {
+            mapCoords.add(LatLng(coord.latitude, coord.longitude))
+        }*/
 
-                            //TimeData Setting
-                            val sTimeArr = body.result.start_time!!.split(":")
-                            val eTimeArr = body.result.end_time!!.split(":")
+        //##서버에서 좌표 받아오면 됨
 
-                            var sTimeTitle = ""
-                            var eTimeTitle = ""
+        mapCoords.add(LatLng(37.57152, 126.97714))
+        mapCoords.add(LatLng(37.56607, 126.98268))
+        mapCoords.add(LatLng(37.56445, 126.97707))
 
-                            if (sTimeArr[0].toInt() < 12)
-                                sTimeTitle = "오전"
-                            else
-                                sTimeTitle = "오후"
-
-                            if (eTimeArr[0].toInt() < 12)
-                                eTimeTitle = "오전"
-                            else
-                                eTimeTitle = "오후"
-
-                            var sTimeHour = (sTimeArr[0].toInt() % 12)
-                            var eTimeHour = (eTimeArr[0].toInt() % 12)
-
-                            if (sTimeHour == 0)
-                                sTimeHour = 12
-
-                            if (eTimeHour == 0)
-                                eTimeHour = 12
-
-                            tvRecDetailTime.text =
-                                sTimeTitle + sTimeHour.toString() + ":" + sTimeArr[1] + "-" + eTimeTitle + eTimeHour.toString() + ":" + eTimeArr[1]
-
-                            //coordinate를 mapCoords: List<LatLng>에 Setting
-                            val coordsDoubleArr = body.result.coordinate
-                            for (coord in coordsDoubleArr) {
-                                mapCoords.add(LatLng(coord.latitude, coord.longitude))
-                            }
-
-                            settingMap()
-                        }
-                    }
-                } else {
-                    Log.d(
-                        "TAG",
-                        "requestRecordDetail onSuccess but response code is not 200 ~ 300 " +
-                                "(status code:${r.code()}) " +
-                                "(message: ${r.message()})" +
-                                "(errorBody: ${r.errorBody()})"
-                    )
-                }
-            }
-
-        )
-    }*/
+        settingMap()
+    }
 
     private fun setRecyclerView() {
 

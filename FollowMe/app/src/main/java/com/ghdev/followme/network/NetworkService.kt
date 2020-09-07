@@ -64,4 +64,13 @@ interface NetworkService {
     fun getMyCourse(
         @Header("authorization") authorization : String
     ): Call<GetAllCourseResponse>
+
+    //코스 Detail
+    @GET("/course/one/{id}")
+    fun getCourseDetail(
+        @Header("authorization") authorization : String,
+        @Path("id") id : Int
+    ): Call<GetAllCourseResponse>
+
+
 }

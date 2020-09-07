@@ -97,7 +97,7 @@ class CourseRecommendFragment : Fragment() {
         getOurCorse.enqueue(object : Callback<GetAllCourseResponse> {
 
             override fun onFailure(call: Call<GetAllCourseResponse>, t: Throwable) {
-                Log.d("course 가져오기 fail", t.toString())
+                Log.d("모두의 Course fail", t.toString())
             }
 
             override fun onResponse(

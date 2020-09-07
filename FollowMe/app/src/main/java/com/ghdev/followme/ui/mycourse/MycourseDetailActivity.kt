@@ -3,10 +3,15 @@ package com.ghdev.followme.ui.mycourse
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ghdev.followme.R
 import com.ghdev.followme.data.test.PlaceInfo
+import com.ghdev.followme.network.ApplicationController
+import com.ghdev.followme.network.NetworkService
+import com.ghdev.followme.network.get.Course
+import com.ghdev.followme.network.get.GetAllCourseResponse
 import com.ghdev.followme.ui.PlaceDetailActivity
 import com.ghdev.followme.ui.home.HomeFragment
 import com.ghdev.followme.ui.home.HotPlaceRecyclerViewAdapter
@@ -18,6 +23,9 @@ import com.naver.maps.map.OnMapReadyCallback
 import com.naver.maps.map.overlay.Marker
 import com.naver.maps.map.overlay.PathOverlay
 import kotlinx.android.synthetic.main.activity_mycourse_detail.*
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class MycourseDetailActivity : AppCompatActivity(), OnMapReadyCallback {
 
@@ -26,6 +34,10 @@ class MycourseDetailActivity : AppCompatActivity(), OnMapReadyCallback {
     lateinit var path: PathOverlay
     val mapCoords = mutableListOf<LatLng>()
     var courseIdx = 0
+
+    val networkService: NetworkService by lazy {
+        ApplicationController.instance.networkService
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -136,5 +148,43 @@ class MycourseDetailActivity : AppCompatActivity(), OnMapReadyCallback {
         rv_store_list.adapter = hotPlaceRecyclerViewAdapter
         rv_store_list.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
 
+    }
+
+    private fun getCourseDetailResponse() {
+        //## token 자리에 SharedPreference 에 있는 token 값 가져와야함.
+        val getOurCorse: Call<GetAllCourseResponse> =
+            networkService.getCourseDetail(
+                "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.88j2Z3_pB_z-xU4AGuYsptIiV9zFdH7bsweI8hR3NS8",
+            courseIdx)
+
+        getOurCorse.enqueue(object : Callback<GetAllCourseResponse> {
+            override fun onFailure(call: Call<GetAllCourseResponse>, t: Throwable) {
+                Log.d("GET course detail fail", t.toString())
+            }
+
+            override fun onResponse(
+                call: Call<GetAllCourseResponse>,
+                response: Response<GetAllCourseResponse>
+            ) {
+                Log.d("TAGG 22", response.isSuccessful.toString() )
+                if (response.isSuccessful) {
+
+                    //##title
+                    //tv_course_title_mycourse_detail.text
+                    //tv_date
+                    //rb_star_mycourse_detail
+
+                    val temp: ArrayList<Course> = response.body()!!.courses
+
+                    if (temp.size > 0) {
+
+                        /*
+                        val position = courseRecyclerViewAdapter.itemCount
+                        courseRecyclerViewAdapter.dataList.addAll(temp)
+                        courseRecyclerViewAdapter.notifyItemInserted(position)*/
+                    }
+                }
+            }
+        })
     }
 }

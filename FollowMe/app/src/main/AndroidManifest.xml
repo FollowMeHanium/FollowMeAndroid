@@ -16,11 +16,6 @@
 
         </activity>
         <activity android:name=".ui.mycourse.MycourseDetailActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity android:name=".ui.PlaceDetailActivity" />
         <activity android:name=".ui.mypage.MypageMysettingActivity" />

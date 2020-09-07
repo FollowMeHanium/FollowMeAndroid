@@ -65,6 +65,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener{
 
             //로그인하기
             btn_login_act -> {
+                Log.d("login_fun", "clicked")
                 getLoginResponse()
             }
 
@@ -189,18 +190,20 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener{
         val input_pw: String = et_pw_login_act.text.toString()
 
         var jsonObject = JSONObject()
-        jsonObject.put("email", input_email)
+        jsonObject.put("id", input_email)
         jsonObject.put("password", input_pw)
 
         val gsonObject = JsonParser().parse(jsonObject.toString()) as JsonObject
 
+        Log.d("login_fun", "gson")
         val postLoginResponse: Call<PostLoginResponse> =
             networkService.postLoginResponse("application/json", gsonObject)
         postLoginResponse.enqueue(object : Callback<PostLoginResponse> {
 
+
             //통신 실패 시 수행되는 메소드
             override fun onFailure(call: Call<PostLoginResponse>, t: Throwable) {
-                Log.e("login fail", t.toString())
+                Log.e("login_fail", t.toString())
             }
 
             //통신 성공 시 수행되는 메소드
@@ -209,7 +212,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener{
                 response: Response<PostLoginResponse>
             ) {
                 if (response.isSuccessful) {
-                    response.body()!!.accessToken
+                   // response.body()!!.token
                     toast(response.body()!!.message)
                     finish()
                 }

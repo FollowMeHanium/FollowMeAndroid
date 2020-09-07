@@ -49,7 +49,7 @@ class SignUpActivity : AppCompatActivity(), View.OnClickListener {
             btn_agree_sign_id_set_act -> {
 
                 val id = et_id_sign_up_act.text.toString()
-                val gender = "M"
+                val gender = "W"
                 val password = et_pw_check_sign_up_act.text.toString()
                 //val deviceToken = singWithEmailPassword(email, password)
 
@@ -97,11 +97,15 @@ class SignUpActivity : AppCompatActivity(), View.OnClickListener {
         val input_email: String = et_id_sign_up_act.text.toString()
         val input_pw: String = et_pw_sign_up_act.text.toString()
         val input_nickname: String = et_nickname_sign_up_act.text.toString()
+        val input_phone: String = et_phonenumber_sign_up_act.text.toString()
+        //val input_gender: Int =
 
         var jsonObject = JSONObject()
         jsonObject.put("email", input_email)
         jsonObject.put("password", input_pw)
         jsonObject.put("nickname", input_nickname)
+        jsonObject.put("phone_num", "01020875535")
+        jsonObject.put("gender", 1)
 
         val gsonObject = JsonParser().parse(jsonObject.toString()) as JsonObject
 

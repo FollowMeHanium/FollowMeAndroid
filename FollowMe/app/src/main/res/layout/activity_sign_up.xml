@@ -27,8 +27,9 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginStart="8dp"
-            android:text="@string/signup_signup"
+            android:text="회원가입"
             android:textColor="#000000"
+            android:textStyle="bold"
             android:textSize="22sp" />
     </RelativeLayout>
 
@@ -230,14 +231,6 @@
                     android:layout_weight="1"
                     android:textColor="#000000"
                     android:text="@string/sex_woman_signup" />
-
-                <RadioButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:textColor="#000000"
-                    android:text="@string/sex_null_signup"/>
-
             </RadioGroup>
 
         </RelativeLayout>

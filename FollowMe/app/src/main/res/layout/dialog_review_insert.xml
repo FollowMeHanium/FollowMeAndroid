@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="335dp"
+    android:layout_height="307dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/bg_item_place_review">
+
+    <TextView
+        android:id="@+id/tv_dialog_review_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="리뷰추가"
+        android:textStyle="bold"
+        android:textSize="18sp"
+        android:textColor="@color/colorBlack"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="20dp"/>
+
+    <View
+        android:id="@+id/v_dialog_review_etline"
+        android:layout_width="315dp"
+        android:layout_height="141dp"
+        android:padding="10dp"
+        android:background="@drawable/bg_item_place_review"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_dialog_review_title"
+        android:layout_marginTop="12dp">
+
+        <EditText
+            android:id="@+id/et_dialog_review"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@null"
+            android:hint="내용을 입력하세요.(최대200자)"
+            android:textColorHint="#bdbdbd"
+            android:maxLength="200"/>
+    </View>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="평점"
+        android:textColor="@color/colorBlack"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/v_dialog_review_etline"/>
+
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

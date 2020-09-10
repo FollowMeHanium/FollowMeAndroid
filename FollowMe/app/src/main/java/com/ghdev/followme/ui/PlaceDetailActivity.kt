@@ -1,9 +1,13 @@
 package com.ghdev.followme.ui
 
+import android.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
+import android.widget.EditText
 import android.widget.LinearLayout
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.ghdev.followme.R
 import com.ghdev.followme.data.test.PlaceInfo
@@ -11,7 +15,7 @@ import com.ghdev.followme.ui.home.HomeFragment.Companion.PLACE_INFO
 import com.ghdev.followme.data.test.ReviewInfo
 import kotlinx.android.synthetic.main.activity_place_detail.*
 
-class PlaceDetailActivity : AppCompatActivity() {
+class PlaceDetailActivity : AppCompatActivity(), View.OnClickListener {
 
     lateinit var placeReivewRecyclerViewAdapter: PlaceReivewRecyclerViewAdapter
     var reviewList : ArrayList<ReviewInfo> = ArrayList()
@@ -26,7 +30,12 @@ class PlaceDetailActivity : AppCompatActivity() {
         tv_place_detail_name.text = place_info.address
         Glide.with(this).load(place_info.img).into(iv_place_detail_main)
 
+        init()
         PlaceReviewRcycler()
+    }
+
+    private fun init(){
+        btn_place_detail_add_review.setOnClickListener(this)
     }
 
     fun PlaceReviewRcycler(){
@@ -37,7 +46,24 @@ class PlaceDetailActivity : AppCompatActivity() {
 
         placeReivewRecyclerViewAdapter = PlaceReivewRecyclerViewAdapter(reviewList)
         rv_place_detail_review.adapter = placeReivewRecyclerViewAdapter
-        rv_place_detail_review.layoutManager = LinearLayoutManager(this, LinearLayout.VERTICAL, false)
+        rv_place_detail_review.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
+    }
+
+    override fun onClick(v: View?) {
+        when(v){
+            btn_place_detail_add_review ->{
+                ReviewDialog()
+            }
+        }
+    }
+
+    fun ReviewDialog(){
+        val builder = AlertDialog.Builder(this)
+        val dv = layoutInflater.inflate(R.layout.dialog_review_insert,null)
+
+        val et_review = dv.findViewById<EditText>(R.id.et_dialog_review)
+
+        builder.setView(dv).show()
     }
 
 }

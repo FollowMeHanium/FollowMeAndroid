@@ -20,7 +20,7 @@ class ApplicationController : Application() {
     }
 
     override fun onCreate() {
-        //onCreate보다 먼저 초기화 해줘야 한다고 함!
+        //preferenceHelper 초기화
         prefs = PreferenceHelper(applicationContext)
         super.onCreate()
         SharedPreference.init(this)//초기화

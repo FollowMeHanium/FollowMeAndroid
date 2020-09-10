@@ -8,7 +8,9 @@ class PreferenceHelper(context: Context) {
 
     companion object {
         private const val PREFS_FILENAME = "token_data"
+        //access
         public const val PREFS_KEY_ACCESS = "token"
+        //refresh
         public const val PREFS_KEY_REF = "refreshToken"
     }
 

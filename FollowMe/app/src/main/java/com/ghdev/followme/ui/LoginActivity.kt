@@ -215,9 +215,6 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener{
             ) {
                 if (response.isSuccessful) {
                     //token값 저장
-                    SharedPreference.PREFS_KEY_ACCESS = response.body()!!.token
-
-
                     sharedPrefs.setString(PreferenceHelper.PREFS_KEY_ACCESS, response.body()!!.token)
                     sharedPrefs.setString(PreferenceHelper.PREFS_KEY_REF, response.body()!!.refreshToken)
 
@@ -230,11 +227,6 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener{
         })
 
     }
-
-    private fun saveSharedPrefs() {
-
-    }
-
 
 
 }

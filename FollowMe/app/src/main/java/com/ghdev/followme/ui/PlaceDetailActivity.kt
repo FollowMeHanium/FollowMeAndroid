@@ -52,18 +52,17 @@ class PlaceDetailActivity : AppCompatActivity(), View.OnClickListener {
     override fun onClick(v: View?) {
         when(v){
             btn_place_detail_add_review ->{
-                ReviewDialog()
+                ReviewDialogCreate(v!!)
             }
         }
     }
 
-    fun ReviewDialog(){
-        val builder = AlertDialog.Builder(this)
-        val dv = layoutInflater.inflate(R.layout.dialog_review_insert,null)
+    fun ReviewDialogCreate(view: View){
+        val dialog: ReviewDialogFragment = ReviewDialogFragment().getInstance()
+        //val fm = supportFragmentManager.beginTransaction()
+        val fm = getFragmentManager()
+        //dialog.show(fm!!, "TAG_DIALOG_EVENT")
 
-        val et_review = dv.findViewById<EditText>(R.id.et_dialog_review)
-
-        builder.setView(dv).show()
     }
 
 }

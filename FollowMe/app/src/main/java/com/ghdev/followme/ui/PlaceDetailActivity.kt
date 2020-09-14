@@ -14,6 +14,7 @@ import com.ghdev.followme.data.test.PlaceInfo
 import com.ghdev.followme.ui.home.HomeFragment.Companion.PLACE_INFO
 import com.ghdev.followme.data.test.ReviewInfo
 import kotlinx.android.synthetic.main.activity_place_detail.*
+import kotlinx.android.synthetic.main.dialog_review_insert.*
 
 class PlaceDetailActivity : AppCompatActivity(), View.OnClickListener {
 
@@ -58,10 +59,14 @@ class PlaceDetailActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     fun ReviewDialogCreate(view: View){
-        val dialog: ReviewDialogFragment = ReviewDialogFragment().getInstance()
+        /*val dialog: ReviewDialogFragment = ReviewDialogFragment().getInstance()
         //val fm = supportFragmentManager.beginTransaction()
         val fm = getFragmentManager()
-        //dialog.show(fm!!, "TAG_DIALOG_EVENT")
+        dialog.show(fm!!, "TAG_DIALOG_EVENT")*/
+
+        val builder = AlertDialog.Builder(this)
+        val dv = layoutInflater.inflate(R.layout.dialog_review_insert, null)
+        builder.setView(dv).show()
 
     }
 

@@ -1,9 +1,6 @@
 package com.ghdev.followme.network
 
-import com.ghdev.followme.data.GetShopInfoResponse
-import com.ghdev.followme.data.PostLoginResponse
-import com.ghdev.followme.data.PostShopResponse
-import com.ghdev.followme.data.PostSignUpResponse
+import com.ghdev.followme.data.*
 import com.ghdev.followme.network.get.GetAllCourseResponse
 import com.google.gson.JsonObject
 import retrofit2.Call
@@ -29,10 +26,17 @@ interface NetworkService {
         @Body() body : JsonObject
     ) :Call<PostLoginResponse>
     
+    //Shop 목록
+    @GET("/shop/list/:category&:tag")
+    fun getShopListInfoResponse(
+        @Header("authorization") authorization : String
+    ) : Call<GetShopListInfoResponse>
+
+
     //Shop 정보 1개
     @GET("/shop/one/:id")
     fun getShopInfoResponse(
-        @Query("token") query : String
+        @Header("authorization") authorization : String
     ) : Call<GetShopInfoResponse>
 
     //Shop 찜하기
@@ -48,7 +52,6 @@ interface NetworkService {
         @Header("Content-Type") content_type: String,
         @Body() body: JsonObject
     ) : Call<PostShopResponse>
-
 
 
 

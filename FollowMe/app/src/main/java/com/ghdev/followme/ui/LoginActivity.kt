@@ -198,6 +198,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener{
         val gsonObject = JsonParser().parse(jsonObject.toString()) as JsonObject
 
         Log.d("login_fun", "gson")
+        
         val postLoginResponse: Call<PostLoginResponse> =
             networkService.postLoginResponse("application/json", gsonObject)
         postLoginResponse.enqueue(object : Callback<PostLoginResponse> {

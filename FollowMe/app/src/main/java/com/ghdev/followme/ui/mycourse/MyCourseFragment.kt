@@ -1,5 +1,6 @@
 package com.ghdev.followme.ui.mycourse
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -13,10 +14,12 @@ import com.ghdev.followme.network.ApplicationController
 import com.ghdev.followme.network.NetworkService
 import com.ghdev.followme.network.get.Course
 import com.ghdev.followme.network.get.GetAllCourseResponse
+import org.jetbrains.anko.startActivity
 import devs.mulham.horizontalcalendar.HorizontalCalendar
 import devs.mulham.horizontalcalendar.HorizontalCalendarView
 import devs.mulham.horizontalcalendar.utils.HorizontalCalendarListener
 import kotlinx.android.synthetic.main.fragment_my_course.*
+import kotlinx.android.synthetic.main.fragment_my_course.view.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -46,6 +49,11 @@ class MyCourseFragment : Fragment() {
 
         rootView = inflater.inflate(R.layout.fragment_my_course, container, false)
 
+        rootView.btn_add_course_frag.setOnClickListener {
+            var intent = Intent(activity, MycourseAddActivity::class.java)
+            startActivity(intent)
+        }
+
         return rootView
     }
 
@@ -69,6 +77,8 @@ class MyCourseFragment : Fragment() {
 
         val endDate: Calendar = Calendar.getInstance()
         endDate.add(Calendar.MONTH, 1)
+
+        tv_ymd_course_frag.text = Calendar.YEAR.toString()+ "년 " + Calendar.MONTH.toString() + "월"
 
         var  horizontalCalendar = HorizontalCalendar.Builder(rootView, R.id.cv_calendar_my_course_frag)
             .range(startDate, endDate)
@@ -119,18 +129,15 @@ class MyCourseFragment : Fragment() {
 
     }
 
-
     private fun getMyCourseResponse() {
-
-
         //## token 자리에 SharedPreference 에 있는 token 값 가져와야함.
-        val getOurCorse: Call<GetAllCourseResponse> = networkService.getAllOurCourse("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.88j2Z3_pB_z-xU4AGuYsptIiV9zFdH7bsweI8hR3NS8")
+        val getOurCorse: Call<GetAllCourseResponse> = networkService.getMyCourse("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.88j2Z3_pB_z-xU4AGuYsptIiV9zFdH7bsweI8hR3NS8")
 
         Log.d("TAGG", "안들어가니?" )
         getOurCorse.enqueue(object : Callback<GetAllCourseResponse> {
 
             override fun onFailure(call: Call<GetAllCourseResponse>, t: Throwable) {
-                Log.d("course 가져오기 fail", t.toString())
+                Log.d("my course GET fail", t.toString())
             }
 
             override fun onResponse(
@@ -154,6 +161,4 @@ class MyCourseFragment : Fragment() {
             }
         })
     }
-
-
 }

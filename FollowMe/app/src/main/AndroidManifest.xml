@@ -12,7 +12,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.mycourse.MycourseDetailActivity"></activity>
+        <activity android:name=".ui.mycourse.MycourseAddActivity">
+
+        </activity>
+        <activity android:name=".ui.mycourse.MycourseDetailActivity">
+        </activity>
         <activity android:name=".ui.PlaceDetailActivity" />
         <activity android:name=".ui.mypage.MypageMysettingActivity" />
         <activity android:name=".ui.mypage.MypageMypickActivity" />
@@ -33,6 +37,10 @@
         <meta-data
             android:name="com.kakao.sdk.AppKey"
             android:value="@string/kakao_app_key" />
+
+        <meta-data
+            android:name="com.naver.maps.map.CLIENT_ID"
+            android:value="q68pv433jh" />
     </application>
 
 </manifest>

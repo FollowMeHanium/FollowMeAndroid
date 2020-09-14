@@ -20,6 +20,8 @@ import kotlinx.android.synthetic.main.item_mycourse.*
 class CourseRecyclerViewAdapter (val ctx : Context, val dataList: ArrayList<Course>)
     : RecyclerView.Adapter<CourseRecyclerViewAdapter.Holder>() {
 
+    val url = "http://3.15.22.4:3005"
+
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): Holder {
         val view: View = LayoutInflater.from(viewGroup.context).inflate(R.layout.item_mycourse, viewGroup, false)
         return Holder(view)
@@ -28,25 +30,27 @@ class CourseRecyclerViewAdapter (val ctx : Context, val dataList: ArrayList<Cour
     override fun getItemCount(): Int = dataList.size
 
     override fun onBindViewHolder(holder: Holder, position: Int) {
-        //holder.date.text = dataList[position].date
+
+        if(dataList[position].dday.length != 0)
+            holder.date.text = dataList[position].dday.replace("-", ".")
 
         //##shop 의 크기 예외처리
         //혹시나 서버에서 잘 못 할 수도 있기에에
-       holder.placename1.text = dataList[position].shops[0].shopname
+        holder.placename1.text = dataList[position].shops[0].shopname
         holder.placename2.text = dataList[position].shops[1].shopname
         holder.placename3.text = dataList[position].shops[2].shopname
         holder.title.text = dataList[position].title
         holder.star.rating = dataList[position].grade_avg.toFloat()
 
-        //Glide.with(holder.itemView.context).load(dataList[position].background).into(holder.background)
+        Glide.with(holder.itemView.context).load(url + dataList[position].main_photo).into(holder.background)
 
         //##detailview로 가도록 구현
         holder.container.setOnClickListener {
             val intent = Intent(ctx, MycourseDetailActivity::class.java)
+            intent.putExtra("course_idx", dataList[position].id)
             ctx.startActivity(intent)
         }
     }
-
 
     inner class Holder(itemView : View) : RecyclerView.ViewHolder(itemView) {
 

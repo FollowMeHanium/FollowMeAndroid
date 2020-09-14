@@ -250,6 +250,20 @@
         android:layout_marginRight="10dp"/>
 
 
+    <!--애니-->
+    <ImageView
+        android:id="@+id/iv_place_detail_anim_mypick"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:src="@drawable/anim_mypick"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:visibility="gone"/>
+
+
+
 
 
 

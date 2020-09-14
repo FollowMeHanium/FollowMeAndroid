@@ -4,8 +4,10 @@ import android.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import android.view.animation.AnimationUtils
 import android.widget.EditText
 import android.widget.LinearLayout
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -20,6 +22,9 @@ class PlaceDetailActivity : AppCompatActivity(), View.OnClickListener {
 
     lateinit var placeReivewRecyclerViewAdapter: PlaceReivewRecyclerViewAdapter
     var reviewList : ArrayList<ReviewInfo> = ArrayList()
+
+    //찜하기 여부
+    var mypick : Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,6 +42,7 @@ class PlaceDetailActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun init(){
         btn_place_detail_add_review.setOnClickListener(this)
+        btn_place_detail_add_mypick.setOnClickListener(this)
     }
 
     fun PlaceReviewRcycler(){
@@ -55,19 +61,37 @@ class PlaceDetailActivity : AppCompatActivity(), View.OnClickListener {
             btn_place_detail_add_review ->{
                 ReviewDialogCreate(v!!)
             }
+
+            btn_place_detail_add_mypick ->{
+                ClickMypick()
+            }
         }
     }
 
     fun ReviewDialogCreate(view: View){
-        /*val dialog: ReviewDialogFragment = ReviewDialogFragment().getInstance()
-        //val fm = supportFragmentManager.beginTransaction()
-        val fm = getFragmentManager()
-        dialog.show(fm!!, "TAG_DIALOG_EVENT")*/
-
         val builder = AlertDialog.Builder(this)
         val dv = layoutInflater.inflate(R.layout.dialog_review_insert, null)
         builder.setView(dv).show()
 
     }
 
+    fun ClickMypick(){
+
+        val anim = AnimationUtils.loadAnimation(this, R.anim.anim_mypick_alpha)
+
+        //mypick가 선택되어져 있을때
+        if(mypick){
+            btn_place_detail_add_mypick.setImageResource(R.drawable.btn_add_mypick)
+            Toast.makeText(this, "찜 리스트에서 삭제되었습니다.", Toast.LENGTH_LONG)
+            mypick = false
+        }
+        //mypick가 선택되어있지 않을때
+        else{
+            btn_place_detail_add_mypick.setImageResource(R.drawable.btn_selected_mypick)
+            iv_place_detail_anim_mypick.visibility = View.VISIBLE
+            iv_place_detail_anim_mypick.startAnimation(anim)
+            iv_place_detail_anim_mypick.visibility = View.GONE
+            mypick = true
+        }
+    }
 }

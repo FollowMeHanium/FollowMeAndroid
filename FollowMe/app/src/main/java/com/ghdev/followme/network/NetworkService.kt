@@ -1,6 +1,7 @@
 package com.ghdev.followme.network
 
 import com.ghdev.followme.data.*
+import com.ghdev.followme.data.test.GetRecommendListInfo
 import com.ghdev.followme.network.get.GetAllCourseResponse
 import com.google.gson.JsonObject
 import retrofit2.Call
@@ -25,18 +26,30 @@ interface NetworkService {
         @Header("Content-Type") content_type: String,
         @Body() body : JsonObject
     ) :Call<PostLoginResponse>
-    
-    //Shop 목록
+
+
+
+
+    //Shop과 Course 추천 목록
+    @GET("/")
+    fun getAllRecomendListInfoResponse(
+        @Header("authorization") authorization: String
+    ) : Call<GetRecommendListInfo>
+
+
+    //Shop 검색 목록 (태그와 카테고리에 따라)
     @GET("/shop/list/:category&:tag")
     fun getShopListInfoResponse(
-        @Header("authorization") authorization : String
+        @Header("authorization") authorization : String,
+        @QueryMap filter : HashMap <String, String>
     ) : Call<GetShopListInfoResponse>
 
 
     //Shop 정보 1개
     @GET("/shop/one/:id")
     fun getShopInfoResponse(
-        @Header("authorization") authorization : String
+        @Header("authorization") authorization : String,
+        @Query("id") id : Int
     ) : Call<GetShopInfoResponse>
 
     //Shop 찜하기

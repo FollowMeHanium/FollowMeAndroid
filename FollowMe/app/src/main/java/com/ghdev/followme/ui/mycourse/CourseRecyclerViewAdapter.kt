@@ -2,6 +2,7 @@ package com.ghdev.followme.ui.mycourse
 
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -31,7 +32,9 @@ class CourseRecyclerViewAdapter (val ctx : Context, val dataList: ArrayList<Cour
 
     override fun onBindViewHolder(holder: Holder, position: Int) {
 
-        if(dataList[position].dday.length != 0)
+        if(dataList[position].dday == null)
+            holder.date.text = "null로 들어옵니다."
+        else
             holder.date.text = dataList[position].dday.replace("-", ".")
 
         //##shop 의 크기 예외처리

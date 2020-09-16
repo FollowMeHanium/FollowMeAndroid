@@ -1,19 +1,15 @@
 package com.ghdev.followme.ui.mycourse
 
-import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ghdev.followme.R
-import com.ghdev.followme.data.test.PlaceInfo
 import com.ghdev.followme.network.ApplicationController
 import com.ghdev.followme.network.NetworkService
-import com.ghdev.followme.network.get.Course
-import com.ghdev.followme.network.get.GetAllCourseResponse
-import com.ghdev.followme.ui.PlaceDetailActivity
-import com.ghdev.followme.ui.home.HomeFragment
+import com.ghdev.followme.network.get.CourseDetailResponse
+import com.ghdev.followme.network.get.Shop
 import com.ghdev.followme.ui.home.HotPlaceRecyclerViewAdapter
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.CameraUpdate
@@ -43,15 +39,12 @@ class MycourseDetailActivity : AppCompatActivity(), OnMapReadyCallback {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_mycourse_detail)
 
-        init()
+        getCourseDetailResponse()
         loadCoordinateDatas()
         setRecyclerView()
 
     }
 
-    private fun init() {
-        courseIdx = intent.getIntExtra("course_idx", -1)
-    }
 
     fun settingMap() {
         //NaverMap 객체 얻어오기
@@ -122,66 +115,62 @@ class MycourseDetailActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private fun setRecyclerView() {
 
-        //핫플
-        //데이터는 서버에서 받을 것
-        //모듈화를 시키기(rv_id와 datalist가 들어가는 것 말고는 다른 것은 동일)
-        var dataList: ArrayList<PlaceInfo> = ArrayList()
-
+        /*
         dataList.add(PlaceInfo(0, "하", "서울시 노원구 공릉동 131313"))
         dataList.add(PlaceInfo( 0,"하", "서울시 노원구 공릉동 131313"))
         dataList.add(PlaceInfo(0, "하", "서울시 노원구 공릉동 131313"))
-        dataList.add(PlaceInfo(0, "하", "서울시 노원구 공릉동 131313"))
+        dataList.add(PlaceInfo(0, "하", "서울시 노원구 공릉동 131313"))*/
 
-        hotPlaceRecyclerViewAdapter =
-            HotPlaceRecyclerViewAdapter(dataList) { PlaceInfo ->
-                val intent = Intent(
-                    this,
-                    PlaceDetailActivity::class.java
-                )
-                intent.putExtra(
-                    HomeFragment.PLACE_INFO,
-                    PlaceInfo
-                )
-                startActivity(intent)
-            }
+        //모듈화를 시키기(rv_id와 datalist가 들어가는 것 말고는 다른 것은 동일)
+        var dataList: ArrayList<Shop> = ArrayList()
 
+        hotPlaceRecyclerViewAdapter = HotPlaceRecyclerViewAdapter(this, dataList)
         rv_store_list.adapter = hotPlaceRecyclerViewAdapter
         rv_store_list.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
 
     }
 
     private fun getCourseDetailResponse() {
+        courseIdx = intent.getIntExtra("course_idx", -1)
+        Log.d("Detail후후", courseIdx.toString())
+
         //## token 자리에 SharedPreference 에 있는 token 값 가져와야함.
-        val getOurCorse: Call<GetAllCourseResponse> =
+        val getOurCorse: Call<CourseDetailResponse> =
             networkService.getCourseDetail(
                 "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.88j2Z3_pB_z-xU4AGuYsptIiV9zFdH7bsweI8hR3NS8",
             courseIdx)
 
-        getOurCorse.enqueue(object : Callback<GetAllCourseResponse> {
-            override fun onFailure(call: Call<GetAllCourseResponse>, t: Throwable) {
+        getOurCorse.enqueue(object : Callback<CourseDetailResponse> {
+            override fun onFailure(call: Call<CourseDetailResponse>, t: Throwable) {
                 Log.d("GET course detail fail", t.toString())
             }
 
             override fun onResponse(
-                call: Call<GetAllCourseResponse>,
-                response: Response<GetAllCourseResponse>
+                call: Call<CourseDetailResponse>,
+                response: Response<CourseDetailResponse>
             ) {
-                Log.d("TAGG 22", response.isSuccessful.toString() )
+                Log.d("TAGG 22 in detail", response.isSuccessful.toString() )
+                Log.d("TAGG 22 in detail", response.message().toString() )
                 if (response.isSuccessful) {
+                    //null처리
+                    if(response.body()?.title == null)
+                        tv_course_title_mycourse_detail.text = "null"
+                    if(response.body()?.dday == null)
+                        tv_date.text = "null"
+                    if(response.body()?.title == null)
+                        rb_star_mycourse_detail.numStars = 3
 
-                    //##title
-                    //tv_course_title_mycourse_detail.text
-                    //tv_date
-                    //rb_star_mycourse_detail
+                    tv_course_title_mycourse_detail.text = response.body()!!.title
+                    tv_date.text = response.body()!!.dday
+                    rb_star_mycourse_detail.numStars = response.body()!!.like
 
-                    val temp: ArrayList<Course> = response.body()!!.courses
+                    val temp: ArrayList<Shop> = response.body()!!.shops
 
                     if (temp.size > 0) {
 
-                        /*
-                        val position = courseRecyclerViewAdapter.itemCount
-                        courseRecyclerViewAdapter.dataList.addAll(temp)
-                        courseRecyclerViewAdapter.notifyItemInserted(position)*/
+                        val position = hotPlaceRecyclerViewAdapter.itemCount
+                        hotPlaceRecyclerViewAdapter.dataList.addAll(temp)
+                        hotPlaceRecyclerViewAdapter.notifyItemInserted(position)
                     }
                 }
             }

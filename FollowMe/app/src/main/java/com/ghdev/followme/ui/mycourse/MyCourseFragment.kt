@@ -117,7 +117,7 @@ class MyCourseFragment : Fragment() {
         //## token 자리에 SharedPreference 에 있는 token 값 가져와야함.
         val getOurCorse: Call<GetAllCourseResponse> = networkService.getMyCourse("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.88j2Z3_pB_z-xU4AGuYsptIiV9zFdH7bsweI8hR3NS8")
 
-        Log.d("TAGG", "안들어가니?" )
+       // Log.d("TAGG", "안들어가니?" )
         getOurCorse.enqueue(object : Callback<GetAllCourseResponse> {
             override fun onFailure(call: Call<GetAllCourseResponse>, t: Throwable) {
                 Log.d("my course GET fail", t.toString())
@@ -127,7 +127,7 @@ class MyCourseFragment : Fragment() {
                 call: Call<GetAllCourseResponse>,
                 response: Response<GetAllCourseResponse>
             ) {
-                Log.d("TAGG 22", response.isSuccessful.toString() )
+                //Log.d("TAGG 22", response.isSuccessful.toString() )
                 if (response.isSuccessful) {
 
                     val temp: ArrayList<Course> = response.body()!!.courses

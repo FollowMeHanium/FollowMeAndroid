@@ -16,6 +16,6 @@ data class GetShopInfoResponse (
     val tag1 : Int,
     val tag2 : Int,
     val tag3 : Int,
-    val main_photo : String,
-    val photo : List<String>
+    val main_photo : Int,
+    val photos : List<String>
 )

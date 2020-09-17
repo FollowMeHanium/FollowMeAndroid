@@ -23,7 +23,6 @@ class ApplicationController : Application() {
         //preferenceHelper 초기화
         prefs = PreferenceHelper(applicationContext)
         super.onCreate()
-        SharedPreference.init(this)//초기화
         instance = this
         buildNetWork()
 

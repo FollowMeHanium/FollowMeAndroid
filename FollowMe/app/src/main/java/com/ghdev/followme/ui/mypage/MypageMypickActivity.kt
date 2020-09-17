@@ -7,12 +7,19 @@ import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.GridLayoutManager
 import com.ghdev.followme.R
+import com.ghdev.followme.data.GetShopLikeListResponse
 import com.ghdev.followme.data.test.PlaceInfo
+import com.ghdev.followme.db.PreferenceHelper
+import com.ghdev.followme.network.ApplicationController
+import com.ghdev.followme.network.NetworkService
 import com.ghdev.followme.ui.PlaceDetailActivity
 import kotlinx.android.synthetic.main.activity_mypage_mypick.*
+import org.jetbrains.anko.networkStatsManager
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class MypageMypickActivity : AppCompatActivity(), View.OnClickListener{
-
 
     companion object{
         val PLACE_INFO = "place_info"
@@ -21,6 +28,16 @@ class MypageMypickActivity : AppCompatActivity(), View.OnClickListener{
         //찜 선택된 item list
         var selectionList: ArrayList<PlaceInfo> = ArrayList()
     }
+
+    val networkService: NetworkService by lazy {
+        ApplicationController.instance.networkService
+    }
+
+    private val sharedPrefs by lazy{
+        ApplicationController.instance.prefs
+    }
+
+
 
     lateinit var myPickPlaceRecyclerViewAdapter: MyPickPlaceRecyclerViewAdapter
     var dataList: ArrayList<PlaceInfo> = ArrayList()
@@ -31,6 +48,7 @@ class MypageMypickActivity : AppCompatActivity(), View.OnClickListener{
 
         init()
         MyPickRecyclerView()
+        getShopLikeListResponse()
     }
 
     private fun init(){
@@ -73,6 +91,28 @@ class MypageMypickActivity : AppCompatActivity(), View.OnClickListener{
 
             }
         }
+    }
+
+    /*************************Shop Like List 불러오기********************/
+
+    private fun getShopLikeListResponse(){
+        val getshop : Call<GetShopLikeListResponse> = networkService.getShopLikeListResponse(sharedPrefs.getString(
+            PreferenceHelper.PREFS_KEY_ACCESS,"0"), 8)
+        Log.d("getlike", "동작")
+
+        getshop.enqueue(object : Callback<GetShopLikeListResponse>{
+            override fun onFailure(call: Call<GetShopLikeListResponse>, t: Throwable) {
+                Log.d("getlike", "실패")
+            }
+
+            override fun onResponse(
+                call: Call<GetShopLikeListResponse>,
+                response: Response<GetShopLikeListResponse>
+            ) {
+                Log.d("getlike", "성공")
+            }
+
+        })
     }
 
     fun MyPickRecyclerView(){

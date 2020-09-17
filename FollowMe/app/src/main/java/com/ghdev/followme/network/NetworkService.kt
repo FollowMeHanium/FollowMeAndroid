@@ -67,11 +67,12 @@ interface NetworkService {
     ) : Call<PostShopResponse>
 
 
+    //Shop 좋아요 리스트
     @GET("/shop/like:id")
     fun getShopLikeListResponse(
         @Header("authorization") authorization: String,
         @Query("id") id: Int
-    ) : Call<PostShopLikeListResponse>
+    ) : Call<GetShopLikeListResponse>
 
     //GEt 모두의 코스
     @GET("/course/list")

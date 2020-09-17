@@ -87,6 +87,7 @@ class PlaceDetailActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
+    /**안됌ㅠㅠ**/
     /************************Shop정보 읽어오기********************/
     private fun getShopInfoResponse(){
         val getshop : Call<GetShopInfoResponse> = networkService.getShopInfoResponse(sharedPrefs.getString(PreferenceHelper.PREFS_KEY_ACCESS,"0"),3)
@@ -103,10 +104,10 @@ class PlaceDetailActivity : AppCompatActivity(), View.OnClickListener {
             ) {
                 if(response.isSuccessful){
                     Log.d("getshop", "성공")
-                    tv_place_detail_title.text = response.body()!!.shopname
-                    tv_place_detail_watch.text = response.body()!!.operating_time
-                    tv_place_detail_menu.text = response.body()!!.menu
-                    tv_place_detail_address.text = response.body()!!.address
+                    //tv_place_detail_title.text = response.body()!!.shopname
+                    //tv_place_detail_watch.text = response.body()!!.operating_time
+                    //tv_place_detail_menu.text = response.body()!!.menu
+                    //tv_place_detail_address.text = response.body()!!.address
                 }
             }
 
@@ -184,13 +185,14 @@ class PlaceDetailActivity : AppCompatActivity(), View.OnClickListener {
         val builder = AlertDialog.Builder(this)
         val mycourse = arrayOf("내가 가고싶은 코스1", "내가 가고싶은 코스2")
         val checkedItem = 1 // cow
-        builder.setSingleChoiceItems(mycourse, checkedItem) { dialog, which ->
+        builder.setTitle("내 코스에 추가하기")
+        .setSingleChoiceItems(mycourse, checkedItem) { dialog, which ->
             // user checked an item
         }
-        builder.setPositiveButton("확인"){dialog, which ->
+        .setPositiveButton("확인"){dialog, which ->
             //user clicked OK
         }
-        builder.setNegativeButton("취소", null)
+        .setNegativeButton("취소", null)
         val dialog = builder.create()
         dialog.show()
     }

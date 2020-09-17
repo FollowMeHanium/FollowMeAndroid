@@ -32,6 +32,15 @@ class SplashActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        //테스트용
+        try{
+            Thread.sleep(1500)
+        }catch (e : InterruptedException){
+
+        }
+        startActivity<LoginActivity>()
+        finish()
+
         if(sharedPrefs.getString(PreferenceHelper.PREFS_KEY_ACCESS, "0") !== "0"){
             getLoginResponse(sharedPrefs.getString(PreferenceHelper.PREFS_KEY_EMAIL, "0"),
                 sharedPrefs.getString(PreferenceHelper.PREFS_KEY_PASSWORD, "0"))

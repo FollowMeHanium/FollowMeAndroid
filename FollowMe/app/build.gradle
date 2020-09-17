@@ -63,6 +63,9 @@ dependencies {
 
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
 
+    //naver map
+    implementation 'com.naver.maps:map-sdk:3.9.1'
+
 
     //rxjava
     implementation "io.reactivex.rxjava2:rxjava:$rootProject.rxjava2Version"

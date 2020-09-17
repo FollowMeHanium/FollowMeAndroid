@@ -1,4 +1,7 @@
-<resources>
+<resources
+    >
+
+
     <string name="app_name">FollowMe</string>
 
 

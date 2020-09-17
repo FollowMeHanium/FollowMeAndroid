@@ -8,4 +8,10 @@
         <item name="colorAccent">@color/pinkcolor</item>
     </style>
 
+    <!--Splash theme-->
+
+    <style name="SplashTheme" parent="AppTheme">
+        <item name="android:background">@drawable/splash</item>
+    </style>
+
 </resources>

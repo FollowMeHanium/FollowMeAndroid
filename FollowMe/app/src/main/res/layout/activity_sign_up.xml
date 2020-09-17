@@ -27,8 +27,9 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginStart="8dp"
-            android:text="@string/signup_signup"
+            android:text="회원가입"
             android:textColor="#000000"
+            android:textStyle="bold"
             android:textSize="22sp" />
     </RelativeLayout>
 
@@ -130,15 +131,34 @@
 
         </RelativeLayout>
 
-        <TextView
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="비밀번호 확인"
-            android:textSize="12sp"
             android:layout_marginTop="20dp"
-            android:textStyle="bold"
-            android:textColor="#000000"
-            />
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="비밀번호 확인"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:textColor="#000000"
+                />
+
+            <TextView
+                android:id="@+id/tv_sign_up_pw_check"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/password_overlap"
+                android:textSize="12sp"
+                android:textColor="#ff0000"
+                android:textStyle="bold"
+                android:layout_marginLeft="4dp"
+                />
+
+        </LinearLayout>
+
 
         <!--패스워드 확인-->
         <RelativeLayout
@@ -208,7 +228,7 @@
             android:layout_marginTop="12dp">
 
             <RadioGroup
-                android:id="@+id/rg_sign_up_act"
+                android:id="@+id/rg_sign_up_gender_act"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
@@ -230,14 +250,6 @@
                     android:layout_weight="1"
                     android:textColor="#000000"
                     android:text="@string/sex_woman_signup" />
-
-                <RadioButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:textColor="#000000"
-                    android:text="@string/sex_null_signup"/>
-
             </RadioGroup>
 
         </RelativeLayout>

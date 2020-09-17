@@ -45,6 +45,7 @@
             android:clickable="true">
         
         <LinearLayout
+            android:id="@+id/ll_mypage_login_and_sign"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -52,6 +53,7 @@
             android:layout_marginLeft="14dp"
             android:background="#ffffff">
             <TextView
+                android:id="@+id/tv_mypage_login_and_sign_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/sign_mypage"
@@ -59,6 +61,7 @@
                 android:textSize="18sp"
                  />
             <ImageView
+                android:id="@+id/iv_mypage_login_and_sign"
                 android:layout_width="10dp"
                 android:layout_height="16dp"
                 android:layout_marginLeft="10dp"
@@ -67,6 +70,7 @@
             
         </LinearLayout>
             <TextView
+                android:id="@+id/tv_mypage_login_and_sign_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/sign_text_mypage"

@@ -1,5 +1,7 @@
 package com.ghdev.followme.data
 
+import java.sql.Time
+
 data class GetShopInfoResponse (
     val id : Int,
     val category : Int,
@@ -8,8 +10,12 @@ data class GetShopInfoResponse (
     val menu : String,
     val operating_time : String,
     val grade_avg : Float,
-    val latitude : Int,
-    val longitude : Int,
-    val reviewnum : Int,
-    val likenum : Int
+    val latitude : Float,
+    val longitude : Float,
+    val like : Int,
+    val tag1 : Int,
+    val tag2 : Int,
+    val tag3 : Int,
+    val main_photo : Int,
+    val photos : List<String>
 )

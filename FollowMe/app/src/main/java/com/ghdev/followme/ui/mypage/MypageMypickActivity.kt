@@ -7,12 +7,19 @@ import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.GridLayoutManager
 import com.ghdev.followme.R
+import com.ghdev.followme.data.GetShopLikeListResponse
 import com.ghdev.followme.data.test.PlaceInfo
+import com.ghdev.followme.db.PreferenceHelper
+import com.ghdev.followme.network.ApplicationController
+import com.ghdev.followme.network.NetworkService
 import com.ghdev.followme.ui.PlaceDetailActivity
 import kotlinx.android.synthetic.main.activity_mypage_mypick.*
+import org.jetbrains.anko.networkStatsManager
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class MypageMypickActivity : AppCompatActivity(), View.OnClickListener{
-
 
     companion object{
         val PLACE_INFO = "place_info"
@@ -21,6 +28,16 @@ class MypageMypickActivity : AppCompatActivity(), View.OnClickListener{
         //찜 선택된 item list
         var selectionList: ArrayList<PlaceInfo> = ArrayList()
     }
+
+    val networkService: NetworkService by lazy {
+        ApplicationController.instance.networkService
+    }
+
+    private val sharedPrefs by lazy{
+        ApplicationController.instance.prefs
+    }
+
+
 
     lateinit var myPickPlaceRecyclerViewAdapter: MyPickPlaceRecyclerViewAdapter
     var dataList: ArrayList<PlaceInfo> = ArrayList()
@@ -31,37 +48,13 @@ class MypageMypickActivity : AppCompatActivity(), View.OnClickListener{
 
         init()
         MyPickRecyclerView()
+        getShopLikeListResponse()
     }
 
     private fun init(){
         btn_mypick_editmode_false.setOnClickListener(this)
         btn_mypick_editmode_true.setOnClickListener(this)
         btn_mypick_editmode_delete.setOnClickListener(this)
-    }
-
-    fun MyPickRecyclerView(){
-
-        dataList.add(PlaceInfo(R.drawable.img5, "비트포비아", "서울특별시 강남구 역삼1동 824-30"))
-        dataList.add(PlaceInfo(R.drawable.img6, "카페 프레도", "서울특별시 강남구 역삼1동"))
-        dataList.add(PlaceInfo(R.drawable.img7, "꽃을피우고", "서울특별시 강남구 역삼동"))
-        dataList.add(PlaceInfo(R.drawable.img8, "자세", "서울특별시 마포구 서교동"))
-        dataList.add(PlaceInfo(R.drawable.img1, "오우 연남점", "서울특별시 마포구 서교동"))
-        dataList.add(PlaceInfo(R.drawable.img2, "돈부리", "서울특별시 마포구 서교동"))
-        dataList.add(PlaceInfo(R.drawable.img3, "랍스타파티", "서울특별시 마포구 서교동 독막로7길"))
-        dataList.add(PlaceInfo(R.drawable.img4, "라공방", "서울특별시 강남구 역삼동 825-20"))
-
-        myPickPlaceRecyclerViewAdapter = MyPickPlaceRecyclerViewAdapter(dataList){PlaceInfo->
-            if(!isInEditMode){
-                val intent = Intent(this, PlaceDetailActivity::class.java)
-                intent.putExtra(PLACE_INFO, PlaceInfo)
-                startActivity(intent)
-            }else{
-                prepareSelection(PlaceInfo)
-                Log.d("clicked datalist: ", selectionList.toString())
-            }
-        }
-        rv_mypick.adapter = myPickPlaceRecyclerViewAdapter
-        rv_mypick.layoutManager = GridLayoutManager(this, 2)
     }
 
     override fun onClick(v: View?) {
@@ -99,6 +92,55 @@ class MypageMypickActivity : AppCompatActivity(), View.OnClickListener{
             }
         }
     }
+
+    /*************************Shop Like List 불러오기********************/
+
+    private fun getShopLikeListResponse(){
+        val getshop : Call<GetShopLikeListResponse> = networkService.getShopLikeListResponse(sharedPrefs.getString(
+            PreferenceHelper.PREFS_KEY_ACCESS,"0"), 8)
+        Log.d("getlike", "동작")
+
+        getshop.enqueue(object : Callback<GetShopLikeListResponse>{
+            override fun onFailure(call: Call<GetShopLikeListResponse>, t: Throwable) {
+                Log.d("getlike", "실패")
+            }
+
+            override fun onResponse(
+                call: Call<GetShopLikeListResponse>,
+                response: Response<GetShopLikeListResponse>
+            ) {
+                Log.d("getlike", "성공")
+            }
+
+        })
+    }
+
+    fun MyPickRecyclerView(){
+
+        dataList.add(PlaceInfo(R.drawable.img5, "비트포비아", "서울특별시 강남구 역삼1동 824-30"))
+        dataList.add(PlaceInfo(R.drawable.img6, "카페 프레도", "서울특별시 강남구 역삼1동"))
+        dataList.add(PlaceInfo(R.drawable.img7, "꽃을피우고", "서울특별시 강남구 역삼동"))
+        dataList.add(PlaceInfo(R.drawable.img8, "자세", "서울특별시 마포구 서교동"))
+        dataList.add(PlaceInfo(R.drawable.img1, "오우 연남점", "서울특별시 마포구 서교동"))
+        dataList.add(PlaceInfo(R.drawable.img2, "돈부리", "서울특별시 마포구 서교동"))
+        dataList.add(PlaceInfo(R.drawable.img3, "랍스타파티", "서울특별시 마포구 서교동 독막로7길"))
+        dataList.add(PlaceInfo(R.drawable.img4, "라공방", "서울특별시 강남구 역삼동 825-20"))
+
+        myPickPlaceRecyclerViewAdapter = MyPickPlaceRecyclerViewAdapter(dataList){PlaceInfo->
+            if(!isInEditMode){
+                val intent = Intent(this, PlaceDetailActivity::class.java)
+                intent.putExtra(PLACE_INFO, PlaceInfo)
+                startActivity(intent)
+            }else{
+                prepareSelection(PlaceInfo)
+                Log.d("clicked datalist: ", selectionList.toString())
+            }
+        }
+        rv_mypick.adapter = myPickPlaceRecyclerViewAdapter
+        rv_mypick.layoutManager = GridLayoutManager(this, 2)
+    }
+
+
 
     //뒤로가기 버튼
     override fun onBackPressed() {

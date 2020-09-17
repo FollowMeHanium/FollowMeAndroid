@@ -35,7 +35,7 @@ android {
     }
 
     dataBinding {
-        enabled = true
+        enabled = false
     }
 
 
@@ -110,7 +110,5 @@ dependencies {
     //카카오 로그인
     implementation group: 'com.kakao.sdk', name: 'usermgmt', version: '1.27.0'
 
-    //databinding
-    kapt "com.android.databinding:compiler:3.1.1"
 
 }

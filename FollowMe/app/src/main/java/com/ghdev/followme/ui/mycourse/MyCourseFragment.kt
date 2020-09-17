@@ -61,8 +61,8 @@ class MyCourseFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
 
 
-        setRecyclerView()
         getMyCourseResponse()
+        setRecyclerView()
         setCalendar()
 
     }
@@ -107,35 +107,18 @@ class MyCourseFragment : Fragment() {
     }
 
     private fun setRecyclerView() {
-//        //코스
-//
-//
-//        var place : ArrayList<Place>  = ArrayList()
-//        place.add(Place("갬성"))
-//        place.add(Place("소울커피"))
-//        place.add(Place("공차"))
-//
-//
-//        courseDataList.add(CourseData("2020.01.04", 5, place,"나만의 힙한 장소", R.drawable.img1))
-//        courseDataList.add(CourseData("2020.04.03", 3, place,"나만의 데이트 장소", R.drawable.img3))
-//        courseDataList.add(CourseData("2020.04.26", 2, place, "힐링하기 좋은날", R.drawable.img2))
-//        courseDataList.add(CourseData("2020.03.02", 1, place, "친구와 함께한 날", R.drawable.img8))
         var courseDataList : ArrayList<Course> = ArrayList()
-
-        courseRecyclerViewAdapter =
-        CourseRecyclerViewAdapter(requireActivity(), courseDataList)
+        courseRecyclerViewAdapter = CourseRecyclerViewAdapter(requireActivity(), courseDataList)
         rv_my_love_course.adapter = courseRecyclerViewAdapter
         rv_my_love_course.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
-
     }
 
     private fun getMyCourseResponse() {
         //## token 자리에 SharedPreference 에 있는 token 값 가져와야함.
-        val getOurCorse: Call<GetAllCourseResponse> = networkService.getMyCourse("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.88j2Z3_pB_z-xU4AGuYsptIiV9zFdH7bsweI8hR3NS8")
+        val getOurCorse: Call<GetAllCourseResponse> = networkService.getMyCourse("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxfQ.ldsBBxz_tUoqEMKD39ugh1rW32kR6tNLfQ-j7nLKi5Y")
 
-        Log.d("TAGG", "안들어가니?" )
+       // Log.d("TAGG", "안들어가니?" )
         getOurCorse.enqueue(object : Callback<GetAllCourseResponse> {
-
             override fun onFailure(call: Call<GetAllCourseResponse>, t: Throwable) {
                 Log.d("my course GET fail", t.toString())
             }
@@ -144,13 +127,10 @@ class MyCourseFragment : Fragment() {
                 call: Call<GetAllCourseResponse>,
                 response: Response<GetAllCourseResponse>
             ) {
-                Log.d("TAGG 22", response.isSuccessful.toString() )
+                //Log.d("TAGG 22", response.isSuccessful.toString() )
                 if (response.isSuccessful) {
 
                     val temp: ArrayList<Course> = response.body()!!.courses
-
-                    Log.d("TAGG 33", temp.toString() )
-
                     if (temp.size > 0) {
 
                         val position = courseRecyclerViewAdapter.itemCount

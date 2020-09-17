@@ -91,7 +91,7 @@ class CourseRecommendFragment : Fragment() {
 
     private fun getMyCourseResponse() {
         //## token 자리에 SharedPreference 에 있는 token 값 가져와야함.
-        val getOurCorse: Call<GetAllCourseResponse> = networkService.getAllOurCourse("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.88j2Z3_pB_z-xU4AGuYsptIiV9zFdH7bsweI8hR3NS8")
+        val getOurCorse: Call<GetAllCourseResponse> = networkService.getAllOurCourse("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxfQ.ldsBBxz_tUoqEMKD39ugh1rW32kR6tNLfQ-j7nLKi5Y")
 
         Log.d("TAGG", "안들어가니?" )
         getOurCorse.enqueue(object : Callback<GetAllCourseResponse> {

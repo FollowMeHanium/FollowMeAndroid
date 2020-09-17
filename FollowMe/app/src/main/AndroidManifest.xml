@@ -13,19 +13,23 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ui.mycourse.MycourseDetailActivity"></activity>
+
+
+        <activity android:name=".ui.mycourse.MycourseDetailActivity" />
         <activity android:name=".ui.PlaceDetailActivity" />
         <activity android:name=".ui.mypage.MypageMysettingActivity" />
         <activity android:name=".ui.mypage.MypageMypickActivity" />
         <activity android:name=".ui.SignUpActivity" />
         <activity android:name=".ui.MainActivity" />
-        <activity android:name=".ui.LoginActivity">
+        <activity android:name=".ui.LoginActivity"/>
+        <activity android:name=".ui.SplashActivity" android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name="com.kakao.auth.authorization.authcode.KakaoWebViewActivity"
             android:launchMode="singleTop"

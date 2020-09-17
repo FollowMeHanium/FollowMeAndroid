@@ -39,31 +39,6 @@ class MypageMypickActivity : AppCompatActivity(), View.OnClickListener{
         btn_mypick_editmode_delete.setOnClickListener(this)
     }
 
-    fun MyPickRecyclerView(){
-
-        dataList.add(PlaceInfo(R.drawable.img5, "비트포비아", "서울특별시 강남구 역삼1동 824-30"))
-        dataList.add(PlaceInfo(R.drawable.img6, "카페 프레도", "서울특별시 강남구 역삼1동"))
-        dataList.add(PlaceInfo(R.drawable.img7, "꽃을피우고", "서울특별시 강남구 역삼동"))
-        dataList.add(PlaceInfo(R.drawable.img8, "자세", "서울특별시 마포구 서교동"))
-        dataList.add(PlaceInfo(R.drawable.img1, "오우 연남점", "서울특별시 마포구 서교동"))
-        dataList.add(PlaceInfo(R.drawable.img2, "돈부리", "서울특별시 마포구 서교동"))
-        dataList.add(PlaceInfo(R.drawable.img3, "랍스타파티", "서울특별시 마포구 서교동 독막로7길"))
-        dataList.add(PlaceInfo(R.drawable.img4, "라공방", "서울특별시 강남구 역삼동 825-20"))
-
-        myPickPlaceRecyclerViewAdapter = MyPickPlaceRecyclerViewAdapter(dataList){PlaceInfo->
-            if(!isInEditMode){
-                val intent = Intent(this, PlaceDetailActivity::class.java)
-                intent.putExtra(PLACE_INFO, PlaceInfo)
-                startActivity(intent)
-            }else{
-                prepareSelection(PlaceInfo)
-                Log.d("clicked datalist: ", selectionList.toString())
-            }
-        }
-        rv_mypick.adapter = myPickPlaceRecyclerViewAdapter
-        rv_mypick.layoutManager = GridLayoutManager(this, 2)
-    }
-
     override fun onClick(v: View?) {
         when(v){
             //editmode 전환
@@ -99,6 +74,33 @@ class MypageMypickActivity : AppCompatActivity(), View.OnClickListener{
             }
         }
     }
+
+    fun MyPickRecyclerView(){
+
+        dataList.add(PlaceInfo(R.drawable.img5, "비트포비아", "서울특별시 강남구 역삼1동 824-30"))
+        dataList.add(PlaceInfo(R.drawable.img6, "카페 프레도", "서울특별시 강남구 역삼1동"))
+        dataList.add(PlaceInfo(R.drawable.img7, "꽃을피우고", "서울특별시 강남구 역삼동"))
+        dataList.add(PlaceInfo(R.drawable.img8, "자세", "서울특별시 마포구 서교동"))
+        dataList.add(PlaceInfo(R.drawable.img1, "오우 연남점", "서울특별시 마포구 서교동"))
+        dataList.add(PlaceInfo(R.drawable.img2, "돈부리", "서울특별시 마포구 서교동"))
+        dataList.add(PlaceInfo(R.drawable.img3, "랍스타파티", "서울특별시 마포구 서교동 독막로7길"))
+        dataList.add(PlaceInfo(R.drawable.img4, "라공방", "서울특별시 강남구 역삼동 825-20"))
+
+        myPickPlaceRecyclerViewAdapter = MyPickPlaceRecyclerViewAdapter(dataList){PlaceInfo->
+            if(!isInEditMode){
+                val intent = Intent(this, PlaceDetailActivity::class.java)
+                intent.putExtra(PLACE_INFO, PlaceInfo)
+                startActivity(intent)
+            }else{
+                prepareSelection(PlaceInfo)
+                Log.d("clicked datalist: ", selectionList.toString())
+            }
+        }
+        rv_mypick.adapter = myPickPlaceRecyclerViewAdapter
+        rv_mypick.layoutManager = GridLayoutManager(this, 2)
+    }
+
+
 
     //뒤로가기 버튼
     override fun onBackPressed() {

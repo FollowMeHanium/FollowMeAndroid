@@ -98,7 +98,7 @@
                     android:layout_marginTop="8dp"/>
 
                 <TextView
-                    android:id="@+id/tv_place_detail_name"
+                    android:id="@+id/tv_place_detail_address"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="서울특별시 성동구 성수2가3동 연무장9길"

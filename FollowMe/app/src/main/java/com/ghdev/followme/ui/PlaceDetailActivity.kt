@@ -22,6 +22,7 @@ import com.ghdev.followme.network.ApplicationController
 import com.ghdev.followme.network.NetworkService
 import kotlinx.android.synthetic.main.activity_place_detail.*
 import kotlinx.android.synthetic.main.dialog_review_insert.*
+import kotlinx.android.synthetic.main.item_hot_place.*
 import org.jetbrains.anko.toast
 import retrofit2.Call
 import retrofit2.Callback
@@ -86,6 +87,7 @@ class PlaceDetailActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
+    /************************Shop정보 읽어오기********************/
     private fun getShopInfoResponse(){
         val getshop : Call<GetShopInfoResponse> = networkService.getShopInfoResponse(sharedPrefs.getString(PreferenceHelper.PREFS_KEY_ACCESS,"0"),3)
         Log.d("getshop", "동작")
@@ -101,7 +103,10 @@ class PlaceDetailActivity : AppCompatActivity(), View.OnClickListener {
             ) {
                 if(response.isSuccessful){
                     Log.d("getshop", "성공")
-                    val temp = response.body()!!.id
+                    tv_place_detail_title.text = response.body()!!.shopname
+                    tv_place_detail_watch.text = response.body()!!.operating_time
+                    tv_place_detail_menu.text = response.body()!!.menu
+                    tv_place_detail_address.text = response.body()!!.address
                 }
             }
 

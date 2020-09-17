@@ -4,7 +4,7 @@
 
     //loginAct_string
     <string name="login_login">로그인</string>
-    <string name="look_around_login"><u>둘러보기</u></string>
+    <string name="look_around_login_button">둘러보기</string>
 
 
     //signupAct_string
@@ -25,7 +25,6 @@
     <string name="btn_sign_signup">가입하기</string>
 
 
-
     //fragment_mycourse
     <string name="title_mycours">나의코스</string>
     <string name="like_mycourse">내가 찜한 코스</string>
@@ -40,6 +39,7 @@
     //mypage_string
     <string name="sign_mypage">로그인 및 회원가입</string>
     <string name="sign_text_mypage">로그인 하시고 나만의 코스를 만들어 보세요</string>
+    <string name="already_sign_text_mypage">나만의 코스를 만들어보는건 어떤가요?</string>
     <string name="my_pick_place_mypage">내가 찜한 장소</string>
     <string name="my_setting_mypage">내 계정 관리</string>
     <string name="note_mypage">공지사항</string>
@@ -50,7 +50,7 @@
     //mypage_mysetting_string
     <string name="myset_title">내 계정 관리</string>
     <string name="myset_change_info">회원 정보 변경</string>
-    <string name="myset_change_pw">비밀번호 변경</string>
+    <string name="myset_logout">로그아웃</string>
     <string name="myset_change_dt">회원탈퇴</string>
 
     //mypage_mypick_string

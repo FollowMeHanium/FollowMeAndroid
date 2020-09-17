@@ -12,6 +12,10 @@ class PreferenceHelper(context: Context) {
         public const val PREFS_KEY_ACCESS = "token"
         //refresh
         public const val PREFS_KEY_REF = "refreshToken"
+        //user email
+        public const val PREFS_KEY_EMAIL = "email"
+        //user password
+        public const val PREFS_KEY_PASSWORD = "password"
     }
 
     private val prefs: SharedPreferences = context.getSharedPreferences(PREFS_FILENAME, Context.MODE_PRIVATE)

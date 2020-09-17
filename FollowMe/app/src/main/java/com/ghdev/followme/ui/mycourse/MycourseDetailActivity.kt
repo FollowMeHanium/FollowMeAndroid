@@ -137,7 +137,7 @@ class MycourseDetailActivity : AppCompatActivity(), OnMapReadyCallback {
         //## token 자리에 SharedPreference 에 있는 token 값 가져와야함.
         val getOurCorse: Call<CourseDetailResponse> =
             networkService.getCourseDetail(
-                "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.88j2Z3_pB_z-xU4AGuYsptIiV9zFdH7bsweI8hR3NS8",
+                "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxfQ.ldsBBxz_tUoqEMKD39ugh1rW32kR6tNLfQ-j7nLKi5Y",
             courseIdx)
 
         getOurCorse.enqueue(object : Callback<CourseDetailResponse> {
@@ -158,11 +158,11 @@ class MycourseDetailActivity : AppCompatActivity(), OnMapReadyCallback {
                     if(response.body()?.dday == null)
                         tv_date.text = "null"
                     if(response.body()?.title == null)
-                        rb_star_mycourse_detail.numStars = 3
+                        rb_star_mycourse_detail.rating = 3F
 
                     tv_course_title_mycourse_detail.text = response.body()!!.title
                     tv_date.text = response.body()!!.dday
-                    rb_star_mycourse_detail.numStars = response.body()!!.like
+                    rb_star_mycourse_detail.rating = response.body()!!.like.toFloat()
 
                     val temp: ArrayList<Shop> = response.body()!!.shops
 

@@ -35,7 +35,7 @@ class HotPlaceRecyclerViewAdapter (val ctx : Context, val dataList: ArrayList<Sh
 
         holder.placename.text = shop.shopname
         holder.address.text = shop.address
-        holder.star.numStars = shop.grade_avg
+        holder.star.rating = shop.grade_avg.toFloat()
 
         Glide.with(holder.itemView.context).load(url + shop.main_photo).into(holder.imgurl)
 

@@ -6,5 +6,6 @@ data class Shop(
     val id: Int,
     val latitude: Any,
     val longitude: Any,
+    val main_photo: String,
     val shopname: String
 )

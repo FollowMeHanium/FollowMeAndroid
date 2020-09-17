@@ -14,15 +14,11 @@ import com.bumptech.glide.Glide
 import com.ghdev.followme.R
 import com.ghdev.followme.data.GetShopInfoResponse
 import com.ghdev.followme.data.test.GetRecommendListInfo
-import com.ghdev.followme.data.test.PlaceInfo
-import com.ghdev.followme.ui.home.HomeFragment.Companion.PLACE_INFO
 import com.ghdev.followme.data.test.ReviewInfo
 import com.ghdev.followme.db.PreferenceHelper
 import com.ghdev.followme.network.ApplicationController
 import com.ghdev.followme.network.NetworkService
 import kotlinx.android.synthetic.main.activity_place_detail.*
-import kotlinx.android.synthetic.main.dialog_review_insert.*
-import kotlinx.android.synthetic.main.item_hot_place.*
 import org.jetbrains.anko.toast
 import retrofit2.Call
 import retrofit2.Callback
@@ -54,6 +50,9 @@ class PlaceDetailActivity : AppCompatActivity(), View.OnClickListener {
         tv_place_detail_name.text = place_info.address
         Glide.with(this).load(place_info.img).into(iv_place_detail_main)*/
 
+        //Recyclerview에서 받은 정보 표시
+        val place_info = intent.putExtra("place_idx", -1)
+
         init()
         getShopInfoResponse()
         PlaceReviewRecycler()
@@ -61,6 +60,11 @@ class PlaceDetailActivity : AppCompatActivity(), View.OnClickListener {
     }
 
 
+
+        /*
+        tv_place_detail_title.text = place_info.shopname
+        tv_place_detail_name.text = place_info.address
+        Glide.with(this).load(place_info.main_photo).into(iv_place_detail_main)*/
 
     private fun init(){
         btn_place_detail_add_review.setOnClickListener(this)
@@ -141,6 +145,7 @@ class PlaceDetailActivity : AppCompatActivity(), View.OnClickListener {
                 toast("취소 클릭!!")
             }
         builder.show()
+        rv_place_detail_review.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
     }
 
 

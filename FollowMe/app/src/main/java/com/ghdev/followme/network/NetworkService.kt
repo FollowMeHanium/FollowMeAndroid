@@ -1,7 +1,13 @@
 package com.ghdev.followme.network
 
+
 import com.ghdev.followme.data.*
 import com.ghdev.followme.data.test.GetRecommendListInfo
+import com.ghdev.followme.data.GetShopInfoResponse
+import com.ghdev.followme.data.PostLoginResponse
+import com.ghdev.followme.data.PostShopResponse
+import com.ghdev.followme.data.PostSignUpResponse
+import com.ghdev.followme.network.get.CourseDetailResponse
 import com.ghdev.followme.network.get.GetAllCourseResponse
 import com.google.gson.JsonObject
 import retrofit2.Call
@@ -87,11 +93,11 @@ interface NetworkService {
     ): Call<GetAllCourseResponse>
 
     //코스 Detail
-    @GET("/course/one/{id}")
+    @GET("/course/one")
     fun getCourseDetail(
         @Header("authorization") authorization : String,
-        @Path("id") id : Int
-    ): Call<GetAllCourseResponse>
+        @Query("id") id : Int
+    ): Call<CourseDetailResponse>
 
 
 }

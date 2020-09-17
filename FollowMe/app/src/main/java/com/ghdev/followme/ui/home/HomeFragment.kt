@@ -11,6 +11,7 @@ import com.ghdev.followme.R
 import com.ghdev.followme.data.test.CourseData
 import com.ghdev.followme.data.test.Place
 import com.ghdev.followme.data.test.PlaceInfo
+import com.ghdev.followme.network.get.Shop
 import com.ghdev.followme.ui.PlaceDetailActivity
 import com.ghdev.followme.ui.mycourse.CourseRecyclerViewAdapter
 import kotlinx.android.synthetic.main.fragment_home.*
@@ -23,11 +24,8 @@ class HomeFragment : Fragment() {
     lateinit var hotPlaceRecyclerViewAdapter: HotPlaceRecyclerViewAdapter
     lateinit var courseRecyclerViewAdapter: CourseRecyclerViewAdapter
 
-    companion object{
-        val PLACE_INFO = "place_info"
-    }
 
-        override fun onCreate(savedInstanceState: Bundle?) {
+    override fun onCreate(savedInstanceState: Bundle?) {
             super.onCreate(savedInstanceState)
     }
 
@@ -46,49 +44,30 @@ class HomeFragment : Fragment() {
         //핫플
         //데이터는 서버에서 받을 것
         //모듈화를 시키기(rv_id와 datalist가 들어가는 것 말고는 다른 것은 동일)
-        var dataList: ArrayList<PlaceInfo> = ArrayList()
-
+        var dataList: ArrayList<Shop> = ArrayList()
+/*
         dataList.add(PlaceInfo(R.drawable.img5, "비트포비아", "서울특별시 강남구 역삼1동 824-30"))
         dataList.add(PlaceInfo(R.drawable.img6, "카페 프레도", "서울특별시 강남구 역삼1동"))
         dataList.add(PlaceInfo(R.drawable.img7, "꽃을피우고", "서울특별시 강남구 역삼동"))
-        dataList.add(PlaceInfo(R.drawable.img8, "자세", "서울특별시 마포구 서교동"))
+        dataList.add(PlaceInfo(R.drawable.img8, "자세", "서울특별시 마포구 서교동"))*/
 
-        hotPlaceRecyclerViewAdapter =
-            HotPlaceRecyclerViewAdapter(dataList) { PlaceInfo ->
-                val intent = Intent(
-                    context,
-                    PlaceDetailActivity::class.java
-                )
-                intent.putExtra(
-                    PLACE_INFO,
-                    PlaceInfo
-                )
-                startActivity(intent)
-            }
+        hotPlaceRecyclerViewAdapter = HotPlaceRecyclerViewAdapter( requireActivity(), dataList)
         rv_hot_place_home.adapter = hotPlaceRecyclerViewAdapter
         rv_hot_place_home.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
 
 
         //맛집
-        var restaurantList : ArrayList<PlaceInfo> = ArrayList()
+        var restaurantList : ArrayList<Shop> = ArrayList()
+/*
 
         restaurantList.add(PlaceInfo(R.drawable.img1, "오우 연남점", "서울특별시 마포구 서교동"))
         restaurantList.add(PlaceInfo(R.drawable.img2, "돈부리", "서울특별시 마포구 서교동"))
         restaurantList.add(PlaceInfo(R.drawable.img3, "랍스타파티", "서울특별시 마포구 서교동 독막로7길"))
         restaurantList.add(PlaceInfo(R.drawable.img4, "라공방", "서울특별시 강남구 역삼동 825-20"))
+*/
 
         hotPlaceRecyclerViewAdapter =
-            HotPlaceRecyclerViewAdapter(restaurantList) { PlaceInfo ->
-                val intent = Intent(
-                    context,
-                    PlaceDetailActivity::class.java
-                )
-                intent.putExtra(
-                    PLACE_INFO,
-                    PlaceInfo
-                )
-                startActivity(intent)
-            }
+            HotPlaceRecyclerViewAdapter(requireActivity(), restaurantList)
         rv_restaurant_today.adapter = hotPlaceRecyclerViewAdapter
         rv_restaurant_today.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
 

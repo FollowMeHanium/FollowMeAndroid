@@ -1,6 +1,8 @@
 package com.ghdev.followme.ui
 
+import android.app.DatePickerDialog
 import android.content.Context
+import android.content.DialogInterface
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -26,10 +28,13 @@ import java.util.*
 
 class SignUpActivity : AppCompatActivity(), View.OnClickListener {
 
-    var year_arr = ArrayList<String>()
-    var month_arr = ArrayList<String>()
-    var date_arr = ArrayList<String>()
+    var equalpw : Boolean = false
     var checkpw : Boolean = false
+    var checkid : Boolean = false
+    var checknick : Boolean = false
+    var checkphone : Boolean = false
+    var checkbirth : Boolean = false
+
     private lateinit var calendar: Calendar
 
     val networkService: NetworkService by lazy {
@@ -52,11 +57,11 @@ class SignUpActivity : AppCompatActivity(), View.OnClickListener {
 
             //가입하기
             btn_agree_sign_id_set_act -> {
-                if(!checkpw) {
+
+                if(!equalpw) {
                     toast("비밀번호를 확인해주세요")
-                } else{
-                    getSignUpResponse()
                 }
+                EmptyCheck()
             }
             btn_signup_birth -> {
                 BirthDiarlogCreate(v!!)
@@ -77,11 +82,11 @@ class SignUpActivity : AppCompatActivity(), View.OnClickListener {
                 if(et_pw_sign_up_act.text.toString().equals(et_pw_check_sign_up_act.text.toString())){
                     tv_sign_up_pw_check.setText(R.string.password_not_overlap)
                     tv_sign_up_pw_check.setTextColor(Color.parseColor("#008000"))
-                    checkpw = true
+                    equalpw = true
                 } else{
                     tv_sign_up_pw_check.setText(R.string.password_overlap)
                     tv_sign_up_pw_check.setTextColor(Color.parseColor("#ff0000"))
-                    checkpw = false
+                    equalpw = false
                 }
             }
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
@@ -104,11 +109,14 @@ class SignUpActivity : AppCompatActivity(), View.OnClickListener {
         val pd: BirthDialogFragment<View> = BirthDialogFragment(view, "tag")
         pd.show(supportFragmentManager, "BirthDialog")
     }
+
+
     private fun downKeyboard(view: View) {
         val imm: InputMethodManager =
             applicationContext!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
+
 
 
     //성별 선택시 숫자로 반환
@@ -123,7 +131,19 @@ class SignUpActivity : AppCompatActivity(), View.OnClickListener {
         return gendertype
     }
 
+    private fun EmptyCheck(){
+        checkpw = et_pw_sign_up_act.text.toString().trim().isNotEmpty()
+        checkid = et_id_sign_up_act.text.toString().trim().isNotEmpty()
+        checknick = et_nickname_sign_up_act.text.toString().trim().isNotEmpty()
+        checkphone = et_phonenumber_sign_up_act.text.toString().trim().isNotEmpty()
+        checkbirth = tv_signup_birth.text.toString().trim().isNotEmpty()
 
+        if(checkpw && checkbirth && checkid && checknick && checkphone){
+            getSignUpResponse()
+        }else{
+            toast("작성하지 않은 칸이 있습니다.")
+        }
+    }
 
     //network
     private fun getSignUpResponse() {
@@ -133,7 +153,13 @@ class SignUpActivity : AppCompatActivity(), View.OnClickListener {
         val input_nickname: String = et_nickname_sign_up_act.text.toString()
         val input_phone: String = et_phonenumber_sign_up_act.text.toString()
         val input_gender: Int = getSignUpGender()
+        var birthstr = tv_signup_birth.text.split("년 ", "월 ", "일")
 
+        val input_birthyear : String = birthstr[0]
+        val input_birthmonth : String = birthstr[1]
+        val input_birthday : String = birthstr[2]
+
+        //birthdayYear , birthdayMonth, birthdayDay
 
         var jsonObject = JSONObject()
         jsonObject.put("email", input_email)
@@ -141,6 +167,9 @@ class SignUpActivity : AppCompatActivity(), View.OnClickListener {
         jsonObject.put("nickname", input_nickname)
         jsonObject.put("phone_num", input_phone)
         jsonObject.put("gender", input_gender)
+        jsonObject.put("birthdayYear", input_birthyear)
+        jsonObject.put("birthdayMonth", input_birthmonth)
+        jsonObject.put("birthdayDay", input_birthday)
 
 
         val gsonObject = JsonParser().parse(jsonObject.toString()) as JsonObject

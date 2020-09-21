@@ -28,7 +28,12 @@ import java.util.*
 
 class SignUpActivity : AppCompatActivity(), View.OnClickListener {
 
+    //중복확인
     var equalpw : Boolean = false
+    var equalid : Boolean = false
+    var equalnick : Boolean = false
+
+    //문항확인
     var checkpw : Boolean = false
     var checkid : Boolean = false
     var checknick : Boolean = false
@@ -44,24 +49,24 @@ class SignUpActivity : AppCompatActivity(), View.OnClickListener {
     override fun onClick(v: View?) {
 
         when (v) {
-           /* //중복확인 버튼
-            btn_id_check_sign_id_set_act -> {
-                //##
-
-            }*/
+            //아이디 중복확인 버튼
+            btn_signup_check_id -> {
+                CheckId()
+            }
 
             //키보드 내리기
             rl_signup_act -> {
                 downKeyboard(rl_signup_act)
             }
 
+            //닉네임 중복확인 버튼
+            btn_signup_check_nickname ->{
+                CheckNickname()
+            }
+
             //가입하기
             btn_agree_sign_id_set_act -> {
-
-                if(!equalpw) {
-                    toast("비밀번호를 확인해주세요")
-                }
-                EmptyCheck()
+                CheckList()
             }
             btn_signup_birth -> {
                 BirthDiarlogCreate(v!!)
@@ -95,8 +100,8 @@ class SignUpActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun init() {
-
-        //btn_id_check_sign_id_set_act.setOnClickListener(this)
+        btn_signup_check_id.setOnClickListener(this)
+        btn_signup_check_nickname.setOnClickListener(this)
         rl_signup_act.setOnClickListener(this)
         btn_agree_sign_id_set_act.setOnClickListener(this)
         btn_signup_birth.setOnClickListener(this)
@@ -131,7 +136,7 @@ class SignUpActivity : AppCompatActivity(), View.OnClickListener {
         return gendertype
     }
 
-    private fun EmptyCheck(){
+    private fun CheckList(){
         checkpw = et_pw_sign_up_act.text.toString().trim().isNotEmpty()
         checkid = et_id_sign_up_act.text.toString().trim().isNotEmpty()
         checknick = et_nickname_sign_up_act.text.toString().trim().isNotEmpty()
@@ -139,10 +144,84 @@ class SignUpActivity : AppCompatActivity(), View.OnClickListener {
         checkbirth = tv_signup_birth.text.toString().trim().isNotEmpty()
 
         if(checkpw && checkbirth && checkid && checknick && checkphone){
-            getSignUpResponse()
+
+            //모두 다 작성되었다면, 중복확인
+            if(!equalpw){
+                toast("비밀번호가 일치하지 않습니다.")
+            }else if(!equalid){
+                toast("아이디 중복여부를 확인해주세요.")
+            }else if(!equalnick){
+                toast("닉네임 중복여부를 확인해주세요.")
+            }else{
+                getSignUpResponse()
+            }
+
         }else{
             toast("작성하지 않은 칸이 있습니다.")
         }
+    }
+
+    /**************************통신*************************************/
+
+    //아이디 중복확인 network
+    private fun CheckId(){
+        //send email
+        val input_email : String = et_id_sign_up_act.text.toString()
+
+        var jsonObject = JSONObject()
+        jsonObject.put("email", input_email)
+
+        val gsonObject = JsonParser().parse(jsonObject.toString()) as JsonObject
+        val postSignUpCheckIdResponse: Call<PostSignUpResponse> =
+            networkService.postSignUpCheckIdResponse("application/json", gsonObject)
+        postSignUpCheckIdResponse.enqueue(object : Callback<PostSignUpResponse>{
+            override fun onFailure(call: Call<PostSignUpResponse>, t: Throwable) {
+                Log.d("checkid: ", "실패")
+            }
+
+            override fun onResponse(
+                call: Call<PostSignUpResponse>,
+                response: Response<PostSignUpResponse>
+            ) {
+                if(response.isSuccessful){
+                    Log.d("checkid: ", "성공")
+                    toast(response.body()!!.message)
+                    equalid = true
+                }
+            }
+
+        })
+
+    }
+
+    //닉네임 중복확인 network
+    private fun CheckNickname(){
+        //send nickname
+        val input_nickname : String = et_nickname_sign_up_act.text.toString()
+
+        var jsonObject = JSONObject()
+        jsonObject.put("nickname", input_nickname)
+
+        val gsonObject = JsonParser().parse(jsonObject.toString()) as JsonObject
+        val postSignUpCheckNameResponse: Call<PostSignUpResponse> =
+            networkService.postSignUpCheckNameResponse("application/json", gsonObject)
+        postSignUpCheckNameResponse.enqueue(object : Callback<PostSignUpResponse>{
+            override fun onFailure(call: Call<PostSignUpResponse>, t: Throwable) {
+                Log.d("checknick: ", "실패")
+            }
+
+            override fun onResponse(
+                call: Call<PostSignUpResponse>,
+                response: Response<PostSignUpResponse>
+            ) {
+                if(response.isSuccessful){
+                    Log.d("checknick: ", "성공")
+                    toast(response.body()!!.message)
+                    equalnick = true
+                }
+            }
+
+        })
     }
 
     //network

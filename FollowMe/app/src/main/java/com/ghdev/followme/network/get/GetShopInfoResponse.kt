@@ -1,4 +1,4 @@
-package com.ghdev.followme.data
+package com.ghdev.followme.network.get
 
 import java.sql.Time
 
@@ -9,7 +9,7 @@ data class GetShopInfoResponse (
     val shopname : String,
     val address : String,
     val menu : String,
-    //val operating_time : String,
+    val operating_time : String,
     val grade_avg : Float,
     val latitude : Double,
     val longitude : Double,

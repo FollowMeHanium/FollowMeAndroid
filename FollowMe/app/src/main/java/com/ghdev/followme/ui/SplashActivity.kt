@@ -17,7 +17,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-//여기서 자동로그인해야하는건가?
+
 class SplashActivity : AppCompatActivity() {
 
     private val networkService: NetworkService by lazy {
@@ -40,6 +40,7 @@ class SplashActivity : AppCompatActivity() {
         }
         startActivity<LoginActivity>()
         finish()
+        //
 
         if(sharedPrefs.getString(PreferenceHelper.PREFS_KEY_ACCESS, "0") !== "0"){
             getLoginResponse(sharedPrefs.getString(PreferenceHelper.PREFS_KEY_EMAIL, "0"),

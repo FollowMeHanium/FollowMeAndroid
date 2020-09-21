@@ -173,14 +173,15 @@
                     android:textSize="14sp"/>
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <ImageView
-                android:id="@+id/iv_place_detail_map"
-                android:layout_width="390dp"
-                android:layout_height="191dp"
-                android:layout_marginTop="30dp"
-                android:layout_gravity="center"
-                android:src="@drawable/example_map"/>
-            
+            <fragment
+                android:id="@+id/map_naver_shop_detail"
+                android:name="com.naver.maps.map.MapFragment"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_height="200dp"
+                android:layout_width="match_parent"
+                android:layout_marginTop="8dp"/>
+
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/cl_place_detial_review"
                 android:layout_width="380dp"

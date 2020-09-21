@@ -1,14 +1,11 @@
 package com.ghdev.followme.network
 
 
-import com.ghdev.followme.data.*
 import com.ghdev.followme.data.test.GetRecommendListInfo
-import com.ghdev.followme.data.GetShopInfoResponse
 import com.ghdev.followme.data.PostLoginResponse
 import com.ghdev.followme.data.PostShopResponse
 import com.ghdev.followme.data.PostSignUpResponse
-import com.ghdev.followme.network.get.CourseDetailResponse
-import com.ghdev.followme.network.get.GetAllCourseResponse
+import com.ghdev.followme.network.get.*
 import com.google.gson.JsonObject
 import retrofit2.Call
 import retrofit2.http.Body
@@ -24,6 +21,20 @@ interface NetworkService {
     fun postSignUpResponse(
         @Header("Content-Type") content_type : String,
         @Body() body : JsonObject
+    ) : Call<PostSignUpResponse>
+
+    //회원가입 -> 닉네임 중복여부
+    @POST("/auth/checkNickname")
+    fun postSignUpCheckNameResponse(
+        @Header("Content-Type") content_type: String,
+        @Body() body: JsonObject
+    ) : Call<PostSignUpResponse>
+
+    //회원가입 -> 아이디 중복여부
+    @POST("/auth/checkEmail")
+    fun postSignUpCheckIdResponse(
+        @Header("Content-Type") content_type: String,
+        @Body() body: JsonObject
     ) : Call<PostSignUpResponse>
 
     //로그인
@@ -65,19 +76,17 @@ interface NetworkService {
         @Body() body: JsonObject
     ) : Call<PostShopResponse>
 
-    //Shop 찜 취소
+    //Shop 좋아요 취소
     @POST("/shop/undip")
     fun postShopUnDipResponse(
         @Header("Content-Type") content_type: String,
         @Body() body: JsonObject
     ) : Call<PostShopResponse>
 
-
     //Shop 좋아요 리스트
     @GET("/shop/like:id")
     fun getShopLikeListResponse(
-        @Header("authorization") authorization: String,
-        @Query("id") id: Int
+        @Header("authorization") authorization: String
     ) : Call<GetShopLikeListResponse>
 
     //GEt 모두의 코스

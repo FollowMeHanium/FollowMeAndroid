@@ -13,6 +13,7 @@ import com.ghdev.followme.R
 import com.ghdev.followme.db.PreferenceHelper
 import com.ghdev.followme.network.ApplicationController
 import com.ghdev.followme.ui.LoginActivity
+import com.ghdev.followme.ui.PlaceDetailActivity
 import kotlinx.android.synthetic.main.fragment_mypage.*
 import java.io.UnsupportedEncodingException
 import java.lang.Exception
@@ -54,7 +55,9 @@ class MypageFragment : Fragment() {
 
         btn_mypage_goto_mypick.setOnClickListener {
             activity?.let {
-                val intent = Intent(context, MypageMypickActivity::class.java)
+                /*val intent = Intent(context, MypageMypickActivity::class.java)
+                startActivity(intent)*/
+                val intent = Intent(context, PlaceDetailActivity::class.java)
                 startActivity(intent)
             }
         }

@@ -7,14 +7,12 @@ import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.GridLayoutManager
 import com.ghdev.followme.R
-import com.ghdev.followme.data.GetShopLikeListResponse
-import com.ghdev.followme.data.test.PlaceInfo
-import com.ghdev.followme.db.PreferenceHelper
+import com.ghdev.followme.network.get.GetShopLikeListResponse
 import com.ghdev.followme.network.ApplicationController
 import com.ghdev.followme.network.NetworkService
+import com.ghdev.followme.network.get.Shop
 import com.ghdev.followme.ui.PlaceDetailActivity
 import kotlinx.android.synthetic.main.activity_mypage_mypick.*
-import org.jetbrains.anko.networkStatsManager
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -26,7 +24,9 @@ class MypageMypickActivity : AppCompatActivity(), View.OnClickListener{
         //EditMode 구별 위한 변수
         var isInEditMode = false
         //찜 선택된 item list
-        var selectionList: ArrayList<PlaceInfo> = ArrayList()
+        var selectionList: ArrayList<Shop> = ArrayList()
+        //찜 선택 취소한 item의 id list -> 서버에 통신용
+        var cancleList: ArrayList<Int> = ArrayList()
     }
 
     val networkService: NetworkService by lazy {
@@ -38,9 +38,8 @@ class MypageMypickActivity : AppCompatActivity(), View.OnClickListener{
     }
 
 
-
     lateinit var myPickPlaceRecyclerViewAdapter: MyPickPlaceRecyclerViewAdapter
-    var dataList: ArrayList<PlaceInfo> = ArrayList()
+    var dataList: ArrayList<Shop> = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -82,6 +81,7 @@ class MypageMypickActivity : AppCompatActivity(), View.OnClickListener{
                 //레이아웃 초기화
                 rv_mypick.removeAllViews()
             }
+
             btn_mypick_editmode_delete ->{
                 if(isInEditMode){
                     removeData(selectionList)
@@ -93,11 +93,36 @@ class MypageMypickActivity : AppCompatActivity(), View.OnClickListener{
         }
     }
 
-    /*************************Shop Like List 불러오기********************/
+    fun MyPickRecyclerView(){
+        myPickPlaceRecyclerViewAdapter =
+            MyPickPlaceRecyclerViewAdapter(dataList){Shop ->
+                //Edit모드가 아니면 -> detailView로 넘어가기
+                if(!isInEditMode){
+                    val intent = Intent(this, PlaceDetailActivity::class.java)
+                    intent.putExtra("place_idx", Shop.id)
+                    startActivity(intent)
+                }else{
+                 //Edit모드라면 -> 삭제할 리스트 정하기
+                    prepareSelection(Shop)
+                    Log.d("clicked datalist: ", selectionList.toString())
+                }
+            }
+        rv_mypick.adapter = myPickPlaceRecyclerViewAdapter
+        rv_mypick.layoutManager = GridLayoutManager(this, 2)
+
+
+    }
+
+    /*************************Shop Like List 통신********************/
 
     private fun getShopLikeListResponse(){
-        val getshop : Call<GetShopLikeListResponse> = networkService.getShopLikeListResponse(sharedPrefs.getString(
+       /* val getshop : Call<GetShopLikeListResponse> = networkService.getShopLikeListResponse(sharedPrefs.getString(
             PreferenceHelper.PREFS_KEY_ACCESS,"0"), 8)
+
+        */
+
+        val getshop : Call<GetShopLikeListResponse> = networkService.getShopLikeListResponse("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxfQ.ldsBBxz_tUoqEMKD39ugh1rW32kR6tNLfQ-j7nLKi5Y")
+
         Log.d("getlike", "동작")
 
         getshop.enqueue(object : Callback<GetShopLikeListResponse>{
@@ -109,38 +134,21 @@ class MypageMypickActivity : AppCompatActivity(), View.OnClickListener{
                 call: Call<GetShopLikeListResponse>,
                 response: Response<GetShopLikeListResponse>
             ) {
-                Log.d("getlike", "성공")
+                if(response.isSuccessful){
+                    Log.d("getlike", "성공")
+                    val temp : ArrayList<Shop> = response.body()!!.shops
+
+                    if(temp.size > 0){
+                        val position = myPickPlaceRecyclerViewAdapter.itemCount
+                        myPickPlaceRecyclerViewAdapter.dataList.addAll(temp)
+                        myPickPlaceRecyclerViewAdapter.notifyItemInserted(position)
+                    }
+                }
+
             }
 
         })
     }
-
-    fun MyPickRecyclerView(){
-
-        dataList.add(PlaceInfo(R.drawable.img5, "비트포비아", "서울특별시 강남구 역삼1동 824-30"))
-        dataList.add(PlaceInfo(R.drawable.img6, "카페 프레도", "서울특별시 강남구 역삼1동"))
-        dataList.add(PlaceInfo(R.drawable.img7, "꽃을피우고", "서울특별시 강남구 역삼동"))
-        dataList.add(PlaceInfo(R.drawable.img8, "자세", "서울특별시 마포구 서교동"))
-        dataList.add(PlaceInfo(R.drawable.img1, "오우 연남점", "서울특별시 마포구 서교동"))
-        dataList.add(PlaceInfo(R.drawable.img2, "돈부리", "서울특별시 마포구 서교동"))
-        dataList.add(PlaceInfo(R.drawable.img3, "랍스타파티", "서울특별시 마포구 서교동 독막로7길"))
-        dataList.add(PlaceInfo(R.drawable.img4, "라공방", "서울특별시 강남구 역삼동 825-20"))
-
-        myPickPlaceRecyclerViewAdapter = MyPickPlaceRecyclerViewAdapter(dataList){PlaceInfo->
-            if(!isInEditMode){
-                val intent = Intent(this, PlaceDetailActivity::class.java)
-                intent.putExtra(PLACE_INFO, PlaceInfo)
-                startActivity(intent)
-            }else{
-                prepareSelection(PlaceInfo)
-                Log.d("clicked datalist: ", selectionList.toString())
-            }
-        }
-        rv_mypick.adapter = myPickPlaceRecyclerViewAdapter
-        rv_mypick.layoutManager = GridLayoutManager(this, 2)
-    }
-
-
 
     //뒤로가기 버튼
     override fun onBackPressed() {
@@ -160,7 +168,7 @@ class MypageMypickActivity : AppCompatActivity(), View.OnClickListener{
 
     }
 
-    fun prepareSelection(dataList : PlaceInfo){
+    fun prepareSelection(dataList : Shop){
         if(!selectionList.contains(dataList))
         {
             //선택된 아이템 리스트에 해당 포지션 추가
@@ -172,11 +180,14 @@ class MypageMypickActivity : AppCompatActivity(), View.OnClickListener{
     }
 
 
-    fun removeData(selectionList: ArrayList<PlaceInfo>){
+    fun removeData(selectionList: ArrayList<Shop>){
         for(i in selectionList){
             dataList.remove(i)
+            cancleList.add(i.id)
             rv_mypick.adapter?.notifyDataSetChanged()
         }
+        //마지막으로 좋아요 list보내기.. -> 좋아요 취소된 배열 모아서 보내기?
+
     }
 
 }

@@ -5,18 +5,24 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.*
+import android.widget.Button
 import androidx.fragment.app.DialogFragment
 import com.ghdev.followme.R
 import kotlinx.android.synthetic.main.dialog_course_category.*
 import kotlinx.android.synthetic.main.dialog_course_category.view.*
 
-class CourseDialogFragment : DialogFragment(){
+class CourseDialogFragment : DialogFragment(), View.OnClickListener{
 
+    private lateinit var contents_lovers : Button
+    private lateinit var contents_friends : Button
+    private lateinit var contents_family : Button
+    private lateinit var contents_act : Button
+    private lateinit var contents_pet : Button
+    private lateinit var contents_tv : Button
+    private lateinit var btn_close : Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-
     }
 
     override fun onResume() {
@@ -30,37 +36,58 @@ class CourseDialogFragment : DialogFragment(){
 
         val view : View = inflater.inflate(R.layout.dialog_course_category, container, false)
 
-        //코스 카테고리 항목
-        var contents_lovers = view.btn_course_category_lovers
-        var contents_friends = view.btn_course_category_friends
-        var contents_family = view.btn_course_category_family
-        var contents_childs = view.btn_course_category_child
-        var contents_act = view.btn_course_category_act
-        var contents_alone = view.btn_course_category_alone
-        var contents_pet = view.btn_course_category_pet
-        var contents_tv = view.btn_course_category_tv
-        var contents_anni = view.btn_course_category_anni
-        var contents_ex = view.btn_course_category_ex
-        var contents_rain = view.btn_course_category_rain
-        var contents_out = view.btn_course_category_out
-
-        //닫기 버튼
-        var btn_close = view.btn_course_dialog_close
-
-        btn_close.setOnClickListener(object: View.OnClickListener{
-            override fun onClick(v: View?){
-                dismiss()
-            }
-        })
+        init(view);
 
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         dialog?.window?.requestFeature(Window.FEATURE_NO_TITLE)
 
         return view
-
     }
 
     fun getInstance():CourseDialogFragment {
         return CourseDialogFragment()
+    }
+
+    private fun init(view : View) {
+        //코스 카테고리 항목
+        contents_lovers = view.btn_course_category_lovers
+        contents_friends = view.btn_course_category_friends
+        contents_family = view.btn_course_category_family
+        contents_act = view.btn_course_category_act
+        contents_pet = view.btn_course_category_pet
+        contents_tv = view.btn_course_category_tv
+        btn_close = view.btn_course_dialog_close
+    }
+
+    override fun onClick(v: View?) {
+        when (v!!) {
+            //0
+            contents_lovers -> {
+
+            }
+            //1
+            contents_friends -> {
+
+            }
+            //2
+            contents_tv -> {
+
+            }
+            //3
+            contents_act-> {
+
+            }
+            //4
+            contents_pet -> {
+
+            }
+            //5
+            contents_family -> {
+
+            }
+            btn_close ->  {
+                dismiss()
+            }
+        }
     }
 }

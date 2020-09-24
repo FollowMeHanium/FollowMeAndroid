@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black_60">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="320dp"
+        android:layout_height="208dp"
+        android:background="@drawable/ic_dialog_box"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/tv_search_alarm_title_dialog"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="14dp"
+            android:text="알림"
+            android:textColor="@color/colorBlack"
+
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="12dp"
+            android:background="@color/colorMain"
+            app:layout_constraintTop_toBottomOf="@+id/tv_search_alarm_title_dialog" />
+
+        <TextView
+            android:id="@+id/tv_des_seasrchAlarm_custom_dialog"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="검색어가 너무 짧습니다."
+            android:textColor="@color/colorBlack"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/colorMain"
+            app:layout_constraintBottom_toTopOf="@+id/cl_complete_search_custom_dialog" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_complete_search_custom_dialog"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            >
+
+            <TextView
+                android:id="@+id/tv_complete_search_custom_dialog"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="확인"
+                android:textColor="@color/colorBlack"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:layout_marginVertical="12dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

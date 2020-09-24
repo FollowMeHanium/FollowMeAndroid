@@ -9,14 +9,12 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ghdev.followme.R
-import com.ghdev.followme.data.test.CourseData
-import com.ghdev.followme.data.test.Place
 import com.ghdev.followme.network.ApplicationController
 import com.ghdev.followme.network.NetworkService
 import com.ghdev.followme.network.get.Course
 import com.ghdev.followme.network.get.GetAllCourseResponse
-import com.ghdev.followme.ui.CourseDialogFragment
 import com.ghdev.followme.ui.mycourse.CourseRecyclerViewAdapter
+import com.ghdev.followme.util.CourseDialogFragment
 import kotlinx.android.synthetic.main.fragment_course_recommend.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -47,7 +45,8 @@ class CourseRecommendFragment : Fragment() {
         val btn_select_categroy = view.findViewById(R.id.cl_category_filter) as ConstraintLayout
 
         btn_select_categroy.setOnClickListener{
-            val dialog: CourseDialogFragment = CourseDialogFragment().getInstance()
+            val dialog: CourseDialogFragment = CourseDialogFragment()
+                .getInstance()
             //val fm = supportFragmentManager.beginTransaction()
             val fm = getFragmentManager()
             dialog.show(fm!!, "TAG_DIALOG_EVENT")

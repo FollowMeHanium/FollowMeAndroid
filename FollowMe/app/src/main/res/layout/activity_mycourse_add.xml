@@ -92,6 +92,7 @@
             android:layout_height="wrap_content"
             android:hint="날짜는 2020-09-24 형식으로 입력해주세요."
             android:layout_marginTop="8dp"
+            android:inputType="datetime"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_add_date"
             />

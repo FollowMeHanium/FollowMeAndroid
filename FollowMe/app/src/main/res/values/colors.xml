@@ -16,4 +16,7 @@
 
     <!--회원가입-->
     <color name ="pinkcolor">#ff6f61</color>
+
+
+    <color name="black_60">#99000000</color>
 </resources>

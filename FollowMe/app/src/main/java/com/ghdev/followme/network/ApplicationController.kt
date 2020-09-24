@@ -2,10 +2,7 @@ package com.ghdev.followme.network
 
 import android.app.Application
 import com.ghdev.followme.db.PreferenceHelper
-import com.ghdev.followme.db.SharedPreference
 import com.kakao.auth.KakaoSDK
-import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 

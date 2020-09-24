@@ -22,6 +22,7 @@
         <activity android:name=".ui.SignUpActivity" />
         <activity android:name=".ui.MainActivity" />
         <activity android:name=".ui.LoginActivity"/>
+        <activity android:name=".ui.mycourse.MycourseAddActivity"/>
         <activity android:name=".ui.SplashActivity" android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -38,6 +39,11 @@
         <meta-data
             android:name="com.kakao.sdk.AppKey"
             android:value="@string/kakao_app_key" />
+
+        <meta-data
+            android:name="com.naver.maps.map.CLIENT_ID"
+            android:value="q68pv433jh" />
+
     </application>
 
 </manifest>

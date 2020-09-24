@@ -32,15 +32,9 @@ class CourseDialogFragment : DialogFragment(){
         var contents_lovers = view.btn_course_category_lovers
         var contents_friends = view.btn_course_category_friends
         var contents_family = view.btn_course_category_family
-        var contents_childs = view.btn_course_category_child
         var contents_act = view.btn_course_category_act
-        var contents_alone = view.btn_course_category_alone
         var contents_pet = view.btn_course_category_pet
         var contents_tv = view.btn_course_category_tv
-        var contents_anni = view.btn_course_category_anni
-        var contents_ex = view.btn_course_category_ex
-        var contents_rain = view.btn_course_category_rain
-        var contents_out = view.btn_course_category_out
 
         //닫기 버튼
         var btn_close = view.btn_course_dialog_close

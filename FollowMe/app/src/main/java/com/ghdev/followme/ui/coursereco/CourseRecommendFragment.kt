@@ -9,14 +9,12 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ghdev.followme.R
-import com.ghdev.followme.data.test.CourseData
-import com.ghdev.followme.data.test.Place
 import com.ghdev.followme.network.ApplicationController
 import com.ghdev.followme.network.NetworkService
 import com.ghdev.followme.network.get.Course
 import com.ghdev.followme.network.get.GetAllCourseResponse
-import com.ghdev.followme.ui.CourseDialogFragment
 import com.ghdev.followme.ui.mycourse.CourseRecyclerViewAdapter
+import com.ghdev.followme.util.CourseDialogFragment
 import kotlinx.android.synthetic.main.fragment_course_recommend.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -47,7 +45,8 @@ class CourseRecommendFragment : Fragment() {
         val btn_select_categroy = view.findViewById(R.id.cl_category_filter) as ConstraintLayout
 
         btn_select_categroy.setOnClickListener{
-            val dialog: CourseDialogFragment = CourseDialogFragment().getInstance()
+            val dialog: CourseDialogFragment = CourseDialogFragment()
+                .getInstance()
             //val fm = supportFragmentManager.beginTransaction()
             val fm = getFragmentManager()
             dialog.show(fm!!, "TAG_DIALOG_EVENT")
@@ -91,7 +90,7 @@ class CourseRecommendFragment : Fragment() {
 
     private fun getMyCourseResponse() {
         //## token 자리에 SharedPreference 에 있는 token 값 가져와야함.
-        val getOurCorse: Call<GetAllCourseResponse> = networkService.getAllOurCourse("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxfQ.ldsBBxz_tUoqEMKD39ugh1rW32kR6tNLfQ-j7nLKi5Y")
+        val getOurCorse: Call<GetAllCourseResponse> = networkService.getAllOurCourse("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoyLCJuaWNrbmFtZSI6InVzZXIxIiwiZ2VuZGVyIjoxLCJhZ2UiOjIwMjAsInN0YXR1cyI6MSwiaWF0IjoxNjAwOTE4NzU1LCJleHAiOjE2MDEwMDUxNTUsImlzcyI6ImNvbWVPbiJ9.f-m4QiX0OXm1nvJDxXvajr0AL0y480Y4EFVGcvttRAY")
 
         Log.d("TAGG", "안들어가니?" )
         getOurCorse.enqueue(object : Callback<GetAllCourseResponse> {
@@ -121,5 +120,4 @@ class CourseRecommendFragment : Fragment() {
             }
         })
     }
-
 }

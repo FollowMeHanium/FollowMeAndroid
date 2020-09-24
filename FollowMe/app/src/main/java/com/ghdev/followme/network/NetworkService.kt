@@ -88,5 +88,12 @@ interface NetworkService {
         @Query("id") id : Int
     ): Call<CourseDetailResponse>
 
+    //코스 추가하기
+    @POST("/course")
+    fun postCourseAdd(
+        @Header("authorization") authorization : String,
+        @Body() body : JsonObject
+    ): Call<ResponseMessageNonData>
+
 
 }

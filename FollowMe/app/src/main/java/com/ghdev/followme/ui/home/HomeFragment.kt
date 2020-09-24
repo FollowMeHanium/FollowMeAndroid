@@ -110,7 +110,6 @@ class HomeFragment : Fragment() {
 
     private fun getRecomendInfo(){
         val getReco : Call<GetRecommendListInfo> = networkService.getAllRecomendListInfoResponse(sharedPrefs.getString(PreferenceHelper.PREFS_KEY_ACCESS, "0"))
-        //val getReco : Call<GetRecommendListInfo> = networkService.getAllRecomendListInfoResponse("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIsIm5pY2tuYW1lIjoiYWFhYSIsImdlbmRlciI6MSwiYWdlIjoyNSwic3RhdHVzIjoxLCJpYXQiOjE2MDA3NjM5NTUsImV4cCI6MTYwMDc2NzU1NSwiaXNzIjoiY29tZU9uIn0.qmQWJPjyKqTNeGHj6oBP5L3MF1s4CF9Ue7wLDXU_4CE")
 
         getReco.enqueue(object: Callback<GetRecommendListInfo> {
             override fun onFailure(call: Call<GetRecommendListInfo>, t: Throwable) {
@@ -126,8 +125,10 @@ class HomeFragment : Fragment() {
                     Log.d("getReco", "성공")
                     val temp = response.body()!!.shops
 
-                    if(temp.size >0){
-
+                    if(temp.size <= 0){
+                        Log.d("getReco", "null값")
+                    }
+                    else{
                         val position = hotPlaceRecyclerViewAdapter.itemCount
                         hotPlaceRecyclerViewAdapter.dataList.addAll(temp)
                         hotPlaceRecyclerViewAdapter.notifyItemInserted(position)

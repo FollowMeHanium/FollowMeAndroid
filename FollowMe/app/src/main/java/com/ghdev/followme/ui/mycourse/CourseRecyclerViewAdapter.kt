@@ -56,7 +56,6 @@ class CourseRecyclerViewAdapter (val ctx : Context, val dataList: ArrayList<Cour
     }
 
     inner class Holder(itemView : View) : RecyclerView.ViewHolder(itemView) {
-
         var date = itemView.findViewById(R.id.tv_date_mycourse) as TextView
         var star = itemView.findViewById(R.id.rb_star_mycourse_item) as RatingBar
         var placename1 = itemView.findViewById(R.id.tv_place1_mycourse) as TextView
@@ -65,6 +64,5 @@ class CourseRecyclerViewAdapter (val ctx : Context, val dataList: ArrayList<Cour
         var title = itemView.findViewById(R.id.tv_title_mycourse) as TextView
         var background = itemView.findViewById(R.id.iv_course_item_backgroung) as ImageView
         var container = itemView.findViewById(R.id.cl_mycourse_container) as ConstraintLayout
-
     }
 }

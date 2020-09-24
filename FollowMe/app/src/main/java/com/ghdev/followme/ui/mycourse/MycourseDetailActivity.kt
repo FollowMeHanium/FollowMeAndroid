@@ -42,7 +42,6 @@ class MycourseDetailActivity : AppCompatActivity(), OnMapReadyCallback {
         getCourseDetailResponse()
         loadCoordinateDatas()
         setRecyclerView()
-
     }
 
 
@@ -137,7 +136,7 @@ class MycourseDetailActivity : AppCompatActivity(), OnMapReadyCallback {
         //## token 자리에 SharedPreference 에 있는 token 값 가져와야함.
         val getOurCorse: Call<CourseDetailResponse> =
             networkService.getCourseDetail(
-                "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxfQ.ldsBBxz_tUoqEMKD39ugh1rW32kR6tNLfQ-j7nLKi5Y",
+                "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoyLCJuaWNrbmFtZSI6InVzZXIxIiwiZ2VuZGVyIjoxLCJhZ2UiOjIwMjAsInN0YXR1cyI6MSwiaWF0IjoxNjAwOTE4NzU1LCJleHAiOjE2MDEwMDUxNTUsImlzcyI6ImNvbWVPbiJ9.f-m4QiX0OXm1nvJDxXvajr0AL0y480Y4EFVGcvttRAY",
             courseIdx)
 
         getOurCorse.enqueue(object : Callback<CourseDetailResponse> {

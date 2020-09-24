@@ -9,6 +9,7 @@ import com.ghdev.followme.data.PostShopResponse
 import com.ghdev.followme.data.PostSignUpResponse
 import com.ghdev.followme.network.get.CourseDetailResponse
 import com.ghdev.followme.network.get.GetAllCourseResponse
+import com.ghdev.followme.network.get.ResponseMessageNonData
 import com.google.gson.JsonObject
 import retrofit2.Call
 import retrofit2.http.Body
@@ -98,6 +99,13 @@ interface NetworkService {
         @Header("authorization") authorization : String,
         @Query("id") id : Int
     ): Call<CourseDetailResponse>
+
+    //코스 추가하기
+    @POST("/course")
+    fun postCourseAdd(
+        @Header("authorization") authorization : String,
+        @Body() body : JsonObject
+    ): Call<ResponseMessageNonData>
 
 
 }

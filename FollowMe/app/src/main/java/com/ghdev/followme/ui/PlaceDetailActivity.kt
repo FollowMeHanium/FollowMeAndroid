@@ -1,6 +1,7 @@
 package com.ghdev.followme.ui
 
 import android.app.AlertDialog
+import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -10,13 +11,17 @@ import android.view.animation.AnimationUtils
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.ghdev.followme.R
+import com.ghdev.followme.data.PostShopLikeResponse
 import com.ghdev.followme.network.get.GetShopInfoResponse
 import com.ghdev.followme.data.test.GetRecommendListInfo
 import com.ghdev.followme.data.test.ReviewInfo
 import com.ghdev.followme.db.PreferenceHelper
 import com.ghdev.followme.network.ApplicationController
 import com.ghdev.followme.network.NetworkService
+import com.google.gson.JsonObject
+import com.google.gson.JsonParser
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.CameraUpdate
 import com.naver.maps.map.MapFragment
@@ -26,17 +31,35 @@ import com.naver.maps.map.overlay.Marker
 import com.naver.maps.map.overlay.PathOverlay
 import kotlinx.android.synthetic.main.activity_place_detail.*
 import org.jetbrains.anko.toast
+import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 class PlaceDetailActivity : AppCompatActivity(), View.OnClickListener, OnMapReadyCallback {
 
+    //recyclerview
     lateinit var placeReivewRecyclerViewAdapter: PlaceReivewRecyclerViewAdapter
     var reviewList : ArrayList<ReviewInfo> = ArrayList()
+
+    //naver map
+    //key값 넣어야 함! (안넣음)
     val mapCoords = mutableListOf<LatLng>()
     lateinit var path: PathOverlay
     private var naverMap: NaverMap? = null
+
+    //recyclerview로부터 받은 shop id
+    var place_info : Int = 0
+
+    //이미지로딩 -> 왜 안되?
+    private  val url = "http://3.15.22.4:3005"
+
+    //애니메이션
+    lateinit var anim : Animation
+
+    //찜하기 여부, 디폴트값은 false
+    var mypick : Boolean = false
+
 
     val networkService: NetworkService by lazy {
         ApplicationController.instance.networkService
@@ -46,26 +69,19 @@ class PlaceDetailActivity : AppCompatActivity(), View.OnClickListener, OnMapRead
         ApplicationController.instance.prefs
     }
 
-    //찜하기 여부
-    var mypick : Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_place_detail)
 
-        //Recyclerview에서 받은 정보 표시 -> shop id값 intent받기
-        /*val place_info = intent.getParcelableExtra<PlaceInfo>(PLACE_INFO)
-        tv_place_detail_title.text = place_info.name
-        tv_place_detail_name.text = place_info.address
-        Glide.with(this).load(place_info.img).into(iv_place_detail_main)*/
+        //Glide.with(this).load(url+"/images/shop/4.jpg").into(iv_place_detail_main)
 
         //Recyclerview에서 받은 정보 표시
-        //val place_info = intent.getIntExtra("place_idx", -1)
-        //Log.d("place_info: ", place_info.toString())
+        place_info = intent.getIntExtra("place_idx", -1)
+        Log.d("place_info: ", place_info.toString())
 
         init()
-        //getShopInfoResponse(place_info)
-        getShopInfoResponse(2)
+        getShopInfoResponse(place_info)
         loadCoordinateDatas()
         PlaceReviewRecycler()
     }
@@ -81,6 +97,20 @@ class PlaceDetailActivity : AppCompatActivity(), View.OnClickListener, OnMapRead
         btn_place_detail_add_review.setOnClickListener(this)
         btn_place_detail_add_mypick.setOnClickListener(this)
         btn_place_detail_add_mycourse.setOnClickListener(this)
+
+        /*************애니메이션 정의****************/
+        anim = AnimationUtils.loadAnimation(this, R.anim.anim_mypick_alpha)
+        anim.setAnimationListener(object : Animation.AnimationListener {
+            override fun onAnimationRepeat(animation: Animation?) {}
+
+            override fun onAnimationEnd(animation: Animation?) {
+                iv_place_detail_anim_mypick.visibility = View.GONE
+            }
+
+            override fun onAnimationStart(animation: Animation?) {
+                iv_place_detail_anim_mypick.visibility = View.VISIBLE
+            }
+        })
     }
 
     override fun onClick(v: View?) {
@@ -105,15 +135,13 @@ class PlaceDetailActivity : AppCompatActivity(), View.OnClickListener, OnMapRead
     /**안됌ㅠㅠ**/
     /************************Shop정보 읽어오기********************/
     private fun getShopInfoResponse(id : Int){
-        //val getshop : Call<GetShopInfoResponse> = networkService.getShopInfoResponse(sharedPrefs.getString(PreferenceHelper.PREFS_KEY_ACCESS,"0"),id)
-        val getshop : Call<GetShopInfoResponse> = networkService.getShopInfoResponse("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxfQ.ldsBBxz_tUoqEMKD39ugh1rW32kR6tNLfQ-j7nLKi5Y",2)
+        val getshop : Call<GetShopInfoResponse> = networkService.getShopInfoResponse(sharedPrefs.getString(PreferenceHelper.PREFS_KEY_ACCESS,"0"),id)
+
 
         Log.d("getshop", "동작")
-        toast("getshop동작")
         getshop.enqueue(object: Callback<GetShopInfoResponse>{
             override fun onFailure(call: Call<GetShopInfoResponse>, t: Throwable) {
                 Log.d("getshop", "실패/ " + t.message)
-                toast("getshop실패/" + t.message)
             }
 
             override fun onResponse(
@@ -122,11 +150,25 @@ class PlaceDetailActivity : AppCompatActivity(), View.OnClickListener, OnMapRead
             ) {
                 if(response.isSuccessful){
                     Log.d("getshop", "성공")
-                    toast("getshop 성공" + response.body()!!.id)
-                    //tv_place_detail_title.text = response.body()!!.shopname
-                    //tv_place_detail_watch.text = response.body()!!.operating_time
-                    //tv_place_detail_menu.text = response.body()!!.menu
-                    //tv_place_detail_address.text = response.body()!!.address
+                    tv_place_detail_title.text = response.body()!!.shopname
+                    tv_place_detail_watch.text = response.body()!!.operating_time
+                    tv_place_detail_menu.text = response.body()!!.menu
+                    tv_place_detail_address.text = response.body()!!.address
+
+                    if(response.body()!!.like == 0){
+                        btn_place_detail_add_mypick.setImageResource(R.drawable.btn_add_mypick)
+                        mypick = false
+                    }else{
+                        btn_place_detail_add_mypick.setImageResource(R.drawable.btn_selected_mypick)
+                        mypick = true
+                    }
+                    Log.d("getshop_like: ", response.body()!!.like.toString() + "/" + mypick.toString())
+
+                    val getphoto = response.body()!!.main_photo - 1
+                    Log.d("getshop", getphoto.toString() + "/" + response.body()!!.photos[0])
+
+
+                    //Glide.with(PlaceDetailActivity()).load(url + response.body()!!.photos[getphoto]).into(iv_place_detail_main)
                 }
             }
 
@@ -167,34 +209,88 @@ class PlaceDetailActivity : AppCompatActivity(), View.OnClickListener, OnMapRead
 
     /****************좋아요 버튼***********************/
     fun ClickMypick(){
-
-        val anim = AnimationUtils.loadAnimation(this, R.anim.anim_mypick_alpha)
-        anim.setAnimationListener(object : Animation.AnimationListener {
-            override fun onAnimationRepeat(animation: Animation?) {}
-
-            override fun onAnimationEnd(animation: Animation?) {
-                iv_place_detail_anim_mypick.visibility = View.GONE
-            }
-
-            override fun onAnimationStart(animation: Animation?) {
-                iv_place_detail_anim_mypick.visibility = View.VISIBLE
-            }
-
-        })
-
         //mypick가 선택되어져 있을때
         if(mypick){
-            btn_place_detail_add_mypick.setImageResource(R.drawable.btn_add_mypick)
-            Toast.makeText(this, "찜 리스트에서 삭제되었습니다.", Toast.LENGTH_SHORT).show()
-            mypick = false
+            postShopUnLikeResponse()
         }
         //mypick가 선택되어있지 않을때
         else{
-            btn_place_detail_add_mypick.setImageResource(R.drawable.btn_selected_mypick)
-            iv_place_detail_anim_mypick.startAnimation(anim)
-            Toast.makeText(this, "찜 리스트 추가되었습니다.", Toast.LENGTH_SHORT).show()
-            mypick = true
+            postShopLikeResponse()
         }
+
+    }
+
+    //좋아요 리스트에 추가
+    private fun postShopLikeResponse(){
+        var jsonObject = JSONObject()
+        jsonObject.put("id", place_info)
+
+        val gsonObject = JsonParser().parse(jsonObject.toString()) as JsonObject
+
+        Log.d("like_fun: ", "gson")
+
+        val postShopLikeResponse : Call<PostShopLikeResponse> =
+            networkService.postShopLikeResponse(sharedPrefs.getString(PreferenceHelper.PREFS_KEY_ACCESS, "0"), gsonObject)
+
+        postShopLikeResponse.enqueue(object : Callback<PostShopLikeResponse>{
+            override fun onFailure(call: Call<PostShopLikeResponse>, t: Throwable) {
+                Log.e("like_fun: ", t.toString())
+            }
+
+            override fun onResponse(
+                call: Call<PostShopLikeResponse>,
+                response: Response<PostShopLikeResponse>
+            ) {
+                if(response.isSuccessful){
+                    Log.d("like_fun: ", "성공")
+                    if(response.body()!!.code == 200){
+                        Log.d("like_fun: ", response.body()!!.message)
+                        Log.d("like_fun", response.body()!!.code.toString())
+                        toast("찜 리스트 추가되었습니다.")
+                        btn_place_detail_add_mypick.setImageResource(R.drawable.btn_selected_mypick)
+                        iv_place_detail_anim_mypick.startAnimation(anim)
+                        mypick = true
+                    }
+                }
+            }
+
+        })
+    }
+
+
+    private fun postShopUnLikeResponse() {
+
+        var jsonObject = JSONObject()
+        jsonObject.put("id", place_info)
+
+        val gsonObject = JsonParser().parse(jsonObject.toString()) as JsonObject
+
+        Log.d("like_un_fun: ", "gson")
+
+        val postShopUnLikeResponse : Call<PostShopLikeResponse> =
+            networkService.postShopUnLikeResponse(sharedPrefs.getString(PreferenceHelper.PREFS_KEY_ACCESS, "0"), gsonObject)
+
+        postShopUnLikeResponse.enqueue(object : Callback<PostShopLikeResponse>{
+            override fun onFailure(call: Call<PostShopLikeResponse>, t: Throwable) {
+                Log.e("like_un_fun: ", t.toString())
+            }
+
+            override fun onResponse(
+                call: Call<PostShopLikeResponse>,
+                response: Response<PostShopLikeResponse>
+            ) {
+                if(response.isSuccessful){
+                    Log.d("like_un_fun: ", "성공")
+                    if(response.body()!!.code == 200){
+                        toast("찜 리스트에서 삭제되었습니다.")
+                        btn_place_detail_add_mypick.setImageResource(R.drawable.btn_add_mypick)
+                        mypick = false
+                    }
+                }
+
+            }
+
+        })
 
     }
 

@@ -55,10 +55,11 @@ class MypageFragment : Fragment() {
 
         btn_mypage_goto_mypick.setOnClickListener {
             activity?.let {
-                /*val intent = Intent(context, MypageMypickActivity::class.java)
-                startActivity(intent)*/
-                val intent = Intent(context, PlaceDetailActivity::class.java)
+               val intent = Intent(context, MypageMypickActivity::class.java)
                 startActivity(intent)
+
+               /* val intent = Intent(context, PlaceDetailActivity::class.java)
+                startActivity(intent)*/
             }
         }
 

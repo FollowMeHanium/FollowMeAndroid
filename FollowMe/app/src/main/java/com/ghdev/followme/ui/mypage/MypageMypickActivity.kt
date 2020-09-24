@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.GridLayoutManager
 import com.ghdev.followme.R
+import com.ghdev.followme.db.PreferenceHelper
 import com.ghdev.followme.network.get.GetShopLikeListResponse
 import com.ghdev.followme.network.ApplicationController
 import com.ghdev.followme.network.NetworkService
@@ -116,18 +117,17 @@ class MypageMypickActivity : AppCompatActivity(), View.OnClickListener{
     /*************************Shop Like List 통신********************/
 
     private fun getShopLikeListResponse(){
-       /* val getshop : Call<GetShopLikeListResponse> = networkService.getShopLikeListResponse(sharedPrefs.getString(
-            PreferenceHelper.PREFS_KEY_ACCESS,"0"), 8)
+        val getshop : Call<GetShopLikeListResponse> = networkService.getShopLikeListResponse(sharedPrefs.getString(PreferenceHelper.PREFS_KEY_ACCESS,"0"))
 
-        */
 
-        val getshop : Call<GetShopLikeListResponse> = networkService.getShopLikeListResponse("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxfQ.ldsBBxz_tUoqEMKD39ugh1rW32kR6tNLfQ-j7nLKi5Y")
 
+       /*val getshop : Call<GetShopLikeListResponse> = networkService.getShopLikeListResponse("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxfQ.ldsBBxz_tUoqEMKD39ugh1rW32kR6tNLfQ-j7nLKi5Y")
+*/
         Log.d("getlike", "동작")
 
         getshop.enqueue(object : Callback<GetShopLikeListResponse>{
             override fun onFailure(call: Call<GetShopLikeListResponse>, t: Throwable) {
-                Log.d("getlike", "실패")
+                Log.d("getlike", "실패" + t.message)
             }
 
             override fun onResponse(
@@ -148,6 +148,8 @@ class MypageMypickActivity : AppCompatActivity(), View.OnClickListener{
             }
 
         })
+
+        Log.d("getlike", "완료")
     }
 
     //뒤로가기 버튼

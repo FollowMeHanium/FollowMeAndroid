@@ -3,6 +3,7 @@ package com.ghdev.followme.network
 
 import com.ghdev.followme.data.test.GetRecommendListInfo
 import com.ghdev.followme.data.PostLoginResponse
+import com.ghdev.followme.data.PostShopLikeResponse
 import com.ghdev.followme.data.PostShopResponse
 import com.ghdev.followme.data.PostSignUpResponse
 import com.ghdev.followme.network.get.*
@@ -16,46 +17,15 @@ import retrofit2.http.*
 
 interface NetworkService {
 
-    //회원가입
-    @POST("/auth/join")
-    fun postSignUpResponse(
-        @Header("Content-Type") content_type : String,
-        @Body() body : JsonObject
-    ) : Call<PostSignUpResponse>
-
-    //회원가입 -> 닉네임 중복여부
-    @POST("/auth/checkNickname")
-    fun postSignUpCheckNameResponse(
-        @Header("Content-Type") content_type: String,
-        @Body() body: JsonObject
-    ) : Call<PostSignUpResponse>
-
-    //회원가입 -> 아이디 중복여부
-    @POST("/auth/checkEmail")
-    fun postSignUpCheckIdResponse(
-        @Header("Content-Type") content_type: String,
-        @Body() body: JsonObject
-    ) : Call<PostSignUpResponse>
-
-    //로그인
-    @POST("/auth/login")
-    fun postLoginResponse(
-        @Header("Content-Type") content_type: String,
-        @Body() body : JsonObject
-    ) :Call<PostLoginResponse>
-
-
-
-
-    //Shop과 Course 추천 목록
-    @GET("/")
+  //Shop과 Course 추천 목록
+    @GET("/recommend")
     fun getAllRecomendListInfoResponse(
         @Header("authorization") authorization: String
     ) : Call<GetRecommendListInfo>
 
 
     //Shop 검색 목록 (태그와 카테고리에 따라)
-    @GET("/shop/list/:category&:tag")
+    @GET("/shop/list")
     fun getShopListInfoResponse(
         @Header("authorization") authorization : String,
         @QueryMap filter : HashMap <String, String>
@@ -63,28 +33,28 @@ interface NetworkService {
 
 
     //Shop 정보 1개
-    @GET("/shop/one/:id")
+    @GET("/shop/one")
     fun getShopInfoResponse(
         @Header("authorization") authorization : String,
         @Query("id") id : Int
     ) : Call<GetShopInfoResponse>
 
-    //Shop 찜하기
-    @POST("/shop/dip")
-    fun postShopDipResponse(
-        @Header("Content-Type") content_type: String,
+    //Shop 좋아요
+    @POST("/shop/like")
+    fun postShopLikeResponse(
+        @Header("authorization") authorization: String,
         @Body() body: JsonObject
-    ) : Call<PostShopResponse>
+    ) : Call<PostShopLikeResponse>
 
     //Shop 좋아요 취소
-    @POST("/shop/undip")
-    fun postShopUnDipResponse(
-        @Header("Content-Type") content_type: String,
+    @POST("/shop/dislike")
+    fun postShopUnLikeResponse(
+        @Header("authorization") authorization: String,
         @Body() body: JsonObject
-    ) : Call<PostShopResponse>
+    ) : Call<PostShopLikeResponse>
 
     //Shop 좋아요 리스트
-    @GET("/shop/like:id")
+    @GET("/shop/like")
     fun getShopLikeListResponse(
         @Header("authorization") authorization: String
     ) : Call<GetShopLikeListResponse>

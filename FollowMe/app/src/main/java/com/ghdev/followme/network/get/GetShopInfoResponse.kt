@@ -14,9 +14,9 @@ data class GetShopInfoResponse (
     val latitude : Double,
     val longitude : Double,
     val like : Int,
-    val tag1 : Int,
-    val tag2 : Int,
-    val tag3 : Int,
+    val thema1: Int,
+    val thema2 : Int,
+    val thema3 : Int,
     val main_photo : Int,
     val photos : List<String>
 )

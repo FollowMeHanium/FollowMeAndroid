@@ -15,6 +15,7 @@ import androidx.core.widget.addTextChangedListener
 import com.ghdev.followme.R
 import com.ghdev.followme.data.PostSignUpResponse
 import com.ghdev.followme.network.ApplicationController
+import com.ghdev.followme.network.LoginNetworkService
 import com.ghdev.followme.network.NetworkService
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
@@ -42,8 +43,8 @@ class SignUpActivity : AppCompatActivity(), View.OnClickListener {
 
     private lateinit var calendar: Calendar
 
-    val networkService: NetworkService by lazy {
-        ApplicationController.instance.networkService
+    private val loginService: LoginNetworkService by lazy {
+        ApplicationController.instance.loginService
     }
 
     override fun onClick(v: View?) {
@@ -173,7 +174,7 @@ class SignUpActivity : AppCompatActivity(), View.OnClickListener {
 
         val gsonObject = JsonParser().parse(jsonObject.toString()) as JsonObject
         val postSignUpCheckIdResponse: Call<PostSignUpResponse> =
-            networkService.postSignUpCheckIdResponse("application/json", gsonObject)
+            loginService.postSignUpCheckIdResponse("application/json", gsonObject)
         postSignUpCheckIdResponse.enqueue(object : Callback<PostSignUpResponse>{
             override fun onFailure(call: Call<PostSignUpResponse>, t: Throwable) {
                 Log.d("checkid: ", "실패")
@@ -204,7 +205,7 @@ class SignUpActivity : AppCompatActivity(), View.OnClickListener {
 
         val gsonObject = JsonParser().parse(jsonObject.toString()) as JsonObject
         val postSignUpCheckNameResponse: Call<PostSignUpResponse> =
-            networkService.postSignUpCheckNameResponse("application/json", gsonObject)
+            loginService.postSignUpCheckNameResponse("application/json", gsonObject)
         postSignUpCheckNameResponse.enqueue(object : Callback<PostSignUpResponse>{
             override fun onFailure(call: Call<PostSignUpResponse>, t: Throwable) {
                 Log.d("checknick: ", "실패")
@@ -254,7 +255,7 @@ class SignUpActivity : AppCompatActivity(), View.OnClickListener {
         val gsonObject = JsonParser().parse(jsonObject.toString()) as JsonObject
 
         val postSignUpResponse: Call<PostSignUpResponse> =
-            networkService.postSignUpResponse("application/json", gsonObject)
+            loginService.postSignUpResponse("application/json", gsonObject)
         postSignUpResponse.enqueue(object : Callback<PostSignUpResponse> {
             override fun onFailure(call: Call<PostSignUpResponse>, t: Throwable) {
                 Log.e("sign up fail", t.toString())

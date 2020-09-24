@@ -13,6 +13,7 @@ import com.ghdev.followme.data.test.CourseData
 import com.ghdev.followme.data.test.GetRecommendListInfo
 import com.ghdev.followme.data.test.Place
 import com.ghdev.followme.data.test.PlaceInfo
+import com.ghdev.followme.db.PreferenceHelper
 import com.ghdev.followme.network.ApplicationController
 import com.ghdev.followme.network.NetworkService
 import com.ghdev.followme.network.get.Shop
@@ -35,6 +36,9 @@ class HomeFragment : Fragment() {
         ApplicationController.instance.networkService
     }
 
+    private val sharedPrefs by lazy{
+        ApplicationController.instance.prefs
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
             super.onCreate(savedInstanceState)
@@ -105,7 +109,9 @@ class HomeFragment : Fragment() {
     }
 
     private fun getRecomendInfo(){
-        val getReco : Call<GetRecommendListInfo> = networkService.getAllRecomendListInfoResponse("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxfQ.ldsBBxz_tUoqEMKD39ugh1rW32kR6tNLfQ-j7nLKi5Y")
+        val getReco : Call<GetRecommendListInfo> = networkService.getAllRecomendListInfoResponse(sharedPrefs.getString(PreferenceHelper.PREFS_KEY_ACCESS, "0"))
+        //val getReco : Call<GetRecommendListInfo> = networkService.getAllRecomendListInfoResponse("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIsIm5pY2tuYW1lIjoiYWFhYSIsImdlbmRlciI6MSwiYWdlIjoyNSwic3RhdHVzIjoxLCJpYXQiOjE2MDA3NjM5NTUsImV4cCI6MTYwMDc2NzU1NSwiaXNzIjoiY29tZU9uIn0.qmQWJPjyKqTNeGHj6oBP5L3MF1s4CF9Ue7wLDXU_4CE")
+
         getReco.enqueue(object: Callback<GetRecommendListInfo> {
             override fun onFailure(call: Call<GetRecommendListInfo>, t: Throwable) {
                 Log.d("getReco", "실패 " + t.message)

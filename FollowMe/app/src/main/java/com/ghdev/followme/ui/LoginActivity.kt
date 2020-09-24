@@ -12,6 +12,7 @@ import com.ghdev.followme.data.PostLoginResponse
 import com.ghdev.followme.db.PreferenceHelper
 import com.ghdev.followme.db.SharedPreference
 import com.ghdev.followme.network.ApplicationController
+import com.ghdev.followme.network.LoginNetworkService
 import com.ghdev.followme.network.NetworkService
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
@@ -33,8 +34,8 @@ import retrofit2.Response
 class LoginActivity : AppCompatActivity(), View.OnClickListener{
 
 
-    private val networkService: NetworkService by lazy {
-        ApplicationController.instance.networkService
+    private val loginService: LoginNetworkService by lazy {
+        ApplicationController.instance.loginService
     }
 
     private val sharedPrefs by lazy{
@@ -48,7 +49,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener{
         setContentView(R.layout.activity_login)
         init()
         //getHashKey(this) //해시키값 구하기
-        Session.getCurrentSession().addCallback(callback) //콜백 추가 정의
+        //Session.getCurrentSession().addCallback(callback) //콜백 추가 정의
 
     }
 
@@ -109,16 +110,16 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener{
 
         val gsonObject = JsonParser().parse(jsonObject.toString()) as JsonObject
 
-        Log.d("login_fun", "gson")
+        Log.d("login_fun: ", "gson")
 
         val postLoginResponse: Call<PostLoginResponse> =
-            networkService.postLoginResponse("application/json", gsonObject)
+            loginService.postLoginResponse("application/json", gsonObject)
         postLoginResponse.enqueue(object : Callback<PostLoginResponse> {
 
 
             //통신 실패 시 수행되는 메소드
             override fun onFailure(call: Call<PostLoginResponse>, t: Throwable) {
-                Log.e("login_fail", t.toString())
+                Log.e("login_fun: ", t.toString())
             }
 
             //통신 성공 시 수행되는 메소드
@@ -127,19 +128,20 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener{
                 response: Response<PostLoginResponse>
             ) {
                 if (response.isSuccessful) {
+
+                    Log.d("login_fun: ","로그인 통신 성공" )
+
                         //token값 저장
                         sharedPrefs.setString(PreferenceHelper.PREFS_KEY_ACCESS, response.body()!!.token)
-                        sharedPrefs.setString(PreferenceHelper.PREFS_KEY_REF, response.body()!!.refreshToken)
-
-                        //사용자 email, pw 저장
-                        sharedPrefs.setString(PreferenceHelper.PREFS_KEY_EMAIL, input_email)
-                        sharedPrefs.setString(PreferenceHelper.PREFS_KEY_PASSWORD, input_pw)
+                        sharedPrefs.setString(PreferenceHelper.PREFS_KEY_REF, response.body()!!.refreshtoken)
 
                         Log.d("SHARED_INFO", "access token" + sharedPrefs.getString(PreferenceHelper.PREFS_KEY_ACCESS, "0"))
 
                         toast(response.body()!!.message)
                         startActivity<MainActivity>()
                         finish()
+
+
 
                 }
             }

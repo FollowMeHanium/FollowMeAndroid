@@ -1,11 +1,8 @@
 package com.ghdev.followme.network
 
 
+import com.ghdev.followme.data.*
 import com.ghdev.followme.data.test.GetRecommendListInfo
-import com.ghdev.followme.data.PostLoginResponse
-import com.ghdev.followme.data.PostShopLikeResponse
-import com.ghdev.followme.data.PostShopResponse
-import com.ghdev.followme.data.PostSignUpResponse
 import com.ghdev.followme.network.get.*
 import com.google.gson.JsonObject
 import retrofit2.Call
@@ -30,8 +27,7 @@ interface NetworkService {
         @Header("authorization") authorization : String,
         @QueryMap filter : HashMap <String, String>
     ) : Call<GetShopListInfoResponse>
-
-
+    
     //Shop 정보 1개
     @GET("/shop/one")
     fun getShopInfoResponse(
@@ -44,20 +40,34 @@ interface NetworkService {
     fun postShopLikeResponse(
         @Header("authorization") authorization: String,
         @Body() body: JsonObject
-    ) : Call<PostShopLikeResponse>
+    ) : Call<PostCodeAndMessageResponse>
 
     //Shop 좋아요 취소
     @POST("/shop/dislike")
     fun postShopUnLikeResponse(
         @Header("authorization") authorization: String,
         @Body() body: JsonObject
-    ) : Call<PostShopLikeResponse>
+    ) : Call<PostCodeAndMessageResponse>
 
     //Shop 좋아요 리스트
     @GET("/shop/like")
     fun getShopLikeListResponse(
         @Header("authorization") authorization: String
     ) : Call<GetShopLikeListResponse>
+
+    //Shop Review 리스트
+    @GET("/shop/review")
+    fun getShopReviewListResponse(
+        @Header("authorization") authorization: String,
+        @Query("id") id : Int
+    ) : Call<GetShopReviewListResponse>
+
+    //Shop Review 남기기
+    @POST("/shop/review")
+    fun postShopReviewWriteResponse(
+        @Header("authorization") authorization: String,
+        @Body() body: JsonObject
+    ) : Call<PostCodeAndMessageResponse>
 
     //GEt 모두의 코스
     @GET("/course/list")

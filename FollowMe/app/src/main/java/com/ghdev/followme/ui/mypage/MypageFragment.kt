@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 
 import com.ghdev.followme.R
+import com.ghdev.followme.data.JWTDecode
 import com.ghdev.followme.db.PreferenceHelper
 import com.ghdev.followme.network.ApplicationController
 import com.ghdev.followme.ui.LoginActivity
@@ -49,7 +50,8 @@ class MypageFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
 
         if(sharedPrefs.getString(PreferenceHelper.PREFS_KEY_ACCESS, "0") !== "0"){
-            DecodeToken()
+            val get_nickname : String = JWTDecode().DecodeToken(sharedPrefs.getString(PreferenceHelper.PREFS_KEY_ACCESS, "0"))
+            changeUserText(get_nickname)
         }
 
 
@@ -79,32 +81,7 @@ class MypageFragment : Fragment() {
         }
     }
 
-    /********************************JWTtoken decode**********************************/
-    private fun DecodeToken(){
-        //sharedprefs에 token값이 들어있다면
-            try{
-            val split : List<String>  = sharedPrefs.getString(PreferenceHelper.PREFS_KEY_ACCESS, "0").split(".")
-                Log.d("JWT_DECODED", "Header: "+ getJson(split[0]))
-                Log.d("JWT_DECODED", "Body: "+ getJson(split[1]))
-                val tempJWT : List<String> = getJson(split[1]).split(",")
-                val userJWT : List<String> = tempJWT[1].split(":")
-                changeUserText(userJWT[1])
-                Log.d("JWT_DECODED", "nickname: " + userJWT[1])
-        }catch (e : Exception){
-                Log.d("JWT_DECODED", "split error: " + e)
-            }
-    }
 
-    private fun getJson(strEncoded : String) : String{
-        lateinit var decodeBytes : ByteArray
-        try{
-            var decodeBytes :ByteArray = Base64.decode(strEncoded, Base64.URL_SAFE)
-            return decodeBytes.toString(Charsets.UTF_8)
-        }catch (e : UnsupportedEncodingException){
-            Log.d("JWT_DECODED", "getJson error: " + e)
-        }
-        return decodeBytes.toString(Charsets.UTF_8)
-    }
 
     /*******************************change Maypage User Text**********************************/
 

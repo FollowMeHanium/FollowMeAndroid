@@ -87,6 +87,7 @@
         </LinearLayout>
 
         <Button
+            android:id="@+id/btn_signup_check_id"
             android:layout_width="80dp"
             android:layout_height="30dp"
             android:text="중복확인"
@@ -191,8 +192,13 @@
             />
 
         <!--닉네임-->
+
         <RelativeLayout
             android:layout_width="match_parent"
+            android:layout_height="42dp">
+
+        <RelativeLayout
+            android:layout_width="220dp"
             android:layout_height="42dp"
             android:background="@drawable/login_edittext_round_box">
 
@@ -206,6 +212,20 @@
                 android:hint="@string/nickname_signup"
                 android:textColorHint="#cecece"
                 android:textSize="13sp" />
+
+        </RelativeLayout>
+
+        <Button
+            android:id="@+id/btn_signup_check_nickname"
+            android:layout_width="80dp"
+            android:layout_height="30dp"
+            android:text="중복확인"
+            android:background="@drawable/signup_button_box"
+            android:textColor="#ffffff"
+            android:textSize="12sp"
+            android:textStyle = "bold"
+            android:layout_marginStart="230dp"
+            android:layout_marginTop = "3dp"/>
 
         </RelativeLayout>
 
@@ -225,7 +245,7 @@
             android:layout_width="match_parent"
             android:layout_height="42dp"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="12dp">
+            android:layout_marginTop="8dp">
 
             <RadioGroup
                 android:id="@+id/rg_sign_up_gender_act"

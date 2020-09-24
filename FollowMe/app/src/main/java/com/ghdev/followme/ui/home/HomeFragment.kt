@@ -2,6 +2,7 @@ package com.ghdev.followme.ui.home
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -9,12 +10,19 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ghdev.followme.R
 import com.ghdev.followme.data.test.CourseData
+import com.ghdev.followme.data.test.GetRecommendListInfo
 import com.ghdev.followme.data.test.Place
 import com.ghdev.followme.data.test.PlaceInfo
+import com.ghdev.followme.db.PreferenceHelper
+import com.ghdev.followme.network.ApplicationController
+import com.ghdev.followme.network.NetworkService
 import com.ghdev.followme.network.get.Shop
 import com.ghdev.followme.ui.PlaceDetailActivity
 import com.ghdev.followme.ui.mycourse.CourseRecyclerViewAdapter
 import kotlinx.android.synthetic.main.fragment_home.*
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 
 /*create gahui*/
@@ -24,6 +32,13 @@ class HomeFragment : Fragment() {
     lateinit var hotPlaceRecyclerViewAdapter: HotPlaceRecyclerViewAdapter
     lateinit var courseRecyclerViewAdapter: CourseRecyclerViewAdapter
 
+    val networkService: NetworkService by lazy {
+        ApplicationController.instance.networkService
+    }
+
+    private val sharedPrefs by lazy{
+        ApplicationController.instance.prefs
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
             super.onCreate(savedInstanceState)
@@ -37,6 +52,7 @@ class HomeFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         setRecyclerView()
+        getRecomendInfo()
     }
 
     private fun setRecyclerView() {
@@ -90,6 +106,37 @@ class HomeFragment : Fragment() {
         rv_follow_course.adapter = courseRecyclerViewAdapter
         rv_follow_course.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)*/
 
+    }
+
+    private fun getRecomendInfo(){
+        val getReco : Call<GetRecommendListInfo> = networkService.getAllRecomendListInfoResponse(sharedPrefs.getString(PreferenceHelper.PREFS_KEY_ACCESS, "0"))
+
+        getReco.enqueue(object: Callback<GetRecommendListInfo> {
+            override fun onFailure(call: Call<GetRecommendListInfo>, t: Throwable) {
+                Log.d("getReco", "실패 " + t.message)
+
+            }
+
+            override fun onResponse(
+                call: Call<GetRecommendListInfo>,
+                response: Response<GetRecommendListInfo>
+            ) {
+                if(response.isSuccessful){
+                    Log.d("getReco", "성공")
+                    val temp = response.body()!!.shops
+
+                    if(temp.size <= 0){
+                        Log.d("getReco", "null값")
+                    }
+                    else{
+                        val position = hotPlaceRecyclerViewAdapter.itemCount
+                        hotPlaceRecyclerViewAdapter.dataList.addAll(temp)
+                        hotPlaceRecyclerViewAdapter.notifyItemInserted(position)
+                    }
+                }
+            }
+
+        })
     }
 
 }

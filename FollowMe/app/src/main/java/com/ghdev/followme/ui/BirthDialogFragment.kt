@@ -24,9 +24,14 @@ class BirthDialogFragment<Button : View?>(v : View, tag:String): DialogFragment(
     val tagname:String = tag
     var cal = Calendar.getInstance()
 
+    var birthofday = "0"
+    var birthofmonth = "0"
+    var birthofyear = "0"
+
     fun setListener(listener: DatePickerDialog.OnDateSetListener?){
         this.listener = listener
     }
+
 
     var btn_done : Button? = null
     @RequiresApi(Build.VERSION_CODES.N)

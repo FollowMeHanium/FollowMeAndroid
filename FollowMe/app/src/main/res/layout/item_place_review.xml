@@ -9,16 +9,16 @@
     android:background="@drawable/bg_item_place_review"
     android:layout_marginBottom="10dp">
 
-
     <TextView
-        android:id="@+id/tv_item_place_review_user"
+        android:id="@+id/tv_item_place_review_user_nick"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="eunj**"
+        android:text="닉네임"
         android:textSize="14sp"
         android:textStyle="bold"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"/>
+
 
     <RatingBar
         android:id="@+id/rb_star_place_review"
@@ -28,7 +28,7 @@
         android:layout_marginLeft="8dp"
         android:layout_marginTop="2dp"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintLeft_toRightOf="@id/tv_item_place_review_user" />
+        app:layout_constraintLeft_toRightOf="@id/tv_item_place_review_user_nick" />
     
     <View
         android:id="@+id/v_item_place_review_line"
@@ -38,7 +38,7 @@
         android:layout_marginTop="5dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_item_place_review_user"/>
+        app:layout_constraintTop_toBottomOf="@id/tv_item_place_review_user_nick"/>
 
     <TextView
         android:id="@+id/tv_item_place_review_contents"

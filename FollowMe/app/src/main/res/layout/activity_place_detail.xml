@@ -173,14 +173,15 @@
                     android:textSize="14sp"/>
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <ImageView
-                android:id="@+id/iv_place_detail_map"
-                android:layout_width="390dp"
-                android:layout_height="191dp"
-                android:layout_marginTop="30dp"
-                android:layout_gravity="center"
-                android:src="@drawable/example_map"/>
-            
+            <fragment
+                android:id="@+id/map_naver_shop_detail"
+                android:name="com.naver.maps.map.MapFragment"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_height="200dp"
+                android:layout_width="match_parent"
+                android:layout_marginTop="8dp"/>
+
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/cl_place_detial_review"
                 android:layout_width="380dp"
@@ -210,6 +211,18 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"/>
 
+                <TextView
+                    android:id="@+id/tv_place_detail_no_review"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp"
+                    android:text="작성된 리뷰가 없습니다."
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_place_detail_review"
+                    android:layout_marginTop="30dp"
+                    android:paddingBottom="200dp"/>
+
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_place_detail_review"
                     android:layout_width="match_parent"
@@ -219,7 +232,9 @@
                     android:clipToPadding="false"
                     app:layout_constraintTop_toBottomOf="@id/btn_place_detail_add_review"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"/>
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:visibility="gone"
+                    />
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>

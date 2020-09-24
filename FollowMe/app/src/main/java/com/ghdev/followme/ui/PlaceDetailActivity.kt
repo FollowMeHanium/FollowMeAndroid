@@ -32,6 +32,7 @@ import com.naver.maps.map.overlay.Marker
 import com.naver.maps.map.overlay.PathOverlay
 import kotlinx.android.synthetic.main.activity_place_detail.*
 import kotlinx.android.synthetic.main.dialog_review_insert.*
+import kotlinx.android.synthetic.main.dialog_review_insert.view.*
 import kotlinx.android.synthetic.main.item_place_review.*
 import org.jetbrains.anko.toast
 import org.json.JSONObject
@@ -221,10 +222,11 @@ class PlaceDetailActivity : AppCompatActivity(), View.OnClickListener, OnMapRead
         builder.setView(dv)
         builder.setPositiveButton("확인"){dialog, i ->
             //내용을 입력하지 않을시
-            if(et_dialog_review.text.toString().isEmpty()){
-                toast("내용을 입력하세요.")
-            }else{
+            if(dv.et_dialog_review.text.toString().trim().isNotEmpty()){
                 postShopReviewWriteResponse(place_info)
+
+            }else{
+                toast("내용을 입력하세요.")
             }
         }
             .setNegativeButton("취소"){dialog, i ->
@@ -235,8 +237,9 @@ class PlaceDetailActivity : AppCompatActivity(), View.OnClickListener, OnMapRead
     }
 
     private fun postShopReviewWriteResponse(place_info : Int){
-        val input_grade : Double = rb_dialog_review.rating.toDouble()
-        val input_review : String = et_dialog_review.text.toString()
+        val dv = layoutInflater.inflate(R.layout.dialog_review_insert, null)
+        val input_grade : Double = dv.rb_dialog_review.rating.toDouble()
+        val input_review : String = dv.et_dialog_review.text.toString()
         var input_nick : String = JWTDecode().DecodeToken(sharedPrefs.getString(PreferenceHelper.PREFS_KEY_ACCESS, "0"))
 
         input_nick = input_nick.replace("\"", "")

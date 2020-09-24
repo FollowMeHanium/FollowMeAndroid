@@ -54,10 +54,10 @@
             android:layout_marginTop="12dp">
 
             <TextView
-                android:id="@+id/btn_myset_change_pw"
+                android:id="@+id/btn_myset_logout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/myset_change_pw"
+                android:text="@string/myset_logout"
                 android:textColor="#80000000"
                 android:textSize="14sp"/>
 

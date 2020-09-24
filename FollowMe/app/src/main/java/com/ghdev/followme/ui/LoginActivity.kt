@@ -9,6 +9,8 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import com.ghdev.followme.R
 import com.ghdev.followme.data.PostLoginResponse
+import com.ghdev.followme.db.PreferenceHelper
+import com.ghdev.followme.db.SharedPreference
 import com.ghdev.followme.network.ApplicationController
 import com.ghdev.followme.network.NetworkService
 import com.google.gson.JsonObject
@@ -36,10 +38,19 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener{
     }
 
     private val sharedPrefs by lazy{
-        ApplicationController.prefs
+        ApplicationController.instance.prefs
     }
 
     private var callback : SessionCallback = SessionCallback()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_login)
+        init()
+        //getHashKey(this) //해시키값 구하기
+        Session.getCurrentSession().addCallback(callback) //콜백 추가 정의
+
+    }
 
     override fun onClick(v: View?) {
         when(v) {
@@ -48,7 +59,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener{
             btn_look_login_act -> {
                 //ApplicationData.loginState = false
                 startActivity<MainActivity>()
-                //finish()
+                finish()
 
             }
 
@@ -65,28 +76,14 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener{
 
             //로그인하기
             btn_login_act -> {
-                getLoginResponse()
+                Log.d("login_fun", "clicked")
+                val input_email: String = et_id_login_act.text.toString()
+                val input_pw: String = et_pw_login_act.text.toString()
+                getLoginResponse(input_email, input_pw)
             }
 
 
         }
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_login)
-
-        /*
-        //viewmodel 불러오기
-        val activityLoginBinding = DataBindingUtil.setContentView<ActivityLoginBinding>(this, R.layout.activity_login)
-        val activityLoginViewModel = ViewModelProvider(this).get(LoginViewModel::class.java)
-        activityLoginBinding.loginviewmodel = activityLoginViewModel
-        //ViewModelProviders는 deprecated되었다. -> ViewModelProvider하고 ViewModelStoreOwner을 호출한다.
-         */
-
-        init()
-        //getHashKey(this) //해시키값 구하기
-        Session.getCurrentSession().addCallback(callback) //콜백 추가 정의
     }
 
     private fun init() {
@@ -102,15 +99,53 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener{
         imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
 
-    /*override fun onSuccess(loginResponse: LiveData<String>) {
-        loginResponse.observe(this, Observer {
-            toast(it)
-        })
-    }
+    /******************************로그인 통신 *********************************/
 
-    override fun onFailure(message: String) {
-        toast(message)
-    }*/
+    private fun getLoginResponse(input_email : String, input_pw : String){
+
+        var jsonObject = JSONObject()
+        jsonObject.put("email", input_email)
+        jsonObject.put("password", input_pw)
+
+        val gsonObject = JsonParser().parse(jsonObject.toString()) as JsonObject
+
+        Log.d("login_fun", "gson")
+
+        val postLoginResponse: Call<PostLoginResponse> =
+            networkService.postLoginResponse("application/json", gsonObject)
+        postLoginResponse.enqueue(object : Callback<PostLoginResponse> {
+
+
+            //통신 실패 시 수행되는 메소드
+            override fun onFailure(call: Call<PostLoginResponse>, t: Throwable) {
+                Log.e("login_fail", t.toString())
+            }
+
+            //통신 성공 시 수행되는 메소드
+            override fun onResponse(
+                call: Call<PostLoginResponse>,
+                response: Response<PostLoginResponse>
+            ) {
+                if (response.isSuccessful) {
+                        //token값 저장
+                        sharedPrefs.setString(PreferenceHelper.PREFS_KEY_ACCESS, response.body()!!.token)
+                        sharedPrefs.setString(PreferenceHelper.PREFS_KEY_REF, response.body()!!.refreshToken)
+
+                        //사용자 email, pw 저장
+                        sharedPrefs.setString(PreferenceHelper.PREFS_KEY_EMAIL, input_email)
+                        sharedPrefs.setString(PreferenceHelper.PREFS_KEY_PASSWORD, input_pw)
+
+                        Log.d("SHARED_INFO", "access token" + sharedPrefs.getString(PreferenceHelper.PREFS_KEY_ACCESS, "0"))
+
+                        toast(response.body()!!.message)
+                        startActivity<MainActivity>()
+                        finish()
+
+                }
+            }
+        })
+
+    }
 
     /*
     //해시키 구하기
@@ -183,44 +218,6 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener{
 
 
 
-    //로그인 통신
-    private fun getLoginResponse(){
-        val input_email: String = et_id_login_act.text.toString()
-        val input_pw: String = et_pw_login_act.text.toString()
-
-        var jsonObject = JSONObject()
-        jsonObject.put("email", input_email)
-        jsonObject.put("password", input_pw)
-
-        val gsonObject = JsonParser().parse(jsonObject.toString()) as JsonObject
-
-        val postLoginResponse: Call<PostLoginResponse> =
-            networkService.postLoginResponse("application/json", gsonObject)
-        postLoginResponse.enqueue(object : Callback<PostLoginResponse> {
-
-            //통신 실패 시 수행되는 메소드
-            override fun onFailure(call: Call<PostLoginResponse>, t: Throwable) {
-                Log.e("login fail", t.toString())
-            }
-
-            //통신 성공 시 수행되는 메소드
-            override fun onResponse(
-                call: Call<PostLoginResponse>,
-                response: Response<PostLoginResponse>
-            ) {
-                if (response.isSuccessful) {
-                    response.body()!!.accessToken
-                    toast(response.body()!!.message)
-                    finish()
-                }
-            }
-        })
-
-    }
-
-    private fun saveSharedPrefs() {
-
-    }
 
 
 

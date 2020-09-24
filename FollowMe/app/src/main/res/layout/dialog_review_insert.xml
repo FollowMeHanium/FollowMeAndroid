@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding ="20dp"
+    android:background="@color/colorWhite">
+
+    <TextView
+        android:id="@+id/tv_dialog_review_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="리뷰추가"
+        android:textStyle="bold"
+        android:textSize="18sp"
+        android:textColor="@color/colorBlack"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_dialog_review_rating"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="평점"
+        android:textColor="@color/colorBlack"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_dialog_review_title"
+        android:layout_marginTop="18dp"
+        android:layout_marginLeft="13dp"/>
+
+    <RatingBar
+        android:id="@+id/rb_dialog_review"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:isIndicator="false"
+        android:stepSize="0.5"
+        android:numStars="5"
+        android:rating = "10"
+        style="@style/Widget.AppCompat.ActionBar"
+        android:layout_marginTop="5dp"
+        app:layout_constraintStart_toEndOf="@id/tv_dialog_review_rating"
+        app:layout_constraintTop_toBottomOf="@id/tv_dialog_review_title"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <LinearLayout
+        android:id="@+id/v_dialog_review_etline"
+        android:layout_width="315dp"
+        android:layout_height="180dp"
+        android:padding="10dp"
+        android:background="@drawable/bg_item_place_review"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/rb_dialog_review"
+        android:layout_marginTop="10dp">
+
+        <EditText
+            android:id="@+id/et_dialog_review"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@null"
+            android:hint="내용을 입력하세요.(최대200자)"
+            android:textColorHint="#bdbdbd"
+            android:maxLength="200"
+            android:gravity = "top"/>
+    </LinearLayout>
+
+
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

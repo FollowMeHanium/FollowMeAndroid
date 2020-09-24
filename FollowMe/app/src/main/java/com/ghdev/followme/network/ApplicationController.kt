@@ -2,6 +2,7 @@ package com.ghdev.followme.network
 
 import android.app.Application
 import com.ghdev.followme.db.PreferenceHelper
+import com.ghdev.followme.db.SharedPreference
 import com.kakao.auth.KakaoSDK
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -12,21 +13,18 @@ class ApplicationController : Application() {
 
     private val baseURL = "http://3.15.22.4:8888"
     lateinit var networkService: NetworkService
+    lateinit var prefs : PreferenceHelper
 
     companion object {
         lateinit var instance: ApplicationController
-        lateinit var prefs : PreferenceHelper
     }
 
     override fun onCreate() {
-        //onCreate보다 먼저 초기화 해줘야 한다고 함!
+        //preferenceHelper 초기화
         prefs = PreferenceHelper(applicationContext)
-
-
         super.onCreate()
         instance = this
         buildNetWork()
-
 
         KakaoSDK.init(KakaoSDKAdapter())
     }

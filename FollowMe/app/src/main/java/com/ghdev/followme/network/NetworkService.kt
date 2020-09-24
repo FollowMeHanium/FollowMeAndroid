@@ -1,5 +1,8 @@
 package com.ghdev.followme.network
 
+
+import com.ghdev.followme.data.*
+import com.ghdev.followme.data.test.GetRecommendListInfo
 import com.ghdev.followme.data.GetShopInfoResponse
 import com.ghdev.followme.data.PostLoginResponse
 import com.ghdev.followme.data.PostShopResponse
@@ -30,11 +33,30 @@ interface NetworkService {
         @Header("Content-Type") content_type: String,
         @Body() body : JsonObject
     ) :Call<PostLoginResponse>
-    
+
+
+
+
+    //Shop과 Course 추천 목록
+    @GET("/")
+    fun getAllRecomendListInfoResponse(
+        @Header("authorization") authorization: String
+    ) : Call<GetRecommendListInfo>
+
+
+    //Shop 검색 목록 (태그와 카테고리에 따라)
+    @GET("/shop/list/:category&:tag")
+    fun getShopListInfoResponse(
+        @Header("authorization") authorization : String,
+        @QueryMap filter : HashMap <String, String>
+    ) : Call<GetShopListInfoResponse>
+
+
     //Shop 정보 1개
     @GET("/shop/one/:id")
     fun getShopInfoResponse(
-        @Query("token") query : String
+        @Header("authorization") authorization : String,
+        @Query("id") id : Int
     ) : Call<GetShopInfoResponse>
 
     //Shop 찜하기
@@ -52,8 +74,12 @@ interface NetworkService {
     ) : Call<PostShopResponse>
 
 
-
-
+    //Shop 좋아요 리스트
+    @GET("/shop/like:id")
+    fun getShopLikeListResponse(
+        @Header("authorization") authorization: String,
+        @Query("id") id: Int
+    ) : Call<GetShopLikeListResponse>
 
     //GEt 모두의 코스
     @GET("/course/list")

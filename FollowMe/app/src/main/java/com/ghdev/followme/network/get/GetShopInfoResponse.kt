@@ -1,7 +1,8 @@
-package com.ghdev.followme.data
+package com.ghdev.followme.network.get
 
 import java.sql.Time
 
+//Shop정보 하나
 data class GetShopInfoResponse (
     val id : Int,
     val category : Int,
@@ -10,12 +11,12 @@ data class GetShopInfoResponse (
     val menu : String,
     val operating_time : String,
     val grade_avg : Float,
-    val latitude : Float,
-    val longitude : Float,
+    val latitude : Double,
+    val longitude : Double,
     val like : Int,
-    val tag1 : Int,
-    val tag2 : Int,
-    val tag3 : Int,
+    val thema1: Int,
+    val thema2 : Int,
+    val thema3 : Int,
     val main_photo : Int,
     val photos : List<String>
 )

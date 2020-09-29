@@ -1,6 +1,8 @@
 package com.ghdev.followme.ui.mypage
 
 import android.app.Activity
+import android.content.Context
+import android.content.Intent
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -14,15 +16,18 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.ghdev.followme.R
 import com.ghdev.followme.data.test.PlaceInfo
+import com.ghdev.followme.network.get.Shop
+import com.ghdev.followme.ui.PlaceDetailActivity
 import com.ghdev.followme.ui.mypage.MypageMypickActivity.Companion.isInEditMode
 import com.ghdev.followme.ui.mypage.MypageMypickActivity.Companion.selectionList
 import kotlinx.coroutines.selects.select
 
 class MyPickPlaceRecyclerViewAdapter (
-    val dataList: ArrayList<PlaceInfo>,
-    val dataListClick: (PlaceInfo) -> Unit)
+    val dataList: ArrayList<Shop>,
+    val dataListClick : (Shop) -> Unit)
     : RecyclerView.Adapter<MyPickPlaceRecyclerViewAdapter.Holder>() {
 
+    val url = "http://3.15.22.4:3005"
 
     override fun onCreateViewHolder(
         viewGroup: ViewGroup,
@@ -38,21 +43,28 @@ class MyPickPlaceRecyclerViewAdapter (
     override fun getItemCount(): Int = dataList.size
 
     override fun onBindViewHolder(holder: MyPickPlaceRecyclerViewAdapter.Holder, position: Int) {
-        val info: PlaceInfo = dataList[position]
+        val info: Shop = dataList[position]
 
-        holder.placename.text = info.name
+        holder.placename.text = info.shopname
         holder.address.text = info.address
-        //holder.star.rating = dataList[position].star.toFloat()
-        Glide.with(holder.itemView.context).load(info.img).into(holder.imgurl)
+        holder.star.rating = info.grade_avg.toFloat()
+
+        Glide.with(holder.itemView.context).load(url + info.main_photo).into(holder.imgurl)
 
         holder.container.setOnClickListener {
-                dataListClick(info)
+
+            //MypickActivity에서 직접 Activitiy전환 및 datalist 수정
+            dataListClick(info)
+
+            //edit모드일 때 -> 클릭시 선택된 item 배경 변경
             if(isInEditMode){
                 if(selectionList.contains(info)){
                     holder.container_checked.visibility = View.VISIBLE
                 }else{
                     holder.container_checked.visibility = View.GONE
                 }
+            }else{
+
             }
 
         }
@@ -63,7 +75,7 @@ class MyPickPlaceRecyclerViewAdapter (
     inner class Holder(itemView: View) : RecyclerView.ViewHolder(itemView){
         var imgurl = itemView.findViewById(R.id.iv_mypick_item_img) as ImageView
         var placename = itemView.findViewById(R.id.tv_mypick_item_title) as TextView
-        //var star = itemView.findViewById(R.id.rb_star_mycourse_item) as RatingBar
+        var star = itemView.findViewById(R.id.rb_star_mycourse_item) as RatingBar
         var address = itemView.findViewById(R.id.tv_mypick_item_address) as TextView
         var container = itemView.findViewById(R.id.cl_mypick_container) as ConstraintLayout
 

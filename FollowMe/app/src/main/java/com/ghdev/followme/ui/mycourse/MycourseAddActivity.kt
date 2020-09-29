@@ -8,6 +8,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.ghdev.followme.R
+import com.ghdev.followme.db.PreferenceHelper
 import com.ghdev.followme.network.ApplicationController
 import com.ghdev.followme.network.NetworkService
 import com.ghdev.followme.network.get.ResponseMessageNonData
@@ -32,6 +33,10 @@ class MycourseAddActivity : AppCompatActivity(), View.OnClickListener {
 
     val networkService: NetworkService by lazy {
         ApplicationController.instance.networkService
+    }
+
+    private val sharedPrefs by lazy{
+        ApplicationController.instance.prefs
     }
 
     private fun makeDialog(message : String) : SearchAlarmDialog {
@@ -133,7 +138,7 @@ class MycourseAddActivity : AppCompatActivity(), View.OnClickListener {
         val gsonObject = JsonParser().parse(jsonObject.toString()) as JsonObject
 
         val postCourseAddResponse: Call<ResponseMessageNonData> =
-            networkService.postCourseAdd("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoyLCJuaWNrbmFtZSI6InVzZXIxIiwiZ2VuZGVyIjoxLCJhZ2UiOjIwMjAsInN0YXR1cyI6MSwiaWF0IjoxNjAwOTE4NzU1LCJleHAiOjE2MDEwMDUxNTUsImlzcyI6ImNvbWVPbiJ9.f-m4QiX0OXm1nvJDxXvajr0AL0y480Y4EFVGcvttRAY", gsonObject)
+            networkService.postCourseAdd(sharedPrefs.getString(sharedPrefs.getString(PreferenceHelper.PREFS_KEY_ACCESS,"0"), ""), gsonObject)
         postCourseAddResponse.enqueue(object : Callback<ResponseMessageNonData> {
 
             //통신 실패 시 수행되는 메소드

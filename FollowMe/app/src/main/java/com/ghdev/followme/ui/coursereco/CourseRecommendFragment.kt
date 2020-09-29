@@ -31,6 +31,10 @@ class CourseRecommendFragment : Fragment() {
         ApplicationController.instance.networkService
     }
 
+    private val sharedPrefs by lazy{
+        ApplicationController.instance.prefs
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -62,7 +66,7 @@ class CourseRecommendFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
 
         setRecyclerView()
-        getMyCourseResponse()
+        getRecommendCourseResponse()
     }
 
     private fun setRecyclerView() {
@@ -86,11 +90,12 @@ class CourseRecommendFragment : Fragment() {
 
     }
 
-    private fun getMyCourseResponse() {
+    private fun getRecommendCourseResponse() {
 
-        val getOurCorse: Call<GetAllCourseResponse> = networkService.getAllOurCourse(PreferenceHelper.PREFS_KEY_ACCESS)
+        Log.v("TAGG reco token : " , sharedPrefs.getString(PreferenceHelper.PREFS_KEY_ACCESS, ""))
+        val getOurCorse: Call<GetAllCourseResponse> = networkService.getAllOurCourse(sharedPrefs.getString(PreferenceHelper.PREFS_KEY_ACCESS, ""))
 
-        Log.d("TAGG", "안들어가니?" )
+        Log.v("TAGG", "안들어가니?" )
         getOurCorse.enqueue(object : Callback<GetAllCourseResponse> {
 
             override fun onFailure(call: Call<GetAllCourseResponse>, t: Throwable) {
@@ -101,20 +106,20 @@ class CourseRecommendFragment : Fragment() {
                 call: Call<GetAllCourseResponse>,
                 response: Response<GetAllCourseResponse>
             ) {
-                Log.d("TAGG 22", response.isSuccessful.toString() )
+                Log.d("TAGG 22 course reco", response.isSuccessful.toString() )
                 if (response.isSuccessful) {
 
                     val temp: ArrayList<Course> = response.body()!!.courses
 
-                    Log.d("TAGG 33", temp.toString() )
+                    Log.d("TAGG 33 course reco", temp.toString() )
 
                     if (temp.size > 0) {
+                    }
                         val position = courseRecyclerViewAdapter.itemCount
                         courseRecyclerViewAdapter.dataList.addAll(temp)
                         courseRecyclerViewAdapter.notifyItemInserted(position)
                     }else {
 
-                    }
                 }
             }
         })

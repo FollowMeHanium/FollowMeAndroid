@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ghdev.followme.R
+import com.ghdev.followme.db.PreferenceHelper
 import com.ghdev.followme.network.ApplicationController
 import com.ghdev.followme.network.NetworkService
 import com.ghdev.followme.network.get.CourseDetailResponse
@@ -213,9 +214,7 @@ class MycourseDetailActivity : AppCompatActivity(), OnMapReadyCallback, View.OnC
 
         //## token 자리에 SharedPreference 에 있는 token 값 가져와야함.
         val getOurCorse: Call<CourseDetailResponse> =
-            networkService.getCourseDetail(
-                "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoyLCJuaWNrbmFtZSI6InVzZXIxIiwiZ2VuZGVyIjoxLCJhZ2UiOjIwMjAsInN0YXR1cyI6MSwiaWF0IjoxNjAwOTE4NzU1LCJleHAiOjE2MDEwMDUxNTUsImlzcyI6ImNvbWVPbiJ9.f-m4QiX0OXm1nvJDxXvajr0AL0y480Y4EFVGcvttRAY",
-            courseIdx)
+            networkService.getCourseDetail(sharedPrefs.getString(PreferenceHelper.PREFS_KEY_ACCESS,"0"), courseIdx)
 
         getOurCorse.enqueue(object : Callback<CourseDetailResponse> {
             override fun onFailure(call: Call<CourseDetailResponse>, t: Throwable) {
@@ -244,7 +243,6 @@ class MycourseDetailActivity : AppCompatActivity(), OnMapReadyCallback, View.OnC
                     val temp: ArrayList<Shop> = response.body()!!.shops
 
                     if (temp.size > 0) {
-
                         val position = hotPlaceRecyclerViewAdapter.itemCount
                         hotPlaceRecyclerViewAdapter.dataList.addAll(temp)
                         hotPlaceRecyclerViewAdapter.notifyItemInserted(position)
@@ -256,14 +254,13 @@ class MycourseDetailActivity : AppCompatActivity(), OnMapReadyCallback, View.OnC
 
     //코스 삭제 통신
     private fun postCourseDelete(){
-
         var jsonObject = JSONObject()
         jsonObject.put("id", courseIdx)
 
         val gsonObject = JsonParser().parse(jsonObject.toString()) as JsonObject
 
         val postCourseAddResponse: Call<ResponseMessageNonData> =
-            networkService.deleteCourse("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoyLCJuaWNrbmFtZSI6InVzZXIxIiwiZ2VuZGVyIjoxLCJhZ2UiOjIwMjAsInN0YXR1cyI6MSwiaWF0IjoxNjAwOTE4NzU1LCJleHAiOjE2MDEwMDUxNTUsImlzcyI6ImNvbWVPbiJ9.f-m4QiX0OXm1nvJDxXvajr0AL0y480Y4EFVGcvttRAY", gsonObject)
+            networkService.deleteCourse(sharedPrefs.getString(PreferenceHelper.PREFS_KEY_ACCESS,"0"), gsonObject)
         postCourseAddResponse.enqueue(object : Callback<ResponseMessageNonData> {
 
             //통신 실패 시 수행되는 메소드

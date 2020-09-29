@@ -9,6 +9,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ghdev.followme.R
+import com.ghdev.followme.db.PreferenceHelper
 import com.ghdev.followme.network.ApplicationController
 import com.ghdev.followme.network.NetworkService
 import com.ghdev.followme.network.get.Course
@@ -65,9 +66,7 @@ class CourseRecommendFragment : Fragment() {
     }
 
     private fun setRecyclerView() {
-//        //코스
-//
-//
+            //코스
 //        var place : ArrayList<Place>  = ArrayList()
 //        place.add(Place("갬성"))
 //        place.add(Place("소울커피"))
@@ -81,16 +80,15 @@ class CourseRecommendFragment : Fragment() {
 
         var courseDataList : ArrayList<Course> = ArrayList()
 
-        courseRecyclerViewAdapter =
-            CourseRecyclerViewAdapter(requireActivity(), courseDataList)
+        courseRecyclerViewAdapter = CourseRecyclerViewAdapter(requireActivity(), courseDataList)
         rv_course_reco.adapter = courseRecyclerViewAdapter
         rv_course_reco.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
 
     }
 
     private fun getMyCourseResponse() {
-        //## token 자리에 SharedPreference 에 있는 token 값 가져와야함.
-        val getOurCorse: Call<GetAllCourseResponse> = networkService.getAllOurCourse("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoyLCJuaWNrbmFtZSI6InVzZXIxIiwiZ2VuZGVyIjoxLCJhZ2UiOjIwMjAsInN0YXR1cyI6MSwiaWF0IjoxNjAwOTE4NzU1LCJleHAiOjE2MDEwMDUxNTUsImlzcyI6ImNvbWVPbiJ9.f-m4QiX0OXm1nvJDxXvajr0AL0y480Y4EFVGcvttRAY")
+
+        val getOurCorse: Call<GetAllCourseResponse> = networkService.getAllOurCourse(PreferenceHelper.PREFS_KEY_ACCESS)
 
         Log.d("TAGG", "안들어가니?" )
         getOurCorse.enqueue(object : Callback<GetAllCourseResponse> {
@@ -111,10 +109,11 @@ class CourseRecommendFragment : Fragment() {
                     Log.d("TAGG 33", temp.toString() )
 
                     if (temp.size > 0) {
-
                         val position = courseRecyclerViewAdapter.itemCount
                         courseRecyclerViewAdapter.dataList.addAll(temp)
                         courseRecyclerViewAdapter.notifyItemInserted(position)
+                    }else {
+
                     }
                 }
             }

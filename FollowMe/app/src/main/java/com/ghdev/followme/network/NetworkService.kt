@@ -10,6 +10,7 @@ import com.ghdev.followme.data.PostSignUpResponse
 import com.ghdev.followme.network.get.CourseDetailResponse
 import com.ghdev.followme.network.get.GetAllCourseResponse
 import com.ghdev.followme.network.get.ResponseMessageNonData
+import com.ghdev.followme.network.get.SearchResultResponse
 import com.google.gson.JsonObject
 import retrofit2.Call
 import retrofit2.http.Body
@@ -106,6 +107,21 @@ interface NetworkService {
         @Header("authorization") authorization : String,
         @Body() body : JsonObject
     ): Call<ResponseMessageNonData>
+
+    //코스 삭제하기
+    @DELETE("/course")
+    fun deleteCourse(
+        @Header("authorization") authorization : String,
+        @Body() body : JsonObject
+    ): Call<ResponseMessageNonData>
+
+
+    //검색
+    @POST("/search")
+    fun postSeach(
+        @Header("authorization") authorization : String,
+        @Body() body : JsonObject
+    ): Call<SearchResultResponse>
 
 
 }

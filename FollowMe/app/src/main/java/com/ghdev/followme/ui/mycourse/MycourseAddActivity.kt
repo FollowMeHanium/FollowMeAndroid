@@ -43,10 +43,15 @@ class MycourseAddActivity : AppCompatActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_mycourse_add)
 
+        clickInit()
         init()
     }
 
     private fun init() {
+
+    }
+
+    private fun clickInit() {
         btn_close_course_add.setOnClickListener(this)
         img_icon_select_btn.setOnClickListener(this)
         img_btn_add_my_course.setOnClickListener(this)

@@ -4,5 +4,4 @@ object SharedPreference {
     private val AccessToken = "access_token"
     private val refreshToken = "refresh_token"
 
-
 }

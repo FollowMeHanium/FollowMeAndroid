@@ -2,23 +2,26 @@ package com.ghdev.followme.ui.mycourse
 
 import android.content.Context
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.ghdev.followme.R
 import com.ghdev.followme.db.PreferenceHelper
 import com.ghdev.followme.network.ApplicationController
 import com.ghdev.followme.network.NetworkService
-import com.ghdev.followme.network.get.ResponseMessageNonData
-import com.ghdev.followme.network.get.ShopDAO
+import com.ghdev.followme.network.get.*
 import com.ghdev.followme.util.SearchAlarmDialog
 import com.ghdev.followme.util.ThemaSelectDialog
-import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
+import com.naver.maps.geometry.LatLng
 import kotlinx.android.synthetic.main.activity_mycourse_add.*
+import kotlinx.android.synthetic.main.fragment_my_course.*
 import org.json.JSONArray
 import org.json.JSONObject
 import retrofit2.Call
@@ -30,6 +33,7 @@ class MycourseAddActivity : AppCompatActivity(), View.OnClickListener {
 
     private lateinit var titleInputDialog : SearchAlarmDialog
     private lateinit var thema : ThemaSelectDialog
+    lateinit var searchRecyclerViewAdapter: SearchRecyclerViewAdapter
     var categoryThemaText = ""
     private var thema_id = -1
     private lateinit var placeLists : MutableList<ShopDAO>
@@ -58,11 +62,30 @@ class MycourseAddActivity : AppCompatActivity(), View.OnClickListener {
         setContentView(R.layout.activity_mycourse_add)
 
         clickInit()
-        init()
+        setEditTextSearch()
     }
 
-    private fun init() {
+    private fun setRecyclerView() {
+        var searchDataList : ArrayList<SearchResultResponseItem> = ArrayList()
 
+        searchRecyclerViewAdapter = SearchRecyclerViewAdapter(this, searchDataList)
+        rv_search_place.adapter = searchRecyclerViewAdapter
+        rv_search_place.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+    }
+
+    private fun setEditTextSearch() {
+        et_add_course.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                postSearch()
+            }
+
+        })
     }
 
     private fun clickInit() {
@@ -87,7 +110,7 @@ class MycourseAddActivity : AppCompatActivity(), View.OnClickListener {
             img_btn_add_my_course -> {
 
                 //edtiText에 있는 것 모두 체크해줘야함 ( ㅎㅎ )
-               /* if (et_add_title.text.toString() == "") {
+                if (et_add_title.text.toString() == "") {
                     makeDialog("제목을 입력해주세요").show()
                 }
                 else if ( et_add_date.text.toString() == "") {
@@ -95,10 +118,10 @@ class MycourseAddActivity : AppCompatActivity(), View.OnClickListener {
                 }
                 else if (thema_id == -1) {
                     makeDialog("테마를 선택해주세요").show()
-                }*/
-              //  else {
+                }
+                else {
                     postCourseAdd()
-              //  }
+                }
 
                 /*else if(placeLists.size == 0)
                     makeDialog("장소는 최소 1개 이상 선택해주세요.").show()*/
@@ -124,12 +147,6 @@ class MycourseAddActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
- /*   private fun clickListener() : View.OnClickListener {
-
-        thema!!.dismiss()
-        return ThemaSelectListener;
-    }*/
-
     private val LoverListener = View.OnClickListener {
         categoryThemaText = "연인과 함께"
         thema_id = 0;
@@ -142,39 +159,33 @@ class MycourseAddActivity : AppCompatActivity(), View.OnClickListener {
         thema_id = 1;
         thema!!.dismiss()
     }
-
     private val TVListener = View.OnClickListener {
         categoryThemaText = "TV 출현"
         select_thema.text = categoryThemaText
         thema_id = 2;
         thema!!.dismiss()
     }
-
     private val ActivityListener = View.OnClickListener {
         categoryThemaText = "활동적인"
         select_thema.text = categoryThemaText
         thema_id = 3;
         thema!!.dismiss()
     }
-
     private val PetListener = View.OnClickListener {
         categoryThemaText = "애완동물과 함께"
         select_thema.text = categoryThemaText
         thema_id = 4;
         thema!!.dismiss()
     }
-
     private val FamilyListener = View.OnClickListener {
         categoryThemaText = "단체석"
         select_thema.text = categoryThemaText
         thema_id = 5;
         thema!!.dismiss()
     }
-
     private val CloseListener = View.OnClickListener {
         thema!!.dismiss()
     }
-
     private val TitleConfirmListener = View.OnClickListener {
         titleInputDialog!!.dismiss()
     }
@@ -238,6 +249,49 @@ class MycourseAddActivity : AppCompatActivity(), View.OnClickListener {
                         finish()
                     }else {
                         Toast.makeText(getApplicationContext(), "코스추가가 실패되었습니다.", Toast.LENGTH_LONG).show()
+                    }
+                }
+            }
+        })
+    }
+
+    //검색통신
+    private fun postSearch() {
+        val query: String = et_add_course.text.toString()
+
+        val jsonObject = JSONObject()
+        jsonObject.put("from", 0)
+        jsonObject.put("query", query)
+
+        val gsonObject = JsonParser().parse(jsonObject.toString()) as JsonObject
+
+        val postSearchResponse: Call<SearchResultResponse> =
+            networkService.postSeach(sharedPrefs.getString(PreferenceHelper.PREFS_KEY_ACCESS,"0"), gsonObject)
+        postSearchResponse.enqueue(object : Callback<SearchResultResponse> {
+
+            //통신 실패 시 수행되는 메소드
+            override fun onFailure(call: Call<SearchResultResponse>, t: Throwable) {
+                Log.e("검색 통신 fail", t.toString())
+            }
+
+            //통신 성공 시 수행되는 메소드
+            override fun onResponse(
+                call: Call<SearchResultResponse>,
+                response: Response<SearchResultResponse>
+            ) {
+                Log.v("코스검색 성공 body", response.body().toString())
+                Log.v("코스검색 성공 success", response.isSuccessful.toString())
+
+                if (response.isSuccessful) {
+                    Log.v("코스검색 성공", response.body().toString())
+
+                    val temp: ArrayList<SearchResultResponseItem> = response.body()!!
+                    if (temp.size > 0) {
+                        rv_search_place.visibility = View.VISIBLE
+                        setRecyclerView()
+                        val position = searchRecyclerViewAdapter.itemCount
+                        searchRecyclerViewAdapter.dataList.addAll(temp)
+                        searchRecyclerViewAdapter.notifyItemChanged(position)
                     }
                 }
             }

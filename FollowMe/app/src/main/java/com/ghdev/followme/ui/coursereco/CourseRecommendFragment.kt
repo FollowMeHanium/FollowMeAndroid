@@ -101,7 +101,7 @@ class CourseRecommendFragment : Fragment() {
                     if (temp.size > 0) {
                         val position = courseRecyclerViewAdapter.itemCount
                         courseRecyclerViewAdapter.dataList.addAll(temp)
-                        courseRecyclerViewAdapter.notifyItemInserted(position)
+                        courseRecyclerViewAdapter.notifyItemChanged(position)
                     }
                 }
             }

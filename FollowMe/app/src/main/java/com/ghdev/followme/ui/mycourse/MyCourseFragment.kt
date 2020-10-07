@@ -46,6 +46,11 @@ class MyCourseFragment : Fragment() {
         super.onCreate(savedInstanceState)
     }
 
+    override fun onResume() {
+        super.onResume()
+        getMyCourseResponse()
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -65,7 +70,7 @@ class MyCourseFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
 
         getMyCourseResponse()
-        setRecyclerView()
+        //setRecyclerView()
         setCalendar()
     }
 
@@ -134,12 +139,12 @@ class MyCourseFragment : Fragment() {
 
                     val temp: ArrayList<Course> = response.body()!!.courses
                     if (temp.size > 0) {
-
-                        val position = courseRecyclerViewAdapter.itemCount
-                        courseRecyclerViewAdapter.dataList.addAll(temp)
-                        courseRecyclerViewAdapter.notifyItemInserted(position)
-                    }
+                        setRecyclerView()
+                    val position = courseRecyclerViewAdapter.itemCount
+                    courseRecyclerViewAdapter.dataList.addAll(temp)
+                    courseRecyclerViewAdapter.notifyItemChanged(position)
                 }
+            }
             }
         })
     }

@@ -48,12 +48,132 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="36dp"
+        android:layout_marginTop="12dp"
         android:layout_marginHorizontal="16dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cl_toolbar_add_course">
+
+        <TextView
+            android:id="@+id/tv_add_course"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/enter_the_three_place"
+            android:textColor="@color/colorBlack"
+            android:textSize="18sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_add_course_link_place"
+            android:layout_width="match_parent"
+            android:layout_height="36dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/ic_dialog_category_selected"
+            app:layout_constraintTop_toBottomOf="@+id/tv_add_course"
+            >
+
+            <ImageView
+                android:id="@+id/img_search_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/btn_search"
+                android:layout_marginStart="16dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                />
+
+            <EditText
+                android:id="@+id/et_add_course"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:hint="@string/mycourse_add_title"
+                app:layout_constraintStart_toEndOf="@+id/img_search_icon"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:background="@null"
+                />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_course_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cl_add_course_link_place"
+            >
+
+            <TextView
+                android:id="@+id/tv_first_store_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="첫번째 가게 이름 : "
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_first_store_name_detail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="추가해주세요."
+                android:textSize="18sp"
+                app:layout_constraintStart_toEndOf="@+id/tv_first_store_name"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_second_store_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="두번째 가게 이름 : "
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_first_store_name" />
+
+            <TextView
+                android:id="@+id/tv_second_store_name_detail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:text="추가해주세요."
+                android:textSize="18sp"
+                app:layout_constraintStart_toEndOf="@+id/tv_second_store_name"
+                app:layout_constraintTop_toBottomOf="@+id/tv_first_store_name" />
+
+            <TextView
+                android:id="@+id/tv_third_store_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="세번째 가게 이름 : "
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_second_store_name" />
+
+            <TextView
+                android:id="@+id/tv_third_store_name_detail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:text="추가해주세요."
+                android:textSize="18sp"
+                app:layout_constraintStart_toEndOf="@+id/tv_third_store_name"
+                app:layout_constraintTop_toBottomOf="@+id/tv_second_store_name" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <TextView
             android:id="@+id/tv_add_title"
@@ -62,8 +182,9 @@
             android:text="@string/add_title"
             android:textColor="@color/colorBlack"
             android:textSize="18sp"
+            android:layout_marginTop="16dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/cl_course_name" />
 
         <EditText
             android:id="@+id/et_add_title"
@@ -135,76 +256,30 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_category" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-        <TextView
-            android:id="@+id/tv_add_course"
-            app:layout_constraintTop_toBottomOf="@+id/tv_add_category"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/enter_the_three_place"
-            android:textColor="@color/colorBlack"
-            android:textSize="18sp"
-            android:layout_marginTop="8dp"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/cl_add_course_link_place"
-            android:layout_width="match_parent"
-            android:layout_height="42dp"
-            android:layout_marginTop="16dp"
-            android:background="@drawable/ic_dialog_category_selected"
-            app:layout_constraintTop_toBottomOf="@+id/tv_add_course"
-            >
 
             <ImageView
-                android:id="@+id/img_search_icon"
+                android:id="@+id/img_btn_add_my_course"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/btn_search"
-                android:layout_marginStart="16dp"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
+                android:src="@drawable/btn_add_mycourse"
+                android:layout_marginTop="36dp"
+                android:padding="8dp"
                 app:layout_constraintStart_toStartOf="parent"
-                />
-
-            <EditText
-                android:id="@+id/et_add_course"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="16dp"
-                android:hint="@string/mycourse_add_title"
-                app:layout_constraintStart_toEndOf="@+id/img_search_icon"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                android:background="@null"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/select_thema"
                 />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <!--추가한 장소들-->
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_course_place"
+            android:id="@+id/rv_search_place"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_height="200dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/cl_add_course_link_place"
+            android:background="@color/colorWhite"
+            android:visibility="invisible"
             />
-
-        <ImageView
-            android:id="@+id/img_btn_add_my_course"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/btn_add_mycourse"
-            android:layout_marginTop="16dp"
-            android:padding="8dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/rv_course_place"
-            />
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

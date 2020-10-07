@@ -54,11 +54,6 @@ class MycourseDetailActivity : AppCompatActivity(), OnMapReadyCallback, View.OnC
         ApplicationController.instance.prefs
     }
 
-    override fun onResume() {
-        super.onResume()
-        getCourseDetailResponse()
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_mycourse_detail)
@@ -220,19 +215,19 @@ class MycourseDetailActivity : AppCompatActivity(), OnMapReadyCallback, View.OnC
                     if (temp.size > 0) {
                         val position = hotPlaceRecyclerViewAdapter.itemCount
                         hotPlaceRecyclerViewAdapter.dataList.addAll(temp)
-                        hotPlaceRecyclerViewAdapter.notifyItemInserted(position)
+                        hotPlaceRecyclerViewAdapter.notifyItemChanged(position)
+                        mapCoords.clear()
 
                         for(i in 0..temp.size-1) {
                             mapCoords.add(LatLng(temp[i].latitude, temp[i].longitude))
                         }
 
-                        Log.v("TAGG map : " , mapCoords.toString())
-                        //settingMap()
+                        Log.v("TAGG map " , mapCoords.toString())
+                        settingMap()
                     }
                     else {
 
                     }
-                    settingMap()
                 }
             }
         })

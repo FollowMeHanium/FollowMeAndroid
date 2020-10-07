@@ -52,6 +52,14 @@ class MypageFragment : Fragment() {
         if(sharedPrefs.getString(PreferenceHelper.PREFS_KEY_ACCESS, "0") !== "0"){
             val get_nickname : String = JWTDecode().DecodeToken(sharedPrefs.getString(PreferenceHelper.PREFS_KEY_ACCESS, "0"))
             changeUserText(get_nickname)
+        }else{
+            btn_sign_mypage.setOnClickListener{
+                activity?.let{
+                    val intent = Intent(context, LoginActivity::class.java)
+                    startActivity(intent)
+                    requireActivity().finish()
+                }
+            }
         }
 
 
@@ -69,14 +77,6 @@ class MypageFragment : Fragment() {
             activity?.let {
                 val intent = Intent(context, MypageMysettingActivity::class.java)
                 startActivity(intent)
-            }
-        }
-
-        btn_sign_mypage.setOnClickListener{
-            activity?.let{
-                val intent = Intent(context, LoginActivity::class.java)
-                startActivity(intent)
-                requireActivity().finish()
             }
         }
     }

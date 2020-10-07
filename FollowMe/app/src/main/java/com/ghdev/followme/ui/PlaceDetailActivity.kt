@@ -7,6 +7,8 @@ import android.util.Log
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
+import android.widget.RatingBar
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -35,6 +37,7 @@ import kotlinx.android.synthetic.main.dialog_review_insert.*
 import kotlinx.android.synthetic.main.dialog_review_insert.view.*
 import kotlinx.android.synthetic.main.item_place_review.*
 import org.jetbrains.anko.toast
+import org.json.JSONException
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
@@ -44,7 +47,13 @@ class PlaceDetailActivity : AppCompatActivity(), View.OnClickListener, OnMapRead
 
     //recyclerview
     lateinit var placeReivewRecyclerViewAdapter: PlaceReivewRecyclerViewAdapter
+    lateinit var placePictureRecyclerViewAdapter: PlacePictureRecyclerViewAdapter
+    lateinit var placeMenuGridViewAdapter: PlaceMenuGridViewAdapter
     var reviewList : ArrayList<Review> = ArrayList()
+    var picturesList : ArrayList<String> = ArrayList()
+    var menu_nameList : ArrayList<String> = ArrayList()
+    var menu_priceList : ArrayList<String> = ArrayList()
+    var menuList : ArrayList<String> = ArrayList()
 
     //naver map
     //key값 넣어야 함! (안넣음)
@@ -133,43 +142,80 @@ class PlaceDetailActivity : AppCompatActivity(), View.OnClickListener, OnMapRead
 
     /************************Shop정보 읽어오기********************/
     private fun getShopInfoResponse(id : Int){
-        val getshop : Call<GetShopInfoResponse> = networkService.getShopInfoResponse(sharedPrefs.getString(PreferenceHelper.PREFS_KEY_ACCESS,"0"),id)
+                val getshop : Call<GetShopInfoResponse> = networkService.getShopInfoResponse(sharedPrefs.getString(PreferenceHelper.PREFS_KEY_ACCESS,"0"),id)
 
 
-        Log.d("getshop", "동작")
-        getshop.enqueue(object: Callback<GetShopInfoResponse>{
-            override fun onFailure(call: Call<GetShopInfoResponse>, t: Throwable) {
-                Log.d("getshop", "실패/ " + t.message)
-            }
-
-            override fun onResponse(
-                call: Call<GetShopInfoResponse>,
-                response: Response<GetShopInfoResponse>
-            ) {
-                if(response.isSuccessful){
-                    Log.d("getshop", "성공")
-                    //가게 정보 갱신
-                    tv_place_detail_title.text = response.body()!!.shopname
-                    tv_place_detail_watch.text = response.body()!!.operating_time
-                    tv_place_detail_menu.text = response.body()!!.menu
-                    tv_place_detail_address.text = response.body()!!.address
-
-                    //좋아요버튼 이미지
-                    if(response.body()!!.like == 0){
-                        btn_place_detail_add_mypick.setImageResource(R.drawable.btn_add_mypick)
-                        mypick = false
-                    }else{
-                        btn_place_detail_add_mypick.setImageResource(R.drawable.btn_selected_mypick)
-                        mypick = true
+                Log.d("getshop", "동작")
+                getshop.enqueue(object: Callback<GetShopInfoResponse>{
+                    override fun onFailure(call: Call<GetShopInfoResponse>, t: Throwable) {
+                        Log.d("getshop", "실패/ " + t.message)
                     }
-                    Log.d("getshop_like: ", response.body()!!.like.toString() + "/" + mypick.toString())
 
-                    //가게 이미지 갱신
-                    val getphoto = response.body()!!.main_photo - 1
-                    Log.d("getshop", getphoto.toString() + "/" + response.body()!!.photos[0])
-                    Glide.with(getApplicationContext()).load(url + response.body()!!.photos[getphoto]).into(iv_place_detail_main)
-                }
-            }
+                    override fun onResponse(
+                        call: Call<GetShopInfoResponse>,
+                        response: Response<GetShopInfoResponse>
+                    ) {
+                        if(response.isSuccessful){
+                            Log.d("getshop", "성공")
+                            //가게 정보 갱신
+                            tv_place_detail_title.text = response.body()!!.shopname
+                            tv_place_detail_watch.text = response.body()!!.operating_time
+                            tv_place_detail_address.text = response.body()!!.address
+
+                            //좋아요버튼 이미지
+                            if(response.body()!!.like == 0){
+                                btn_place_detail_add_mypick.setImageResource(R.drawable.btn_add_mypick)
+                                mypick = false
+                            }else{
+                                btn_place_detail_add_mypick.setImageResource(R.drawable.btn_selected_mypick)
+                                mypick = true
+                            }
+                            Log.d("getshop_like: ", response.body()!!.like.toString() + "/" + mypick.toString())
+
+                            //가게 이미지 갱신
+                            val getphoto = response.body()!!.main_photo - 1
+                            Log.d("getshop", getphoto.toString() + "/" + response.body()!!.photos[0])
+                            Glide.with(getApplicationContext()).load(url + response.body()!!.photos[getphoto]).into(iv_place_detail_main)
+
+                            //가게 이미지들 넣기
+                            val getphotos = response.body()!!.photos
+                            if(getphotos.isNullOrEmpty()){
+                                Log.d("getshop", "가게 이미지들이 없습니당.")
+                            }
+                            else{
+                                val position = placePictureRecyclerViewAdapter.itemCount
+                                placePictureRecyclerViewAdapter.dataList.addAll(getphotos)
+                                placePictureRecyclerViewAdapter.notifyItemInserted(position)
+                            }
+
+                            //가게 메뉴 넣기
+                            try{
+                                var jsonObject = JSONObject(response.body()!!.menu)
+                                val i = jsonObject.keys().iterator()
+
+                                //반복자를 사용하여 json의 key값을 다 가지고 옴
+                                while(i.hasNext()){
+                                    val temp : String = i.next().toString()
+                                    menu_nameList.add(temp)
+                                }
+                                for(j in menu_nameList){
+                                    menu_priceList.add(jsonObject.getString(j))
+                                }
+                                Log.d("getshop", "list size값 : " + menu_nameList.size.toString())
+                                //menuList에 넣기
+                                for(j in 0 until menu_nameList.size step 1){
+                                    menuList.add(menu_nameList[j])
+                                    menuList.add(menu_priceList[j])
+                                }
+                                placeMenuGridViewAdapter = PlaceMenuGridViewAdapter(applicationContext, menuList)
+                                gv_place_detail_menu.adapter = placeMenuGridViewAdapter
+                                //gridview가 안보이는 거 때문에(아마 listview가 여러개라 그런가봄) padding조절
+                                gv_place_detail_menu.setPadding(0,0,0,30 * menu_nameList.size)
+                            }catch(e : JSONException){
+                                Log.d("getshop", e.printStackTrace().toString())
+                            }
+                        }
+                   }
 
         })
         Log.d("getshop", "완료")
@@ -191,14 +237,17 @@ class PlaceDetailActivity : AppCompatActivity(), View.OnClickListener, OnMapRead
                 response: Response<GetShopReviewListResponse>
             ) {
                 if(response.isSuccessful){
-                    Log.d("getreview: ", "성공")
-                    val temp : ArrayList<Review>? = response.body()!!.reviews
-                    if (temp != null) {
+                    Log.d("getreview: ", "성공 " + response.isSuccessful.toString())
+                    val temp : ArrayList<Review> = response.body()!!.reviews
+                    if(temp.isNullOrEmpty()) {
+                        Log.d("getreview", "리뷰가 null값입니다.")
+                        tv_place_detail_no_review.visibility = View.VISIBLE
+                    }
+                    else{
+                        Log.d("getreview", "리뷰가 있습니다. " + response.body()!!.reviews.toString())
                         val position = placeReivewRecyclerViewAdapter.itemCount
                         placeReivewRecyclerViewAdapter.dataList.addAll(temp)
                         placeReivewRecyclerViewAdapter.notifyItemInserted(position)
-                    }else{
-                        tv_place_detail_no_review.visibility = View.VISIBLE
                     }
                 }
             }
@@ -210,6 +259,10 @@ class PlaceDetailActivity : AppCompatActivity(), View.OnClickListener, OnMapRead
         placeReivewRecyclerViewAdapter = PlaceReivewRecyclerViewAdapter(reviewList)
         rv_place_detail_review.adapter = placeReivewRecyclerViewAdapter
         rv_place_detail_review.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
+
+        placePictureRecyclerViewAdapter = PlacePictureRecyclerViewAdapter(picturesList)
+        rv_place_detail_picture.adapter = placePictureRecyclerViewAdapter
+        rv_place_detail_picture.layoutManager = GridLayoutManager(this, 2, LinearLayoutManager.HORIZONTAL, false)
     }
 
 
@@ -220,11 +273,19 @@ class PlaceDetailActivity : AppCompatActivity(), View.OnClickListener, OnMapRead
         val builder = AlertDialog.Builder(this)
         val dv = layoutInflater.inflate(R.layout.dialog_review_insert, null)
         builder.setView(dv)
+
         builder.setPositiveButton("확인"){dialog, i ->
+            var input_grade : Double = dv.rb_dialog_review.rating.toDouble()
+            var input_review : String = dv.et_dialog_review.text.toString()
+            Log.d("review_write_fun: ",  "review: " + input_review)
+            var input_nick : String = JWTDecode().DecodeToken(sharedPrefs.getString(PreferenceHelper.PREFS_KEY_ACCESS, "0"))
+
+            input_nick = input_nick.replace("\"", "")
+            Log.d("review_write_fun: ",  "nickname: " + input_nick)
+
             //내용을 입력하지 않을시
             if(dv.et_dialog_review.text.toString().trim().isNotEmpty()){
-                postShopReviewWriteResponse(place_info)
-
+                postShopReviewWriteResponse(place_info, input_grade, input_nick, input_review)
             }else{
                 toast("내용을 입력하세요.")
             }
@@ -236,16 +297,9 @@ class PlaceDetailActivity : AppCompatActivity(), View.OnClickListener, OnMapRead
         rv_place_detail_review.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
     }
 
-    private fun postShopReviewWriteResponse(place_info : Int){
-        val dv = layoutInflater.inflate(R.layout.dialog_review_insert, null)
-        val input_grade : Double = dv.rb_dialog_review.rating.toDouble()
-        val input_review : String = dv.et_dialog_review.text.toString()
-        var input_nick : String = JWTDecode().DecodeToken(sharedPrefs.getString(PreferenceHelper.PREFS_KEY_ACCESS, "0"))
+    /***********************리뷰 작성 post*************************/
 
-        input_nick = input_nick.replace("\"", "")
-        Log.d("review_write_fun: ",  "nickname: " + input_nick)
-
-
+    private fun postShopReviewWriteResponse(place_info : Int, input_grade : Double, input_nick : String, input_review : String){
         var jsonObject = JSONObject()
         jsonObject.put("shop_id", place_info)
         jsonObject.put("grade", input_grade)
@@ -267,9 +321,14 @@ class PlaceDetailActivity : AppCompatActivity(), View.OnClickListener, OnMapRead
                 response: Response<PostCodeAndMessageResponse>
             ) {
                 if(response.isSuccessful){
-                    Log.d("review_write_fun: ", "성공")
+                    Log.d("review_write_fun: ", "작동 " + response.body()!!.message)
+                    Log.d("review_write_fun: ", "작동 " + response.body()!!.code)
+                    Log.d("review_wride_fun: ", "input_review: " + input_review)
                     reviewList.add(Review(place_info, input_grade, input_nick, input_review))
-                    placeReivewRecyclerViewAdapter.notifyItemInserted(0)
+                    placeReivewRecyclerViewAdapter.notifyItemInserted(reviewList.size)
+                    tv_place_detail_no_review.visibility = View.GONE
+                    rv_place_detail_review.visibility = View.VISIBLE
+                    //getShopReviewListResponse(place_info)
                 }
             }
 
@@ -335,7 +394,7 @@ class PlaceDetailActivity : AppCompatActivity(), View.OnClickListener, OnMapRead
         })
     }
 
-
+    //좋아요 리스트에 삭제
     private fun postShopUnLikeResponse() {
 
         var jsonObject = JSONObject()

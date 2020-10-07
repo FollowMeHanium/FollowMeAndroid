@@ -7,16 +7,24 @@ import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.GridLayoutManager
 import com.ghdev.followme.R
+import com.ghdev.followme.data.PostCodeAndMessageResponse
 import com.ghdev.followme.db.PreferenceHelper
 import com.ghdev.followme.network.get.GetShopLikeListResponse
 import com.ghdev.followme.network.ApplicationController
 import com.ghdev.followme.network.NetworkService
 import com.ghdev.followme.network.get.Shop
 import com.ghdev.followme.ui.PlaceDetailActivity
+import com.google.gson.JsonObject
+import com.google.gson.JsonParser
 import kotlinx.android.synthetic.main.activity_mypage_mypick.*
+import kotlinx.android.synthetic.main.activity_place_detail.*
+import org.jetbrains.anko.toast
+import org.json.JSONArray
+import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.lang.StringBuilder
 
 class MypageMypickActivity : AppCompatActivity(), View.OnClickListener{
 
@@ -118,11 +126,6 @@ class MypageMypickActivity : AppCompatActivity(), View.OnClickListener{
 
     private fun getShopLikeListResponse(){
         val getshop : Call<GetShopLikeListResponse> = networkService.getShopLikeListResponse(sharedPrefs.getString(PreferenceHelper.PREFS_KEY_ACCESS,"0"))
-
-
-
-       /*val getshop : Call<GetShopLikeListResponse> = networkService.getShopLikeListResponse("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxfQ.ldsBBxz_tUoqEMKD39ugh1rW32kR6tNLfQ-j7nLKi5Y")
-*/
         Log.d("getlike", "동작")
 
         getshop.enqueue(object : Callback<GetShopLikeListResponse>{
@@ -137,18 +140,20 @@ class MypageMypickActivity : AppCompatActivity(), View.OnClickListener{
                 if(response.isSuccessful){
                     Log.d("getlike", "성공")
                     val temp : ArrayList<Shop> = response.body()!!.shops
-
+                    Log.d("getlike", temp.toString())
                     if(temp.size > 0){
+                        Log.d("getlike", "temp는 0이 아님!")
+                        tv_mypick_no_sign.visibility = View.GONE
                         val position = myPickPlaceRecyclerViewAdapter.itemCount
                         myPickPlaceRecyclerViewAdapter.dataList.addAll(temp)
                         myPickPlaceRecyclerViewAdapter.notifyItemInserted(position)
+                    }else{
+                        Log.d("getlike", "null값입니다.")
+                        tv_mypick_no_sign.visibility = View.VISIBLE
                     }
                 }
-
             }
-
         })
-
         Log.d("getlike", "완료")
     }
 
@@ -167,7 +172,6 @@ class MypageMypickActivity : AppCompatActivity(), View.OnClickListener{
             //이전 Activity실행
             super.onBackPressed()
         }
-
     }
 
     fun prepareSelection(dataList : Shop){
@@ -183,12 +187,73 @@ class MypageMypickActivity : AppCompatActivity(), View.OnClickListener{
 
 
     fun removeData(selectionList: ArrayList<Shop>){
+        val sb = StringBuilder()
         for(i in selectionList){
             dataList.remove(i)
             cancleList.add(i.id)
+            sb.append(",").append(i.id)
             rv_mypick.adapter?.notifyDataSetChanged()
         }
+        val temp : String = cancleList.toString().replace("[", "")
+        val input_cancleList : String = temp.replace("]","")
+
+        Log.d("getlike", "input1: " + cancleList.toString())
+        Log.d("getlike", "input2: " + input_cancleList)
+
         //마지막으로 좋아요 list보내기.. -> 좋아요 취소된 배열 모아서 보내기?
+        //postShopUnLikeResponse(input_cancleList)
+        postShopUnLikeResponse(cancleList)
+        cancleList.clear()
+
+    }
+
+    private fun postShopUnLikeResponse(input_cancleList : ArrayList<Int>) {
+
+        Log.d("like_un_fun", "숫자넣기0: " + input_cancleList.toString())
+        var jsonObject = JSONObject()
+        var jsonArray = JSONArray()
+
+        for(j in input_cancleList){
+            jsonArray.put(j)
+            Log.d("like_un_fun", "숫자넣기1: " + jsonArray.toString())
+        }
+
+        jsonObject.put("id", jsonArray)
+        Log.d("like_un_fun", "숫자넣기2: " + jsonObject.toString())
+
+        val gsonObject = JsonParser().parse(jsonObject.toString()) as JsonObject
+
+        Log.d("like_un_fun: ", "gson")
+
+        val postShopUnLikeResponse : Call<PostCodeAndMessageResponse> =
+            networkService.postShopUnLikeResponse(sharedPrefs.getString(PreferenceHelper.PREFS_KEY_ACCESS, "0"), gsonObject)
+
+        postShopUnLikeResponse.enqueue(object : Callback<PostCodeAndMessageResponse>{
+            override fun onFailure(call: Call<PostCodeAndMessageResponse>, t: Throwable) {
+                Log.e("like_un_fun: ", t.toString())
+            }
+
+            override fun onResponse(
+                call: Call<PostCodeAndMessageResponse>,
+                response: Response<PostCodeAndMessageResponse>
+            ) {
+                if(response.isSuccessful){
+                    Log.d("like_un_fun: ", "성공")
+
+                    if(response.body()!!.code == 200){
+                        Log.d("like_un_fun: ", response.body()!!.message)
+                        Log.d("like_un_fun: ", response.body()!!.code.toString())
+                        toast("찜 리스트에서 삭제되었습니다.")
+
+                    }else{
+                        Log.d("like_fun: ", "fail/" + response.body()!!.message)
+                        Log.d("like_fun", "fail/" + response.body()!!.code.toString())
+                    }
+                }
+
+            }
+
+        })
 
     }
 

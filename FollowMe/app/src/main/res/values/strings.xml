@@ -55,7 +55,7 @@
     <string name="myset_change_dt">회원탈퇴</string>
 
     //mypage_mypick_string
-    <string name="mypick_title">나의 코스</string>
+    <string name="mypick_title">내가 찜한 장소</string>
 
     //dialog
     <string name="course_category_title">카테고리</string>

@@ -197,19 +197,20 @@ class PlaceDetailActivity : AppCompatActivity(), View.OnClickListener, OnMapRead
                                 while(i.hasNext()){
                                     val temp : String = i.next().toString()
                                     menu_nameList.add(temp)
-                                    Log.d("getshop", "temp값 : " + temp)
                                 }
                                 for(j in menu_nameList){
                                     menu_priceList.add(jsonObject.getString(j))
                                 }
+                                Log.d("getshop", "list size값 : " + menu_nameList.size.toString())
+                                //menuList에 넣기
                                 for(j in 0 until menu_nameList.size step 1){
                                     menuList.add(menu_nameList[j])
                                     menuList.add(menu_priceList[j])
                                 }
-                                Log.d("getshop" , "menuList: " + menuList.toString())
                                 placeMenuGridViewAdapter = PlaceMenuGridViewAdapter(applicationContext, menuList)
                                 gv_place_detail_menu.adapter = placeMenuGridViewAdapter
-
+                                //gridview가 안보이는 거 때문에(아마 listview가 여러개라 그런가봄) padding조절
+                                gv_place_detail_menu.setPadding(0,0,0,30 * menu_nameList.size)
                             }catch(e : JSONException){
                                 Log.d("getshop", e.printStackTrace().toString())
                             }

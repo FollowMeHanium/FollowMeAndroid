@@ -50,6 +50,7 @@
         app:layout_constraintTop_toBottomOf="@id/rb_star_mypick_item"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        android:maxLength="20"
         />
 
     <ImageView

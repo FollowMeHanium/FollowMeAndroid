@@ -3,6 +3,7 @@ package com.ghdev.followme.network.get
 data class Course(
     val grade_avg: Int,
     val id: Int,
+    val thema : Int,
     val user_nickname : String,
     val dday : String,
     val main_photo : String,

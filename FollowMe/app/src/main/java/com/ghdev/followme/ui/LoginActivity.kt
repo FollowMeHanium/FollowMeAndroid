@@ -10,7 +10,6 @@ import android.view.inputmethod.InputMethodManager
 import com.ghdev.followme.R
 import com.ghdev.followme.data.PostLoginResponse
 import com.ghdev.followme.db.PreferenceHelper
-import com.ghdev.followme.db.SharedPreference
 import com.ghdev.followme.network.ApplicationController
 import com.ghdev.followme.network.LoginNetworkService
 import com.ghdev.followme.network.NetworkService
@@ -32,7 +31,6 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class LoginActivity : AppCompatActivity(), View.OnClickListener{
-
 
     private val loginService: LoginNetworkService by lazy {
         ApplicationController.instance.loginService

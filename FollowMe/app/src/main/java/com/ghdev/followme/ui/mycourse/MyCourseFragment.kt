@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ghdev.followme.R
+import com.ghdev.followme.db.PreferenceHelper
 import com.ghdev.followme.network.ApplicationController
 import com.ghdev.followme.network.NetworkService
 import com.ghdev.followme.network.get.Course
@@ -23,6 +24,7 @@ import kotlinx.android.synthetic.main.fragment_my_course.view.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -36,9 +38,17 @@ class MyCourseFragment : Fragment() {
         ApplicationController.instance.networkService
     }
 
+    private val sharedPrefs by lazy{
+        ApplicationController.instance.prefs
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        getMyCourseResponse()
     }
 
     override fun onCreateView(
@@ -59,11 +69,9 @@ class MyCourseFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-
         getMyCourseResponse()
-        setRecyclerView()
+        //setRecyclerView()
         setCalendar()
-
     }
 
     private fun setCalendar() {
@@ -77,7 +85,10 @@ class MyCourseFragment : Fragment() {
         val endDate: Calendar = Calendar.getInstance()
         endDate.add(Calendar.MONTH, 1)
 
-        tv_ymd_course_frag.text = Calendar.YEAR.toString()+ "년 " + Calendar.MONTH.toString() + "월"
+        val formatDate : SimpleDateFormat = SimpleDateFormat("yyyy년 MM월")
+        val time : Date = Date()
+        val date : String = formatDate.format(time)
+        tv_ymd_course_frag.text = date
 
         var  horizontalCalendar = HorizontalCalendar.Builder(rootView, R.id.cv_calendar_my_course_frag)
             .range(startDate, endDate)
@@ -86,8 +97,6 @@ class MyCourseFragment : Fragment() {
                 .showTopText(false)
             .end()*/
             .build()
-
-
 
         horizontalCalendar.calendarListener = object : HorizontalCalendarListener() {
             override fun onDateSelected(date: Calendar?, position: Int) {
@@ -102,7 +111,6 @@ class MyCourseFragment : Fragment() {
                 return true
             }
         }
-
     }
 
     private fun setRecyclerView() {
@@ -114,7 +122,7 @@ class MyCourseFragment : Fragment() {
 
     private fun getMyCourseResponse() {
         //## token 자리에 SharedPreference 에 있는 token 값 가져와야함.
-        val getOurCorse: Call<GetAllCourseResponse> = networkService.getMyCourse("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoyLCJuaWNrbmFtZSI6InVzZXIxIiwiZ2VuZGVyIjoxLCJhZ2UiOjIwMjAsInN0YXR1cyI6MSwiaWF0IjoxNjAwOTE4NzU1LCJleHAiOjE2MDEwMDUxNTUsImlzcyI6ImNvbWVPbiJ9.f-m4QiX0OXm1nvJDxXvajr0AL0y480Y4EFVGcvttRAY")
+        val getOurCorse: Call<GetAllCourseResponse> = networkService.getMyCourse(sharedPrefs.getString(PreferenceHelper.PREFS_KEY_ACCESS,"0"))
 
        // Log.d("TAGG", "안들어가니?" )
         getOurCorse.enqueue(object : Callback<GetAllCourseResponse> {
@@ -126,17 +134,17 @@ class MyCourseFragment : Fragment() {
                 call: Call<GetAllCourseResponse>,
                 response: Response<GetAllCourseResponse>
             ) {
-                //Log.d("TAGG 22", response.isSuccessful.toString() )
+                //Log.d("TAGG 22 my course", response.isSuccessful.toString() )
                 if (response.isSuccessful) {
 
                     val temp: ArrayList<Course> = response.body()!!.courses
                     if (temp.size > 0) {
-
-                        val position = courseRecyclerViewAdapter.itemCount
-                        courseRecyclerViewAdapter.dataList.addAll(temp)
-                        courseRecyclerViewAdapter.notifyItemInserted(position)
-                    }
+                        setRecyclerView()
+                    val position = courseRecyclerViewAdapter.itemCount
+                    courseRecyclerViewAdapter.dataList.addAll(temp)
+                    courseRecyclerViewAdapter.notifyItemChanged(position)
                 }
+            }
             }
         })
     }

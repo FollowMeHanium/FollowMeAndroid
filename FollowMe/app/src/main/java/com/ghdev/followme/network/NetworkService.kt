@@ -4,6 +4,7 @@ package com.ghdev.followme.network
 import com.ghdev.followme.data.*
 import com.ghdev.followme.data.test.GetRecommendListInfo
 import com.ghdev.followme.network.get.*
+
 import com.google.gson.JsonObject
 import retrofit2.Call
 import retrofit2.http.Body
@@ -69,7 +70,7 @@ interface NetworkService {
         @Body() body: JsonObject
     ) : Call<PostCodeAndMessageResponse>
 
-    //GEt 모두의 코스
+    //GET 모두의 코스
     @GET("/course/list")
     fun getAllOurCourse(
         @Header("authorization") authorization : String
@@ -94,6 +95,22 @@ interface NetworkService {
         @Header("authorization") authorization : String,
         @Body() body : JsonObject
     ): Call<ResponseMessageNonData>
+
+    //코스 삭제하기
+    //@DELETE("/course")
+    @HTTP(method = "DELETE", path = "/course", hasBody = true)
+    fun deleteCourse(
+        @Header("authorization") authorization : String,
+        @Body() body : JsonObject
+    ): Call<ResponseMessageNonData>
+
+
+    //검색
+    @POST("/search")
+    fun postSeach(
+        @Header("authorization") authorization : String,
+        @Body() body : JsonObject
+    ): Call<SearchResultResponse>
 
 
 }

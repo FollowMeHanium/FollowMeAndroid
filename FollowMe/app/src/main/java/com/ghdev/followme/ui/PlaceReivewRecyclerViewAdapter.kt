@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import android.widget.RatingBar
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.ghdev.followme.R
 import com.ghdev.followme.data.test.ReviewInfo
 import com.ghdev.followme.network.get.Review
@@ -13,6 +14,7 @@ import com.ghdev.followme.network.get.Review
 class PlaceReivewRecyclerViewAdapter(
     val dataList: ArrayList<Review>
 ) : RecyclerView.Adapter<PlaceReivewRecyclerViewAdapter.Holder>() {
+
     override fun onCreateViewHolder(
         viewGroup: ViewGroup,
         viewType: Int
@@ -30,6 +32,7 @@ class PlaceReivewRecyclerViewAdapter(
         holder.user_nick.text = info.nickname
         holder.contents.text = info.review
         holder.rating.rating = info.grade.toFloat()
+
     }
 
    inner class Holder(itemView: View) : RecyclerView.ViewHolder(itemView){

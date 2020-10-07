@@ -49,6 +49,7 @@ class MyPickPlaceRecyclerViewAdapter (
         holder.address.text = info.address
         holder.star.rating = info.grade_avg.toFloat()
 
+
         Glide.with(holder.itemView.context).load(url + info.main_photo).into(holder.imgurl)
 
         holder.container.setOnClickListener {
@@ -75,7 +76,7 @@ class MyPickPlaceRecyclerViewAdapter (
     inner class Holder(itemView: View) : RecyclerView.ViewHolder(itemView){
         var imgurl = itemView.findViewById(R.id.iv_mypick_item_img) as ImageView
         var placename = itemView.findViewById(R.id.tv_mypick_item_title) as TextView
-        var star = itemView.findViewById(R.id.rb_star_mycourse_item) as RatingBar
+        var star = itemView.findViewById(R.id.rb_star_mypick_item) as RatingBar
         var address = itemView.findViewById(R.id.tv_mypick_item_address) as TextView
         var container = itemView.findViewById(R.id.cl_mypick_container) as ConstraintLayout
 

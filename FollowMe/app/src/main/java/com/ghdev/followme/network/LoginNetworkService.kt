@@ -1,11 +1,13 @@
 package com.ghdev.followme.network
 
 import com.ghdev.followme.data.PostLoginResponse
+import com.ghdev.followme.data.PostNewTokenResponse
 import com.ghdev.followme.data.PostSignUpResponse
 import com.google.gson.JsonObject
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.Header
+import retrofit2.http.HeaderMap
 import retrofit2.http.POST
 
 interface LoginNetworkService {
@@ -38,5 +40,11 @@ interface LoginNetworkService {
         @Header("Content-Type") content_type: String,
         @Body() body : JsonObject
     ) : Call<PostLoginResponse>
+
+    //토큰 검사 -> 토큰 사용시 매번 검사해야함
+    @POST("/auth/getNewToken")
+    fun postNewToken(
+        @HeaderMap header: Map<String, String>
+    ) : Call<PostNewTokenResponse>
 
 }

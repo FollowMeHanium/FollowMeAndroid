@@ -19,6 +19,7 @@ import kotlinx.android.synthetic.main.fragment_course_recommend.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import com.ghdev.followme.db.PreferenceHelper
 
 import kotlin.collections.ArrayList
 
@@ -28,6 +29,10 @@ class CourseRecommendFragment : Fragment() {
 
     val networkService: NetworkService by lazy {
         ApplicationController.instance.networkService
+    }
+
+    private val sharedPrefs by lazy{
+        ApplicationController.instance.prefs
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -90,7 +95,7 @@ class CourseRecommendFragment : Fragment() {
 
     private fun getMyCourseResponse() {
         //## token 자리에 SharedPreference 에 있는 token 값 가져와야함.
-        val getOurCorse: Call<GetAllCourseResponse> = networkService.getAllOurCourse("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoyLCJuaWNrbmFtZSI6InVzZXIxIiwiZ2VuZGVyIjoxLCJhZ2UiOjIwMjAsInN0YXR1cyI6MSwiaWF0IjoxNjAwOTE4NzU1LCJleHAiOjE2MDEwMDUxNTUsImlzcyI6ImNvbWVPbiJ9.f-m4QiX0OXm1nvJDxXvajr0AL0y480Y4EFVGcvttRAY")
+        val getOurCorse: Call<GetAllCourseResponse> = networkService.getAllOurCourse(sharedPrefs.getString(PreferenceHelper.PREFS_KEY_ACCESS, "0"))
 
         Log.d("TAGG", "안들어가니?" )
         getOurCorse.enqueue(object : Callback<GetAllCourseResponse> {

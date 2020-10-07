@@ -88,6 +88,7 @@ class HomeFragment : Fragment() {
         rv_restaurant_today.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
 
 
+
         //코스로 따라와
 /*        var courseDataList : ArrayList<CourseData> = ArrayList()
 

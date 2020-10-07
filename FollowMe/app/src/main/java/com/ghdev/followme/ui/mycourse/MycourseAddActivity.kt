@@ -15,9 +15,11 @@ import com.ghdev.followme.network.get.ResponseMessageNonData
 import com.ghdev.followme.network.get.ShopDAO
 import com.ghdev.followme.util.SearchAlarmDialog
 import com.ghdev.followme.util.ThemaSelectDialog
+import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
 import kotlinx.android.synthetic.main.activity_mycourse_add.*
+import org.json.JSONArray
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
@@ -84,11 +86,6 @@ class MycourseAddActivity : AppCompatActivity(), View.OnClickListener {
             //작성완료 체크버튼 눌렀을 때
             img_btn_add_my_course -> {
 
-                Log.v("TAGG editText ", et_add_title.text.toString())
-                Log.v("TAGG 맨끝 ", et_add_date.text.toString())
-                Log.v("TAGG 맨끝 thema ", thema_id.toString())
-
-
                 //edtiText에 있는 것 모두 체크해줘야함 ( ㅎㅎ )
                /* if (et_add_title.text.toString() == "") {
                     makeDialog("제목을 입력해주세요").show()
@@ -100,7 +97,6 @@ class MycourseAddActivity : AppCompatActivity(), View.OnClickListener {
                     makeDialog("테마를 선택해주세요").show()
                 }*/
               //  else {
-                    Log.v("TAGG 여기 자체가 안가는거야??", "else 가 안오는거야?!?!?")
                     postCourseAdd()
               //  }
 
@@ -195,22 +191,31 @@ class MycourseAddActivity : AppCompatActivity(), View.OnClickListener {
         val title: String = et_add_title.text.toString()
         val dday : String = et_add_date.text.toString()
         placeLists = ArrayList<ShopDAO>()
+        placeLists.add(ShopDAO(10, "ndn"))
 
-        var jsonObject = JSONObject()
+        val jsonObjectPlaceList = JSONObject()
+        val jsonArray = JSONArray()
+        for(i in 0..placeLists.size-1) {
+            jsonObjectPlaceList.put("id", placeLists[i].id)
+            jsonObjectPlaceList.put("shopname", placeLists[i].shopname)
+            jsonArray.put(jsonObjectPlaceList)
+        }
+
+        val jsonObject = JSONObject()
         jsonObject.put("title", title)
         jsonObject.put("thema", thema_id)
         jsonObject.put("dday", dday)
-        jsonObject.put("shops", placeLists)
+        jsonObject.put("shops", jsonArray)
 
-        Log.v("TAGG 코스 추가", title)
+       /* Log.v("TAGG 코스 추가", title)
         Log.v("TAGG 코스 추가", thema_id.toString())
         Log.v("TAGG 코스 추가", dday)
-
+        Log.v("TAGG 코스 추가", jsonObject.toString())*/
 
         val gsonObject = JsonParser().parse(jsonObject.toString()) as JsonObject
 
         val postCourseAddResponse: Call<ResponseMessageNonData> =
-            networkService.postCourseAdd(sharedPrefs.getString(sharedPrefs.getString(PreferenceHelper.PREFS_KEY_ACCESS,"0"), ""), gsonObject)
+            networkService.postCourseAdd(sharedPrefs.getString(PreferenceHelper.PREFS_KEY_ACCESS,"0"), gsonObject)
         postCourseAddResponse.enqueue(object : Callback<ResponseMessageNonData> {
 
             //통신 실패 시 수행되는 메소드
@@ -223,18 +228,17 @@ class MycourseAddActivity : AppCompatActivity(), View.OnClickListener {
                 call: Call<ResponseMessageNonData>,
                 response: Response<ResponseMessageNonData>
             ) {
-
-                Log.v("코스추가 통신 성공", response.body().toString())
+                //Log.v("코스추가 통신 성공 body", response.body().toString())
+                //Log.v("코스추가 통신 성공 success", response.isSuccessful.toString())
 
                 if (response.isSuccessful) {
-                    Log.v("코스추가 통신 성공", response.body().toString())
+                    //Log.v("코스추가 통신 code", response.body()!!.code.toString())
                     if(response.body()!!.code == 200) {
                         Toast.makeText(getApplicationContext(), "코스가 추가되었습니다.", Toast.LENGTH_LONG).show()
                         finish()
                     }else {
                         Toast.makeText(getApplicationContext(), "코스추가가 실패되었습니다.", Toast.LENGTH_LONG).show()
                     }
-
                 }
             }
         })

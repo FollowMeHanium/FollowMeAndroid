@@ -97,7 +97,8 @@ interface NetworkService {
     ): Call<ResponseMessageNonData>
 
     //코스 삭제하기
-    @DELETE("/course")
+    //@DELETE("/course")
+    @HTTP(method = "DELETE", path = "/course", hasBody = true)
     fun deleteCourse(
         @Header("authorization") authorization : String,
         @Body() body : JsonObject

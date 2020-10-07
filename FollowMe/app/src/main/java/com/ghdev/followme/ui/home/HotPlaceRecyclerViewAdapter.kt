@@ -35,17 +35,17 @@ class HotPlaceRecyclerViewAdapter (val ctx : Context, val dataList: ArrayList<Sh
         val shop : Shop = dataList[position]
 
         //null처리
-        if(shop.shopname.equals(null))
+        if(shop.shopname == null)
             holder.placename.text = "null"
         else
             holder.placename.text = shop.shopname
 
-        if(shop.address.equals(null))
+        if(shop.address == null)
             holder.address.text = "null"
         else
             holder.address.text = shop.address
 
-        if(shop.grade_avg.equals(null))
+        if(shop.grade_avg == null)
             holder.star.rating = 3F
         else
             holder.star.rating = (shop.grade_avg/2).toFloat()

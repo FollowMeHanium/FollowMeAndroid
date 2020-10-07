@@ -129,7 +129,7 @@ class MyCourseFragment : Fragment() {
                 call: Call<GetAllCourseResponse>,
                 response: Response<GetAllCourseResponse>
             ) {
-                Log.d("TAGG 22 my course", response.isSuccessful.toString() )
+                //Log.d("TAGG 22 my course", response.isSuccessful.toString() )
                 if (response.isSuccessful) {
 
                     val temp: ArrayList<Course> = response.body()!!.courses

@@ -43,8 +43,6 @@ class MycourseDetailActivity : AppCompatActivity(), OnMapReadyCallback, View.OnC
     private var naverMap: NaverMap? = null
     lateinit var path: PathOverlay
     val mapCoords = mutableListOf<LatLng>()
-
-
     var courseIdx = 0
     var userNickname = ""
 
@@ -54,6 +52,11 @@ class MycourseDetailActivity : AppCompatActivity(), OnMapReadyCallback, View.OnC
 
     private val sharedPrefs by lazy{
         ApplicationController.instance.prefs
+    }
+
+    override fun onResume() {
+        super.onResume()
+        getCourseDetailResponse()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -166,11 +169,10 @@ class MycourseDetailActivity : AppCompatActivity(), OnMapReadyCallback, View.OnC
 
     private fun setRecyclerView() {
 
-        /*
-        dataList.add(PlaceInfo(0, "하", "서울시 노원구 공릉동 131313"))
+        /* dataList.add(PlaceInfo(0, "하", "서울시 노원구 공릉동 131313"))
         dataList.add(PlaceInfo( 0,"하", "서울시 노원구 공릉동 131313"))
         dataList.add(PlaceInfo(0, "하", "서울시 노원구 공릉동 131313"))
-        dataList.add(PlaceInfo(0, "하", "서울시 노원구 공릉동 131313"))*/
+        dataList.add(PlaceInfo(0, "하", "서울시 노원구 공릉동 131313")) */
 
         //모듈화를 시키기(rv_id와 datalist가 들어가는 것 말고는 다른 것은 동일)
         var dataList: ArrayList<Shop> = ArrayList()
@@ -186,7 +188,6 @@ class MycourseDetailActivity : AppCompatActivity(), OnMapReadyCallback, View.OnC
         courseIdx = intent.getIntExtra("course_idx", -1)
         //Log.d("Detail후후", courseIdx.toString())
 
-        //## token 자리에 SharedPreference 에 있는 token 값 가져와야함.
         val getOurCorse: Call<CourseDetailResponse> =
             networkService.getCourseDetail(sharedPrefs.getString(PreferenceHelper.PREFS_KEY_ACCESS,"0"), courseIdx)
 
@@ -226,9 +227,12 @@ class MycourseDetailActivity : AppCompatActivity(), OnMapReadyCallback, View.OnC
                         }
 
                         Log.v("TAGG map : " , mapCoords.toString())
-
-                        settingMap()
+                        //settingMap()
                     }
+                    else {
+
+                    }
+                    settingMap()
                 }
             }
         })
@@ -236,14 +240,15 @@ class MycourseDetailActivity : AppCompatActivity(), OnMapReadyCallback, View.OnC
 
     //코스 삭제 통신
     private fun postCourseDelete(){
-        var jsonObject = JSONObject()
+        val jsonObject = JSONObject()
         jsonObject.put("id", courseIdx)
+        Log.v("TAGG id", courseIdx.toString())
 
         val gsonObject = JsonParser().parse(jsonObject.toString()) as JsonObject
 
-        val postCourseAddResponse: Call<ResponseMessageNonData> =
+        val deleteCourseAddResponse: Call<ResponseMessageNonData> =
             networkService.deleteCourse(sharedPrefs.getString(PreferenceHelper.PREFS_KEY_ACCESS,"0"), gsonObject)
-        postCourseAddResponse.enqueue(object : Callback<ResponseMessageNonData> {
+        deleteCourseAddResponse.enqueue(object : Callback<ResponseMessageNonData> {
 
             //통신 실패 시 수행되는 메소드
             override fun onFailure(call: Call<ResponseMessageNonData>, t: Throwable) {
@@ -255,6 +260,9 @@ class MycourseDetailActivity : AppCompatActivity(), OnMapReadyCallback, View.OnC
                 call: Call<ResponseMessageNonData>,
                 response: Response<ResponseMessageNonData>
             ) {
+
+                Log.v("코스삭제 통신 성공 body", response.body().toString())
+                Log.v("코스삭제 통신 성공 success", response.isSuccessful.toString())
                 if (response.isSuccessful) {
                     Log.v("코스삭제 통신 성공", response.body().toString())
                     if(response.body()!!.code == 200) {
@@ -265,10 +273,8 @@ class MycourseDetailActivity : AppCompatActivity(), OnMapReadyCallback, View.OnC
                     }else {
                         Toast.makeText(getApplicationContext(), "코스 삭제가 실패했습니다.", Toast.LENGTH_LONG).show()
                     }
-
                 }
             }
         })
     }
-
 }

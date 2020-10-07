@@ -81,13 +81,9 @@ class CourseRecommendFragment : Fragment() {
     }
 
     private fun getRecommendCourseResponse() {
-
-        Log.v("TAGG reco token : " , sharedPrefs.getString(PreferenceHelper.PREFS_KEY_ACCESS, ""))
         val getOurCorse: Call<GetAllCourseResponse> = networkService.getAllOurCourse(sharedPrefs.getString(PreferenceHelper.PREFS_KEY_ACCESS, ""))
 
-        Log.v("TAGG", "안들어가니?")
         getOurCorse.enqueue(object : Callback<GetAllCourseResponse> {
-
             override fun onFailure(call: Call<GetAllCourseResponse>, t: Throwable) {
                 Log.d("모두의 Course fail", t.toString())
             }
@@ -96,11 +92,11 @@ class CourseRecommendFragment : Fragment() {
                 call: Call<GetAllCourseResponse>,
                 response: Response<GetAllCourseResponse>
             ) {
-                Log.d("TAGG 22 course reco", response.isSuccessful.toString() )
+                //Log.d("TAGG 22 course reco", response.isSuccessful.toString() )
                 if (response.isSuccessful) {
 
                     val temp: ArrayList<Course> = response.body()!!.courses
-                    Log.d("TAGG 33 course reco", temp.toString())
+                    //Log.d("TAGG 33 course reco", temp.toString())
 
                     if (temp.size > 0) {
                         val position = courseRecyclerViewAdapter.itemCount

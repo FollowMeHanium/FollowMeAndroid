@@ -15,9 +15,6 @@ class CourseDialogFragment : DialogFragment(){
     }
 
     override fun onResume() {
-        var width = resources.getDimensionPixelSize(R.dimen.course_dialog_width)
-        var height = resources.getDimensionPixelSize(R.dimen.course_dialog_height)
-        dialog?.window?.setLayout(width, height)
         super.onResume()
     }
 
@@ -32,6 +29,14 @@ class CourseDialogFragment : DialogFragment(){
         var contents_act = view.btn_course_category_act
         var contents_pet = view.btn_course_category_pet
         var contents_tv = view.btn_course_category_tv
+
+        contents_lovers.setOnClickListener {
+            activity.let {
+                //activity로 이 값을 전달해주고 dismiss()하면 됨
+
+                dismiss()
+            }
+        }
 
         //닫기 버튼
         var btn_close = view.btn_course_dialog_close

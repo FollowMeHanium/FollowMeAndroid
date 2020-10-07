@@ -43,7 +43,10 @@ class MycourseDetailActivity : AppCompatActivity(), OnMapReadyCallback, View.OnC
     private var naverMap: NaverMap? = null
     lateinit var path: PathOverlay
     val mapCoords = mutableListOf<LatLng>()
+
+
     var courseIdx = 0
+    var userNickname = ""
 
     val networkService: NetworkService by lazy {
         ApplicationController.instance.networkService
@@ -59,30 +62,25 @@ class MycourseDetailActivity : AppCompatActivity(), OnMapReadyCallback, View.OnC
 
         init()
         getCourseDetailResponse()
-        loadCoordinateDatas()
         setRecyclerView()
     }
 
     override fun onClick(v: View?) {
         when(v){
             btn_edit_mycourse -> {
-                showPopup(btn_edit_mycourse)
+                if(userNickname != "")
+                    showPopup(btn_edit_mycourse)
             }
         }
     }
 
     fun init() {
         btn_edit_mycourse.setOnClickListener(this)
-    }
 
-/*    //팝업 클릭리스너
-    val clickListener = View.OnClickListener { view ->
-        when (view.id) {
-            R.id.btn_edit_mycourse -> {
-                showPopup(view)
-            }
-        }
-    }*/
+        userNickname = intent.getStringExtra("user_nickname")
+        if(userNickname == "")
+            btn_edit_mycourse.visibility = View.GONE
+    }
 
     //팝업창
     private fun showPopup(view: View) {
@@ -96,15 +94,6 @@ class MycourseDetailActivity : AppCompatActivity(), OnMapReadyCallback, View.OnC
                     makeDialog("준비중인 기능입니다").show()
                 }
                 R.id.menu_delete -> {
-                    //본인의 것만 삭제 가능.
-                    //if (login_userIdx == write_userIdx)
-                    /*else if(ApplicationData.auth == "")
-                        customLoginCheckDialog.show()
-                    else
-                    //본인이 아닙니다.
-                        writeSelfDialog.show()*/
-
-                    //Toast -> 삭제 완료
                     postCourseDelete()
                 }
             }
@@ -175,21 +164,6 @@ class MycourseDetailActivity : AppCompatActivity(), OnMapReadyCallback, View.OnC
         }
     }
 
-    fun loadCoordinateDatas() {
-       /* val coordsDoubleArr =
-        for (coord in coordsDoubleArr) {
-            mapCoords.add(LatLng(coord.latitude, coord.longitude))
-        }*/
-
-        //##서버에서 좌표 받아오면 됨
-
-        mapCoords.add(LatLng(37.57152, 126.97714))
-        mapCoords.add(LatLng(37.56607, 126.98268))
-        mapCoords.add(LatLng(37.56445, 126.97707))
-
-        settingMap()
-    }
-
     private fun setRecyclerView() {
 
         /*
@@ -210,7 +184,7 @@ class MycourseDetailActivity : AppCompatActivity(), OnMapReadyCallback, View.OnC
     //코스 detail 통신
     private fun getCourseDetailResponse() {
         courseIdx = intent.getIntExtra("course_idx", -1)
-        Log.d("Detail후후", courseIdx.toString())
+        //Log.d("Detail후후", courseIdx.toString())
 
         //## token 자리에 SharedPreference 에 있는 token 값 가져와야함.
         val getOurCorse: Call<CourseDetailResponse> =
@@ -225,9 +199,9 @@ class MycourseDetailActivity : AppCompatActivity(), OnMapReadyCallback, View.OnC
                 call: Call<CourseDetailResponse>,
                 response: Response<CourseDetailResponse>
             ) {
-                Log.d("TAGG 22 in detail", response.isSuccessful.toString() )
-                Log.d("TAGG 22 in detail", response.message().toString() )
                 if (response.isSuccessful) {
+                    Log.d("TAGG 22 in detail", response.body().toString() )
+
                     //null처리
                     if(response.body()?.title == null)
                         tv_course_title_mycourse_detail.text = "null"
@@ -238,7 +212,7 @@ class MycourseDetailActivity : AppCompatActivity(), OnMapReadyCallback, View.OnC
 
                     tv_course_title_mycourse_detail.text = response.body()!!.title
                     tv_date.text = response.body()!!.dday
-                    rb_star_mycourse_detail.rating = response.body()!!.like.toFloat()
+                    rb_star_mycourse_detail.rating = (response.body()!!.grade_avg/2).toFloat()
 
                     val temp: ArrayList<Shop> = response.body()!!.shops
 
@@ -246,6 +220,14 @@ class MycourseDetailActivity : AppCompatActivity(), OnMapReadyCallback, View.OnC
                         val position = hotPlaceRecyclerViewAdapter.itemCount
                         hotPlaceRecyclerViewAdapter.dataList.addAll(temp)
                         hotPlaceRecyclerViewAdapter.notifyItemInserted(position)
+
+                        for(i in 0..temp.size-1) {
+                            mapCoords.add(LatLng(temp[i].latitude, temp[i].longitude))
+                        }
+
+                        Log.v("TAGG map : " , mapCoords.toString())
+
+                        settingMap()
                     }
                 }
             }
@@ -288,6 +270,5 @@ class MycourseDetailActivity : AppCompatActivity(), OnMapReadyCallback, View.OnC
             }
         })
     }
-
 
 }

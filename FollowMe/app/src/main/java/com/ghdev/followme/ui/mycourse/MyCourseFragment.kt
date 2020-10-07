@@ -24,6 +24,7 @@ import kotlinx.android.synthetic.main.fragment_my_course.view.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -63,11 +64,9 @@ class MyCourseFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-
         getMyCourseResponse()
         setRecyclerView()
         setCalendar()
-
     }
 
     private fun setCalendar() {
@@ -81,7 +80,10 @@ class MyCourseFragment : Fragment() {
         val endDate: Calendar = Calendar.getInstance()
         endDate.add(Calendar.MONTH, 1)
 
-        tv_ymd_course_frag.text = Calendar.YEAR.toString()+ "년 " + Calendar.MONTH.toString() + "월"
+        val formatDate : SimpleDateFormat = SimpleDateFormat("yyyy년 MM월")
+        val time : Date = Date()
+        val date : String = formatDate.format(time)
+        tv_ymd_course_frag.text = date
 
         var  horizontalCalendar = HorizontalCalendar.Builder(rootView, R.id.cv_calendar_my_course_frag)
             .range(startDate, endDate)
@@ -90,8 +92,6 @@ class MyCourseFragment : Fragment() {
                 .showTopText(false)
             .end()*/
             .build()
-
-
 
         horizontalCalendar.calendarListener = object : HorizontalCalendarListener() {
             override fun onDateSelected(date: Calendar?, position: Int) {
@@ -106,7 +106,6 @@ class MyCourseFragment : Fragment() {
                 return true
             }
         }
-
     }
 
     private fun setRecyclerView() {

@@ -2,115 +2,129 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="360dp"
-    android:layout_height="wrap_content"
-    android:background="@drawable/bg_dialog_category">
-    
-    <TextView
-        android:id="@+id/tv_dialog_course_category"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/course_category_title"
-        android:textStyle="bold"
-        android:textSize="23sp"
-        android:layout_marginTop="12dp"
-        android:textColor="#000000"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black_60">
 
-    <TextView
-        android:id="@+id/tv_dialog_category_string"
-        android:layout_width="wrap_content"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/category_string"
-        android:textSize="14sp"
-        android:textColor="#000000"
-        android:layout_marginTop="8dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_dialog_course_category"
-        app:layout_constraintEnd_toEndOf="parent"/>
-
-    <GridLayout
-        android:id="@+id/gl_category"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:columnCount="3"
-        android:rowCount="2"
-        android:layout_marginTop="14dp"
-        app:layout_constraintTop_toBottomOf="@id/tv_dialog_category_string"
-        app:layout_constraintStart_toStartOf="parent"
+        android:background="@drawable/bg_dialog_category"
+        android:layout_marginHorizontal="24dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:useDefaultMargins="true"
-        android:alignmentMode ="alignBounds">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/tv_dialog_course_category"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="@string/course_category_title"
+            android:textColor="#000000"
+            android:textSize="23sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_dialog_category_string"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/category_string"
+            android:textColor="#000000"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_dialog_course_category" />
+
+        <GridLayout
+            android:id="@+id/gl_category"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14dp"
+            android:alignmentMode="alignBounds"
+            android:columnCount="3"
+            android:orientation="horizontal"
+            android:rowCount="2"
+            android:useDefaultMargins="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_dialog_category_string">
+
+            <Button
+                android:id="@+id/btn_course_category_lovers"
+                android:layout_width="100dp"
+                android:layout_height="70dp"
+                android:background="@drawable/login_edittext_round_box"
+                android:text="@string/course_category_lovers"
+                android:textColor="#000000"
+                android:textSize="14sp" />
+
+            <Button
+                android:id="@+id/btn_course_category_friends"
+                android:layout_width="100dp"
+                android:layout_height="70dp"
+                android:background="@drawable/login_edittext_round_box"
+                android:text="@string/course_category_friends"
+                android:textColor="#000000"
+                android:textSize="14sp" />
+
+            <Button
+                android:id="@+id/btn_course_category_tv"
+                android:layout_width="100dp"
+                android:layout_height="70dp"
+                android:background="@drawable/login_edittext_round_box"
+                android:text="@string/course_category_tv"
+                android:textColor="#000000"
+                android:textSize="14sp" />
+
+            <Button
+                android:id="@+id/btn_course_category_act"
+                android:layout_width="100dp"
+                android:layout_height="70dp"
+                android:background="@drawable/login_edittext_round_box"
+                android:text="@string/course_category_act"
+                android:textColor="#000000"
+                android:textSize="14sp" />
+
+            <Button
+                android:id="@+id/btn_course_category_pet"
+                android:layout_width="100dp"
+                android:layout_height="70dp"
+                android:background="@drawable/login_edittext_round_box"
+                android:text="@string/course_category_pet"
+                android:textColor="#000000"
+                android:textSize="14sp" />
+
+            <Button
+                android:id="@+id/btn_course_category_family"
+                android:layout_width="100dp"
+                android:layout_height="70dp"
+                android:background="@drawable/login_edittext_round_box"
+                android:text="@string/course_category_family"
+                android:textColor="#000000"
+                android:textSize="14sp" />
+
+        </GridLayout>
 
         <Button
-            android:id="@+id/btn_course_category_lovers"
-            android:layout_width="100dp"
-            android:layout_height="70dp"
-            android:background="@drawable/login_edittext_round_box"
-            android:text="@string/course_category_lovers"
+            android:id="@+id/btn_course_dialog_close"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/bg_btn_dialog_category"
+            android:text="닫기"
+            android:textColor="@color/colorBlack"
             android:textSize="14sp"
-            android:textColor="#000000"/>
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/gl_category" />
 
-        <Button
-            android:id="@+id/btn_course_category_friends"
-            android:layout_width="100dp"
-            android:layout_height="70dp"
-            android:background="@drawable/login_edittext_round_box"
-            android:text="@string/course_category_friends"
-            android:textSize="14sp"
-            android:textColor="#000000"/>
-
-        <Button
-            android:id="@+id/btn_course_category_tv"
-            android:layout_width="100dp"
-            android:layout_height="70dp"
-            android:background="@drawable/login_edittext_round_box"
-            android:text="@string/course_category_tv"
-            android:textSize="14sp"
-            android:textColor="#000000"/>
-
-        <Button
-            android:id="@+id/btn_course_category_act"
-            android:layout_width="100dp"
-            android:layout_height="70dp"
-            android:background="@drawable/login_edittext_round_box"
-            android:text="@string/course_category_act"
-            android:textSize="14sp"
-            android:textColor="#000000"/>
-
-        <Button
-            android:id="@+id/btn_course_category_pet"
-            android:layout_width="100dp"
-            android:layout_height="70dp"
-            android:background="@drawable/login_edittext_round_box"
-            android:text="@string/course_category_pet"
-            android:textSize="14sp"
-            android:textColor="#000000"/>
-
-        <Button
-            android:id="@+id/btn_course_category_family"
-            android:layout_width="100dp"
-            android:layout_height="70dp"
-            android:background="@drawable/login_edittext_round_box"
-            android:text="@string/course_category_family"
-            android:textSize="14sp"
-            android:textColor="#000000"/>
-
-    </GridLayout>
-    
-    <Button
-        android:id="@+id/btn_course_dialog_close"
-        android:layout_width="360dp"
-        android:layout_height="40dp"
-        android:text="닫기"
-        android:layout_marginTop="16dp"
-        android:textSize="14sp"
-        android:textColor="@color/colorBlack"
-        app:layout_constraintTop_toBottomOf="@+id/gl_category"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:background="@drawable/bg_btn_dialog_category"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

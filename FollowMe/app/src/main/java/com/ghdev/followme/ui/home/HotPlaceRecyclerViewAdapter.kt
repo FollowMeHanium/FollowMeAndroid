@@ -16,11 +16,12 @@ import com.ghdev.followme.R
 import com.ghdev.followme.data.test.PlaceInfo
 import com.ghdev.followme.network.get.Shop
 import com.ghdev.followme.ui.PlaceDetailActivity
+import kotlinx.android.synthetic.main.activity_mycourse_detail.*
 
 class HotPlaceRecyclerViewAdapter (val ctx : Context, val dataList: ArrayList<Shop>)
     : RecyclerView.Adapter<HotPlaceRecyclerViewAdapter.Holder>() {
 
-    val url = "http://3.15.22.4:3005"
+    val url = "http://3.15.22.4:3005/"
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): Holder {
 
@@ -33,9 +34,21 @@ class HotPlaceRecyclerViewAdapter (val ctx : Context, val dataList: ArrayList<Sh
     override fun onBindViewHolder(holder: Holder, position: Int) {
         val shop : Shop = dataList[position]
 
-        holder.placename.text = shop.shopname
-        holder.address.text = shop.address
-        holder.star.rating = shop.grade_avg.toFloat()
+        //null처리
+        if(shop.shopname.equals(null))
+            holder.placename.text = "null"
+        else
+            holder.placename.text = shop.shopname
+
+        if(shop.address.equals(null))
+            holder.address.text = "null"
+        else
+            holder.address.text = shop.address
+
+        if(shop.grade_avg.equals(null))
+            holder.star.rating = 3F
+        else
+            holder.star.rating = (shop.grade_avg/2).toFloat()
 
         Glide.with(holder.itemView.context).load(url + shop.main_photo).into(holder.imgurl)
 

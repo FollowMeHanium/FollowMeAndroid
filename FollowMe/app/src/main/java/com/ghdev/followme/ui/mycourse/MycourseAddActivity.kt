@@ -13,8 +13,8 @@ import com.ghdev.followme.network.ApplicationController
 import com.ghdev.followme.network.NetworkService
 import com.ghdev.followme.network.get.ResponseMessageNonData
 import com.ghdev.followme.network.get.ShopDAO
-import com.ghdev.followme.util.CourseDialogFragment
 import com.ghdev.followme.util.SearchAlarmDialog
+import com.ghdev.followme.util.ThemaSelectDialog
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
 import kotlinx.android.synthetic.main.activity_mycourse_add.*
@@ -27,6 +27,8 @@ import retrofit2.Response
 class MycourseAddActivity : AppCompatActivity(), View.OnClickListener {
 
     private lateinit var titleInputDialog : SearchAlarmDialog
+    private lateinit var thema : ThemaSelectDialog
+    var categoryThemaText = ""
     private var thema_id = -1
     private lateinit var placeLists : MutableList<ShopDAO>
     val YYYYMMDD = "(19|20)\\d{2}(0[1-9]|1[012])(0[1-9]|[12][0-9]|3[01])"
@@ -42,6 +44,11 @@ class MycourseAddActivity : AppCompatActivity(), View.OnClickListener {
     private fun makeDialog(message : String) : SearchAlarmDialog {
         titleInputDialog  = SearchAlarmDialog(this@MycourseAddActivity, message, TitleConfirmListener)
         return titleInputDialog
+    }
+
+    private fun themaSelectDialog() : ThemaSelectDialog {
+        thema = ThemaSelectDialog(this@MycourseAddActivity,LoverListener, FriendsListener, TVListener, ActivityListener, PetListener, FamilyListener, CloseListener)
+        return thema
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -66,31 +73,39 @@ class MycourseAddActivity : AppCompatActivity(), View.OnClickListener {
     override fun onClick(v: View?) {
         when (v!!) {
             btn_close_course_add -> {
-                Log.v("TAGG", "터치가 왜 안되니?")
                 finish()
             }
 
             //테마
             img_icon_select_btn -> {
-                val dialog: CourseDialogFragment = CourseDialogFragment().getInstance()
-                val fm = supportFragmentManager.beginTransaction()
-                dialog.show(fm!!, "TAG_DIALOG_EVENT")
+                themaSelectDialog().show()
             }
 
             //작성완료 체크버튼 눌렀을 때
             img_btn_add_my_course -> {
 
+                Log.v("TAGG editText ", et_add_title.text.toString())
+                Log.v("TAGG 맨끝 ", et_add_date.text.toString())
+                Log.v("TAGG 맨끝 thema ", thema_id.toString())
+
+
                 //edtiText에 있는 것 모두 체크해줘야함 ( ㅎㅎ )
-                /*if (et_add_title.text.length == 0)
+               /* if (et_add_title.text.toString() == "") {
                     makeDialog("제목을 입력해주세요").show()
-                else if(et_add_date.length() == 0)
+                }
+                else if ( et_add_date.text.toString() == "") {
                     makeDialog("날짜를 입력해주세요").show()
-                else if(thema_id == -1)
+                }
+                else if (thema_id == -1) {
                     makeDialog("테마를 선택해주세요").show()
-                else if(placeLists.size == 0)
-                    makeDialog("장소는 최소 1개 이상 선택해주세요.").show()
-                else*/
+                }*/
+              //  else {
+                    Log.v("TAGG 여기 자체가 안가는거야??", "else 가 안오는거야?!?!?")
                     postCourseAdd()
+              //  }
+
+                /*else if(placeLists.size == 0)
+                    makeDialog("장소는 최소 1개 이상 선택해주세요.").show()*/
             }
 
             //키보드 다운 함수
@@ -113,6 +128,57 @@ class MycourseAddActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
+ /*   private fun clickListener() : View.OnClickListener {
+
+        thema!!.dismiss()
+        return ThemaSelectListener;
+    }*/
+
+    private val LoverListener = View.OnClickListener {
+        categoryThemaText = "연인과 함께"
+        thema_id = 0;
+        select_thema.text = categoryThemaText
+        thema!!.dismiss()
+    }
+    private val FriendsListener = View.OnClickListener {
+        categoryThemaText = "친구와 함께"
+        select_thema.text = categoryThemaText
+        thema_id = 1;
+        thema!!.dismiss()
+    }
+
+    private val TVListener = View.OnClickListener {
+        categoryThemaText = "TV 출현"
+        select_thema.text = categoryThemaText
+        thema_id = 2;
+        thema!!.dismiss()
+    }
+
+    private val ActivityListener = View.OnClickListener {
+        categoryThemaText = "활동적인"
+        select_thema.text = categoryThemaText
+        thema_id = 3;
+        thema!!.dismiss()
+    }
+
+    private val PetListener = View.OnClickListener {
+        categoryThemaText = "애완동물과 함께"
+        select_thema.text = categoryThemaText
+        thema_id = 4;
+        thema!!.dismiss()
+    }
+
+    private val FamilyListener = View.OnClickListener {
+        categoryThemaText = "단체석"
+        select_thema.text = categoryThemaText
+        thema_id = 5;
+        thema!!.dismiss()
+    }
+
+    private val CloseListener = View.OnClickListener {
+        thema!!.dismiss()
+    }
+
     private val TitleConfirmListener = View.OnClickListener {
         titleInputDialog!!.dismiss()
     }
@@ -124,6 +190,7 @@ class MycourseAddActivity : AppCompatActivity(), View.OnClickListener {
         imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
 
+    //코스 추가통신
     private fun postCourseAdd(){
         val title: String = et_add_title.text.toString()
         val dday : String = et_add_date.text.toString()
@@ -134,6 +201,11 @@ class MycourseAddActivity : AppCompatActivity(), View.OnClickListener {
         jsonObject.put("thema", thema_id)
         jsonObject.put("dday", dday)
         jsonObject.put("shops", placeLists)
+
+        Log.v("TAGG 코스 추가", title)
+        Log.v("TAGG 코스 추가", thema_id.toString())
+        Log.v("TAGG 코스 추가", dday)
+
 
         val gsonObject = JsonParser().parse(jsonObject.toString()) as JsonObject
 
@@ -151,6 +223,9 @@ class MycourseAddActivity : AppCompatActivity(), View.OnClickListener {
                 call: Call<ResponseMessageNonData>,
                 response: Response<ResponseMessageNonData>
             ) {
+
+                Log.v("코스추가 통신 성공", response.body().toString())
+
                 if (response.isSuccessful) {
                     Log.v("코스추가 통신 성공", response.body().toString())
                     if(response.body()!!.code == 200) {

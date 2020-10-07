@@ -31,7 +31,5 @@ class SearchAlarmDialog (context: Context,
             cl_complete_search_custom_dialog.setOnClickListener(mResponseClickListener)
         }
     }
-
-
 }
 

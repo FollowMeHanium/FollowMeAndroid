@@ -5,7 +5,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ghdev.followme.R
@@ -15,13 +14,10 @@ import com.ghdev.followme.network.NetworkService
 import com.ghdev.followme.network.get.Course
 import com.ghdev.followme.network.get.GetAllCourseResponse
 import com.ghdev.followme.ui.mycourse.CourseRecyclerViewAdapter
-import com.ghdev.followme.util.CourseDialogFragment
 import kotlinx.android.synthetic.main.fragment_course_recommend.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-
-import kotlin.collections.ArrayList
 
 class CourseRecommendFragment : Fragment() {
 
@@ -47,18 +43,12 @@ class CourseRecommendFragment : Fragment() {
 
         val view : View = inflater.inflate(R.layout.fragment_course_recommend, container, false)
 
-        val btn_select_categroy = view.findViewById(R.id.cl_category_filter) as ConstraintLayout
-
-        btn_select_categroy.setOnClickListener{
-            val dialog: CourseDialogFragment = CourseDialogFragment()
-                .getInstance()
-            //val fm = supportFragmentManager.beginTransaction()
-            val fm = getFragmentManager()
-            dialog.show(fm!!, "TAG_DIALOG_EVENT")
-
-        }
+        setOnClickListener()
         // Inflate the layout for this fragment
         return view
+    }
+
+    private fun setOnClickListener() {
 
     }
 
@@ -95,7 +85,7 @@ class CourseRecommendFragment : Fragment() {
         Log.v("TAGG reco token : " , sharedPrefs.getString(PreferenceHelper.PREFS_KEY_ACCESS, ""))
         val getOurCorse: Call<GetAllCourseResponse> = networkService.getAllOurCourse(sharedPrefs.getString(PreferenceHelper.PREFS_KEY_ACCESS, ""))
 
-        Log.v("TAGG", "안들어가니?" )
+        Log.v("TAGG", "안들어가니?")
         getOurCorse.enqueue(object : Callback<GetAllCourseResponse> {
 
             override fun onFailure(call: Call<GetAllCourseResponse>, t: Throwable) {
@@ -110,16 +100,13 @@ class CourseRecommendFragment : Fragment() {
                 if (response.isSuccessful) {
 
                     val temp: ArrayList<Course> = response.body()!!.courses
-
-                    Log.d("TAGG 33 course reco", temp.toString() )
+                    Log.d("TAGG 33 course reco", temp.toString())
 
                     if (temp.size > 0) {
-                    }
                         val position = courseRecyclerViewAdapter.itemCount
                         courseRecyclerViewAdapter.dataList.addAll(temp)
                         courseRecyclerViewAdapter.notifyItemInserted(position)
-                    }else {
-
+                    }
                 }
             }
         })

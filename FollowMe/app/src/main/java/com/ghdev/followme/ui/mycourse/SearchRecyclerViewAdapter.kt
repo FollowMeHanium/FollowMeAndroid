@@ -19,6 +19,12 @@ class SearchRecyclerViewAdapter(
 
     val url = "http://3.15.22.4:3005/"
 
+    private var mCallback : OnItemClick? = null;
+
+    fun setOnItemClickListener(listener: OnItemClick) {
+        this.mCallback = listener
+    }
+
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -31,8 +37,11 @@ class SearchRecyclerViewAdapter(
     override fun getItemCount(): Int = dataList.size
 
     override fun onBindViewHolder(holder: SearchRecyclerViewAdapter.Holder, position: Int) {
-        holder.shopname.text = dataList[position].shopname
-        Glide.with(holder.itemView.context).load(url + dataList[position].photo).into(holder.img)
+
+        if(dataList[position].shopname != null) {
+            holder.shopname.text = dataList[position].shopname
+            Glide.with(holder.itemView.context).load(url + dataList[position].photo).into(holder.img)
+        }
 
         holder.container.setOnClickListener {
             //R.layout.activity_mycourse_add.visibility = View.VISIBLE
@@ -41,7 +50,7 @@ class SearchRecyclerViewAdapter(
             //ctx.startActivity(intent)
 
             //클릭과 동시에 recyclerview가 없어져야되고, item이 reset, editText에 있는 글들도 reset되어야 함.
-
+            mCallback?.onClick(1, dataList[position].shopname)
         }
     }
 
@@ -51,4 +60,7 @@ class SearchRecyclerViewAdapter(
         var container = itemView.findViewById(R.id.cl_search_item) as ConstraintLayout
     }
 
+    public interface OnItemClick {
+        fun onClick(id : Int, shopname : String)
+    }
 }

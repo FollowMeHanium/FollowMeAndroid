@@ -29,7 +29,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 
-class MycourseAddActivity : AppCompatActivity(), View.OnClickListener {
+class MycourseAddActivity : AppCompatActivity(), View.OnClickListener, SearchRecyclerViewAdapter.OnItemClick {
 
     private lateinit var titleInputDialog : SearchAlarmDialog
     private lateinit var thema : ThemaSelectDialog
@@ -61,8 +61,10 @@ class MycourseAddActivity : AppCompatActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_mycourse_add)
 
+        placeLists = ArrayList<ShopDAO>()
         clickInit()
         setEditTextSearch()
+        setPlace()
     }
 
     private fun setRecyclerView() {
@@ -73,7 +75,23 @@ class MycourseAddActivity : AppCompatActivity(), View.OnClickListener {
         rv_search_place.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
     }
 
+    private fun setPlace() {
+        for(i in 0..placeLists.size - 1) {
+            if(i == 0)
+                tv_first_store_name_detail.text = placeLists[i].shopname
+            else if(i == 1)
+                tv_second_store_name_detail.text = placeLists[i].shopname
+            else if( i == 2)
+                tv_third_store_name_detail.text = placeLists[i].shopname
+        }
+    }
+
     private fun setEditTextSearch() {
+
+        et_add_course.setOnClickListener {
+            et_add_course.text.clear()
+        }
+
         et_add_course.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
             }
@@ -82,9 +100,11 @@ class MycourseAddActivity : AppCompatActivity(), View.OnClickListener {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                postSearch()
+                if(et_add_course.text != null || et_add_course.toString() != "")
+                    postSearch()
+                else
+                    rv_search_place.visibility = View.INVISIBLE
             }
-
         })
     }
 
@@ -119,17 +139,17 @@ class MycourseAddActivity : AppCompatActivity(), View.OnClickListener {
                 else if (thema_id == -1) {
                     makeDialog("테마를 선택해주세요").show()
                 }
+                else if(placeLists.size == 0)
+                    makeDialog("장소는 최소 1개 이상 선택해주세요.").show()
                 else {
                     postCourseAdd()
                 }
-
-                /*else if(placeLists.size == 0)
-                    makeDialog("장소는 최소 1개 이상 선택해주세요.").show()*/
             }
 
             //키보드 다운 함수
             cl_mycourse_add_layout -> {
                 downKeyboard(cl_mycourse_add_layout)
+                rv_search_place.visibility = View.INVISIBLE
             }
 
             //et로 focus가도록
@@ -201,8 +221,6 @@ class MycourseAddActivity : AppCompatActivity(), View.OnClickListener {
     private fun postCourseAdd(){
         val title: String = et_add_title.text.toString()
         val dday : String = et_add_date.text.toString()
-        placeLists = ArrayList<ShopDAO>()
-        placeLists.add(ShopDAO(10, "ndn"))
 
         val jsonObjectPlaceList = JSONObject()
         val jsonArray = JSONArray()
@@ -292,9 +310,22 @@ class MycourseAddActivity : AppCompatActivity(), View.OnClickListener {
                         val position = searchRecyclerViewAdapter.itemCount
                         searchRecyclerViewAdapter.dataList.addAll(temp)
                         searchRecyclerViewAdapter.notifyItemChanged(position)
+                        searchRecyclerViewAdapter.setOnItemClickListener(this@MycourseAddActivity)
                     }
                 }
             }
         })
+    }
+
+    override fun onClick(id: Int, shopname: String) {
+        val shopAdd = ShopDAO(id, shopname)
+
+        if(placeLists.size < 3 && !placeLists.contains(shopAdd))
+            placeLists.add(shopAdd)
+        else
+            Toast.makeText(getApplicationContext(), "코스를 추가할 수 없습니다..", Toast.LENGTH_LONG).show()
+
+        rv_search_place.visibility = View.INVISIBLE
+        setPlace()
     }
 }

@@ -2,17 +2,17 @@ package com.ghdev.followme.ui
 
 import android.content.Context
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import androidx.appcompat.app.AppCompatActivity
 import com.ghdev.followme.R
 import com.ghdev.followme.data.PostLoginResponse
 import com.ghdev.followme.db.PreferenceHelper
 import com.ghdev.followme.network.ApplicationController
 import com.ghdev.followme.network.LoginNetworkService
-import com.ghdev.followme.network.NetworkService
+import com.ghdev.followme.util.SearchAlarmDialog
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
 import com.kakao.auth.ISessionCallback
@@ -32,6 +32,7 @@ import retrofit2.Response
 
 class LoginActivity : AppCompatActivity(), View.OnClickListener{
 
+    private lateinit var titleInputDialog: SearchAlarmDialog
     private val loginService: LoginNetworkService by lazy {
         ApplicationController.instance.loginService
     }
@@ -48,7 +49,15 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener{
         init()
         //getHashKey(this) //해시키값 구하기
         //Session.getCurrentSession().addCallback(callback) //콜백 추가 정의
+    }
 
+    private fun makeDialog(message: String): SearchAlarmDialog {
+        titleInputDialog = SearchAlarmDialog(this@LoginActivity, message, TitleConfirmListener)
+        return titleInputDialog
+    }
+
+    private val TitleConfirmListener = View.OnClickListener {
+        titleInputDialog!!.dismiss()
     }
 
     override fun onClick(v: View?) {
@@ -56,16 +65,14 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener{
 
             //둘러보기 버튼
             btn_look_login_act -> {
-                //ApplicationData.loginState = false
-                startActivity<MainActivity>()
-                finish()
-
+                makeDialog("준비중인 기능입니다").show()
+                //startActivity<MainActivity>()
+                //finish()
             }
 
             //회원가입하기
             btn_signup_login_act -> {
                 startActivity<SignUpActivity>()
-
             }
 
             //키보드 다운
@@ -80,8 +87,6 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener{
                 val input_pw: String = et_pw_login_act.text.toString()
                 getLoginResponse(input_email, input_pw)
             }
-
-
         }
     }
 
@@ -130,17 +135,16 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener{
                     Log.d("login_fun: ","로그인 통신 성공" )
 
                         //token값 저장
-                        sharedPrefs.setString(PreferenceHelper.PREFS_KEY_ACCESS, response.body()!!.token)
-                        sharedPrefs.setString(PreferenceHelper.PREFS_KEY_REF, response.body()!!.refreshtoken)
+                    sharedPrefs.setString(PreferenceHelper.PREFS_KEY_ACCESS, response.body()!!.token)
+                    sharedPrefs.setString(PreferenceHelper.PREFS_KEY_REF, response.body()!!.refreshtoken)
+                    sharedPrefs.setID(PreferenceHelper.USERID, input_email)
+                    sharedPrefs.setPW(PreferenceHelper.USERPW, input_pw)
 
-                        Log.d("SHARED_INFO", "access token" + sharedPrefs.getString(PreferenceHelper.PREFS_KEY_ACCESS, "0"))
+                    Log.d("SHARED_INFO", "access token" + sharedPrefs.getString(PreferenceHelper.PREFS_KEY_ACCESS, "0"))
 
                         toast(response.body()!!.message)
                         startActivity<MainActivity>()
                         finish()
-
-
-
                 }
             }
         })

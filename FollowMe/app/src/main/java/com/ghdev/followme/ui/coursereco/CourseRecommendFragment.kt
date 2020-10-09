@@ -18,7 +18,6 @@ import kotlinx.android.synthetic.main.fragment_course_recommend.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import com.ghdev.followme.db.PreferenceHelper
 
 class CourseRecommendFragment : Fragment() {
 
@@ -43,42 +42,20 @@ class CourseRecommendFragment : Fragment() {
     ): View? {
 
         val view : View = inflater.inflate(R.layout.fragment_course_recommend, container, false)
-
-        setOnClickListener()
-        // Inflate the layout for this fragment
         return view
-    }
-
-    private fun setOnClickListener() {
-
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        setRecyclerView()
         getRecommendCourseResponse()
     }
 
     private fun setRecyclerView() {
-            //코스
-//        var place : ArrayList<Place>  = ArrayList()
-//        place.add(Place("갬성"))
-//        place.add(Place("소울커피"))
-//        place.add(Place("공차"))
-//
-//
-//        courseDataList.add(CourseData("2020.01.04", 5, place,"나만의 힙한 장소", R.drawable.img1))
-//        courseDataList.add(CourseData("2020.04.03", 3, place,"나만의 데이트 장소", R.drawable.img3))
-//        courseDataList.add(CourseData("2020.04.26", 2, place, "힐링하기 좋은날", R.drawable.img2))
-//        courseDataList.add(CourseData("2020.03.02", 1, place, "친구와 함께한 날", R.drawable.img8))
-
         var courseDataList : ArrayList<Course> = ArrayList()
-
         courseRecyclerViewAdapter = CourseRecyclerViewAdapter(requireActivity(), courseDataList)
         rv_course_reco.adapter = courseRecyclerViewAdapter
         rv_course_reco.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
-
     }
 
     private fun getRecommendCourseResponse() {
@@ -93,16 +70,18 @@ class CourseRecommendFragment : Fragment() {
                 call: Call<GetAllCourseResponse>,
                 response: Response<GetAllCourseResponse>
             ) {
-                //Log.d("TAGG 22 course reco", response.isSuccessful.toString() )
                 if (response.isSuccessful) {
 
                     val temp: ArrayList<Course> = response.body()!!.courses
-                    //Log.d("TAGG 33 course reco", temp.toString())
 
                     if (temp.size > 0) {
+                        setRecyclerView()
                         val position = courseRecyclerViewAdapter.itemCount
                         courseRecyclerViewAdapter.dataList.addAll(temp)
                         courseRecyclerViewAdapter.notifyItemChanged(position)
+                    }
+                    else {
+
                     }
                 }
             }

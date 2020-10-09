@@ -2,7 +2,6 @@ package com.ghdev.followme.ui.mycourse
 
 import android.content.Context
 import android.content.Intent
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,13 +9,10 @@ import android.widget.ImageView
 import android.widget.RatingBar
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.ghdev.followme.R
-import com.ghdev.followme.data.test.CourseData
 import com.ghdev.followme.network.get.Course
-import kotlinx.android.synthetic.main.item_mycourse.*
 
 class CourseRecyclerViewAdapter (val ctx : Context, val dataList: ArrayList<Course>)
     : RecyclerView.Adapter<CourseRecyclerViewAdapter.Holder>() {

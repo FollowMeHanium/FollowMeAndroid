@@ -9,14 +9,11 @@ import android.widget.ImageView
 import android.widget.RatingBar
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.ghdev.followme.R
-import com.ghdev.followme.data.test.PlaceInfo
 import com.ghdev.followme.network.get.Shop
 import com.ghdev.followme.ui.PlaceDetailActivity
-import kotlinx.android.synthetic.main.activity_mycourse_detail.*
 
 class HotPlaceRecyclerViewAdapter (val ctx : Context, val dataList: ArrayList<Shop>)
     : RecyclerView.Adapter<HotPlaceRecyclerViewAdapter.Holder>() {
@@ -50,7 +47,12 @@ class HotPlaceRecyclerViewAdapter (val ctx : Context, val dataList: ArrayList<Sh
         else
             holder.star.rating = (shop.grade_avg/2).toFloat()
 
-        Glide.with(holder.itemView.context).load(url + shop.main_photo).into(holder.imgurl)
+        if(shop.main_photo.startsWith("h"))
+            Glide.with(holder.itemView.context).load(shop.main_photo).into(holder.imgurl)
+        else if(shop.main_photo == null)
+            holder.imgurl.setBackgroundResource(R.drawable.ic_restaurant_menu_black_24dp)
+        else
+            Glide.with(holder.itemView.context).load(url + shop.main_photo).into(holder.imgurl)
 
         holder.container.setOnClickListener {
             val intent = Intent(ctx, PlaceDetailActivity::class.java)

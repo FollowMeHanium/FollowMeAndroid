@@ -15,8 +15,6 @@ import com.bumptech.glide.Glide
 import com.ghdev.followme.R
 import com.ghdev.followme.data.JWTDecode
 import com.ghdev.followme.data.PostCodeAndMessageResponse
-import com.ghdev.followme.data.test.PostShopLikeResponse
-import com.ghdev.followme.data.test.PostShopUnLikeResponse
 import com.ghdev.followme.network.get.GetShopInfoResponse
 import com.ghdev.followme.db.PreferenceHelper
 import com.ghdev.followme.network.ApplicationController
@@ -86,8 +84,6 @@ class PlaceDetailActivity : AppCompatActivity(), View.OnClickListener, OnMapRead
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_place_detail)
-
-        //Glide.with(this).load(url+"/images/shop/4.jpg").into(iv_place_detail_main)
 
         //Recyclerview에서 받은 정보 표시
         place_info = intent.getIntExtra("place_idx", -1)

@@ -6,9 +6,7 @@ import android.view.ViewGroup
 import android.widget.RatingBar
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.ghdev.followme.R
-import com.ghdev.followme.data.test.ReviewInfo
 import com.ghdev.followme.network.get.Review
 
 class PlaceReivewRecyclerViewAdapter(

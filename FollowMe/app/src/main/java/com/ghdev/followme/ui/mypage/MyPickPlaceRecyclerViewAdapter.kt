@@ -1,9 +1,5 @@
 package com.ghdev.followme.ui.mypage
 
-import android.app.Activity
-import android.content.Context
-import android.content.Intent
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,16 +7,12 @@ import android.widget.ImageView
 import android.widget.RatingBar
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.content.contentValuesOf
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.ghdev.followme.R
-import com.ghdev.followme.data.test.PlaceInfo
 import com.ghdev.followme.network.get.Shop
-import com.ghdev.followme.ui.PlaceDetailActivity
 import com.ghdev.followme.ui.mypage.MypageMypickActivity.Companion.isInEditMode
 import com.ghdev.followme.ui.mypage.MypageMypickActivity.Companion.selectionList
-import kotlinx.coroutines.selects.select
 
 class MyPickPlaceRecyclerViewAdapter (
     val dataList: ArrayList<Shop>,

@@ -7,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ghdev.followme.R
 import com.ghdev.followme.db.PreferenceHelper
@@ -15,7 +14,6 @@ import com.ghdev.followme.network.ApplicationController
 import com.ghdev.followme.network.NetworkService
 import com.ghdev.followme.network.get.Course
 import com.ghdev.followme.network.get.GetAllCourseResponse
-import org.jetbrains.anko.startActivity
 import devs.mulham.horizontalcalendar.HorizontalCalendar
 import devs.mulham.horizontalcalendar.HorizontalCalendarView
 import devs.mulham.horizontalcalendar.utils.HorizontalCalendarListener
@@ -124,7 +122,6 @@ class MyCourseFragment : Fragment() {
         //## token 자리에 SharedPreference 에 있는 token 값 가져와야함.
         val getOurCorse: Call<GetAllCourseResponse> = networkService.getMyCourse(sharedPrefs.getString(PreferenceHelper.PREFS_KEY_ACCESS,"0"))
 
-       // Log.d("TAGG", "안들어가니?" )
         getOurCorse.enqueue(object : Callback<GetAllCourseResponse> {
             override fun onFailure(call: Call<GetAllCourseResponse>, t: Throwable) {
                 Log.d("my course GET fail", t.toString())
@@ -134,7 +131,6 @@ class MyCourseFragment : Fragment() {
                 call: Call<GetAllCourseResponse>,
                 response: Response<GetAllCourseResponse>
             ) {
-                //Log.d("TAGG 22 my course", response.isSuccessful.toString() )
                 if (response.isSuccessful) {
 
                     val temp: ArrayList<Course> = response.body()!!.courses
@@ -142,9 +138,8 @@ class MyCourseFragment : Fragment() {
                         setRecyclerView()
                     val position = courseRecyclerViewAdapter.itemCount
                     courseRecyclerViewAdapter.dataList.addAll(temp)
-                    courseRecyclerViewAdapter.notifyItemChanged(position)
+                    courseRecyclerViewAdapter.notifyItemChanged(position) }
                 }
-            }
             }
         })
     }

@@ -2,7 +2,7 @@ package com.ghdev.followme.network
 
 
 import com.ghdev.followme.data.*
-import com.ghdev.followme.data.test.GetRecommendListInfo
+import com.ghdev.followme.network.get.GetRecommendListInfo
 import com.ghdev.followme.network.get.*
 
 import com.google.gson.JsonObject

@@ -28,7 +28,10 @@ class PlacePictureRecyclerViewAdapter (val dataList : ArrayList<String>)
     override fun onBindViewHolder(holder: Holder, position: Int) {
         val pictures : String? = dataList[position]
 
-        Glide.with(holder.itemView.context).load(url + pictures).into(holder.imgurl)
+        if(pictures!!.startsWith("h"))
+            Glide.with(holder.itemView.context).load(pictures).into(holder.imgurl)
+        else
+            Glide.with(holder.itemView.context).load(url + pictures).into(holder.imgurl)
     }
 
     inner class Holder(itemView: View) : RecyclerView.ViewHolder(itemView){

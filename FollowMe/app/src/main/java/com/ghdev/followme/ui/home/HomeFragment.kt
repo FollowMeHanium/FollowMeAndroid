@@ -124,9 +124,9 @@ class HomeFragment : Fragment() {
             ) {
                 if(response.isSuccessful){
                     Log.d("getReco", "성공")
-                    val temp = response.body()!!.shops
+                    val temp = response.body()!!.hot
 
-                    if(temp.size <= 0){
+                    if(temp.isNullOrEmpty()){
                         Log.d("getReco", "null값")
                     }
                     else{

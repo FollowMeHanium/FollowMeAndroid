@@ -40,6 +40,7 @@
 
 
     <androidx.core.widget.NestedScrollView
+        android:id="@+id/nsv_place_detail_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/detail_title_line"
@@ -175,13 +176,19 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
 
+            <LinearLayout
+                android:id="@+id/ll_place_detail_map"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
                 <fragment
                     android:id="@+id/map_naver_shop_detail"
                     android:name="com.naver.maps.map.MapFragment"
-                    android:layout_height="200dp"
+                    android:layout_height="230dp"
                     android:layout_width="match_parent"
                     android:layout_marginTop="5dp"
                     />
+            </LinearLayout>
+
 
 
             <androidx.constraintlayout.widget.ConstraintLayout

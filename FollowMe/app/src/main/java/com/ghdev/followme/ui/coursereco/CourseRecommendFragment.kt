@@ -18,7 +18,6 @@ import kotlinx.android.synthetic.main.fragment_course_recommend.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import com.ghdev.followme.db.PreferenceHelper
 
 class CourseRecommendFragment : Fragment() {
 

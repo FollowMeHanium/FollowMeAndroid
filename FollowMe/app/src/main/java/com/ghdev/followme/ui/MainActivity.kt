@@ -1,14 +1,10 @@
 package com.ghdev.followme.ui
 
-import android.content.Context
-import android.graphics.Point
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
-import android.view.WindowManager
 import android.widget.ImageView
-import android.widget.Toast
 import com.ghdev.followme.R
 import com.ghdev.followme.ui.base.BasePagerAdapter
 import com.ghdev.followme.ui.coursereco.CourseRecommendFragment

@@ -1,6 +1,5 @@
 package com.ghdev.followme.ui.home
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -9,21 +8,17 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ghdev.followme.R
-import com.ghdev.followme.data.test.CourseData
-import com.ghdev.followme.data.test.GetRecommendListInfo
-import com.ghdev.followme.data.test.Place
-import com.ghdev.followme.data.test.PlaceInfo
 import com.ghdev.followme.db.PreferenceHelper
 import com.ghdev.followme.network.ApplicationController
 import com.ghdev.followme.network.NetworkService
+import com.ghdev.followme.network.get.Course
+import com.ghdev.followme.network.get.GetRecommendListInfo
 import com.ghdev.followme.network.get.Shop
-import com.ghdev.followme.ui.PlaceDetailActivity
 import com.ghdev.followme.ui.mycourse.CourseRecyclerViewAdapter
 import kotlinx.android.synthetic.main.fragment_home.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-
 
 /*create gahui*/
 
@@ -46,67 +41,38 @@ class HomeFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_home, container, false)
-
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        setRecyclerView()
+
         getRecomendInfo()
     }
 
-    private fun setRecyclerView() {
-
+    private fun hotPlaceRV() {
         //핫플
-        //데이터는 서버에서 받을 것
-        //모듈화를 시키기(rv_id와 datalist가 들어가는 것 말고는 다른 것은 동일)
-        var dataList: ArrayList<Shop> = ArrayList()
-/*
-        dataList.add(PlaceInfo(R.drawable.img5, "비트포비아", "서울특별시 강남구 역삼1동 824-30"))
-        dataList.add(PlaceInfo(R.drawable.img6, "카페 프레도", "서울특별시 강남구 역삼1동"))
-        dataList.add(PlaceInfo(R.drawable.img7, "꽃을피우고", "서울특별시 강남구 역삼동"))
-        dataList.add(PlaceInfo(R.drawable.img8, "자세", "서울특별시 마포구 서교동"))*/
-
+        val dataList: ArrayList<Shop> = ArrayList()
         hotPlaceRecyclerViewAdapter = HotPlaceRecyclerViewAdapter( requireActivity(), dataList)
         rv_hot_place_home.adapter = hotPlaceRecyclerViewAdapter
         rv_hot_place_home.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
+    }
 
+    private fun foodPlaceRV() {
 
         //맛집
-        var restaurantList : ArrayList<Shop> = ArrayList()
-/*
-
-        restaurantList.add(PlaceInfo(R.drawable.img1, "오우 연남점", "서울특별시 마포구 서교동"))
-        restaurantList.add(PlaceInfo(R.drawable.img2, "돈부리", "서울특별시 마포구 서교동"))
-        restaurantList.add(PlaceInfo(R.drawable.img3, "랍스타파티", "서울특별시 마포구 서교동 독막로7길"))
-        restaurantList.add(PlaceInfo(R.drawable.img4, "라공방", "서울특별시 강남구 역삼동 825-20"))
-*/
-
-        hotPlaceRecyclerViewAdapter =
-            HotPlaceRecyclerViewAdapter(requireActivity(), restaurantList)
+        val restaurantList : ArrayList<Shop> = ArrayList()
+        hotPlaceRecyclerViewAdapter = HotPlaceRecyclerViewAdapter(requireActivity(), restaurantList)
         rv_restaurant_today.adapter = hotPlaceRecyclerViewAdapter
         rv_restaurant_today.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
+    }
 
-
+    private fun courseRV() {
 
         //코스로 따라와
-/*        var courseDataList : ArrayList<CourseData> = ArrayList()
-
-        var place : ArrayList<Place>  = ArrayList()
-        place.add(Place("갬성"))
-        place.add(Place("소울커피"))
-        place.add(Place("공차"))
-
-        courseDataList.add(CourseData("2020.01.04", 5, place,"나만의 힙한 장소", R.drawable.img1))
-        courseDataList.add(CourseData("2020.04.03", 3, place,"나만의 데이트 장소", R.drawable.img3))
-        courseDataList.add(CourseData("2020.04.26", 2, place, "힐링하기 좋은날", R.drawable.img2))
-        courseDataList.add(CourseData("2020.03.02", 1, place, "친구와 함께한 날", R.drawable.img8))
-
-        courseRecyclerViewAdapter =
-            CourseRecyclerViewAdapter(requireActivity(), courseDataList)
+       var courseDataList : ArrayList<Course> = ArrayList()
+        courseRecyclerViewAdapter = CourseRecyclerViewAdapter(requireActivity(), courseDataList)
         rv_follow_course.adapter = courseRecyclerViewAdapter
-        rv_follow_course.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)*/
-
+        rv_follow_course.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
     }
 
     private fun getRecomendInfo(){
@@ -123,21 +89,40 @@ class HomeFragment : Fragment() {
                 response: Response<GetRecommendListInfo>
             ) {
                 if(response.isSuccessful){
+
                     Log.d("getReco", "성공")
                     val temp = response.body()!!.hot
 
-                    if(temp.isNullOrEmpty()){
+                    if(temp.isNullOrEmpty()) {
                         Log.d("getReco", "null값")
                     }
                     else{
-                        val position = hotPlaceRecyclerViewAdapter.itemCount
-                        hotPlaceRecyclerViewAdapter.dataList.addAll(temp)
-                        hotPlaceRecyclerViewAdapter.notifyItemInserted(position)
+                        val hot = response.body()!!.hot
+                        val courses = response.body()!!.courses
+                        val food = response.body()!!.food
+
+                        if(hot.size > 0){
+                            hotPlaceRV()
+                            val position = hotPlaceRecyclerViewAdapter.itemCount
+                            hotPlaceRecyclerViewAdapter.dataList.addAll(hot)
+                            hotPlaceRecyclerViewAdapter.notifyItemChanged(position)
+
+                        }
+                        if(courses.size > 0) {
+                            courseRV()
+                            val position = courseRecyclerViewAdapter.itemCount
+                            courseRecyclerViewAdapter.dataList.addAll(courses)
+                            courseRecyclerViewAdapter.notifyItemChanged(position)
+                        }
+                        if(food.size > 0) {
+                            foodPlaceRV()
+                            val position = hotPlaceRecyclerViewAdapter.itemCount
+                            hotPlaceRecyclerViewAdapter.dataList.addAll(food)
+                            hotPlaceRecyclerViewAdapter.notifyItemChanged(position)
+                        }
                     }
-                }
             }
-
-        })
-    }
-
+        }
+    })
+}
 }

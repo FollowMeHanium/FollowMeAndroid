@@ -9,7 +9,6 @@ object SharedPreferenceController {
     val REFRESH_TOKEN = "refresh_token"
     val ACCESS_TOKEN = "access_token"
 
-
     fun setUserToken(ctx: Context, u_token: String?) {
 
         val preference: SharedPreferences = ctx.getSharedPreferences(MY_ACCOUNT, Context.MODE_PRIVATE)

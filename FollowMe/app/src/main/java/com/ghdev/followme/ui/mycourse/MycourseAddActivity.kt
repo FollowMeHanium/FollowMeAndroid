@@ -236,11 +236,6 @@ class MycourseAddActivity : AppCompatActivity(), View.OnClickListener, SearchRec
         jsonObject.put("dday", dday)
         jsonObject.put("shops", jsonArray)
 
-       /* Log.v("TAGG 코스 추가", title)
-        Log.v("TAGG 코스 추가", thema_id.toString())
-        Log.v("TAGG 코스 추가", dday)
-        Log.v("TAGG 코스 추가", jsonObject.toString())*/
-
         val gsonObject = JsonParser().parse(jsonObject.toString()) as JsonObject
 
         val postCourseAddResponse: Call<ResponseMessageNonData> =
@@ -257,11 +252,7 @@ class MycourseAddActivity : AppCompatActivity(), View.OnClickListener, SearchRec
                 call: Call<ResponseMessageNonData>,
                 response: Response<ResponseMessageNonData>
             ) {
-                //Log.v("코스추가 통신 성공 body", response.body().toString())
-                //Log.v("코스추가 통신 성공 success", response.isSuccessful.toString())
-
                 if (response.isSuccessful) {
-                    //Log.v("코스추가 통신 code", response.body()!!.code.toString())
                     if(response.body()!!.code == 200) {
                         Toast.makeText(getApplicationContext(), "코스가 추가되었습니다.", Toast.LENGTH_LONG).show()
                         finish()
@@ -297,12 +288,7 @@ class MycourseAddActivity : AppCompatActivity(), View.OnClickListener, SearchRec
                 call: Call<SearchResultResponse>,
                 response: Response<SearchResultResponse>
             ) {
-                Log.v("코스검색 성공 body", response.body().toString())
-                Log.v("코스검색 성공 success", response.isSuccessful.toString())
-
                 if (response.isSuccessful) {
-                    Log.v("코스검색 성공", response.body().toString())
-
                     val temp: ArrayList<SearchResultResponseItem> = response.body()!!
                     if (temp.size > 0) {
                         rv_search_place.visibility = View.VISIBLE

@@ -44,6 +44,8 @@ class MypageMysettingActivity : AppCompatActivity(), View.OnClickListener {
             .setPositiveButton("확인"){dialog, which ->
                 sharedPrefs.setString(PreferenceHelper.PREFS_KEY_ACCESS, "0")
                 sharedPrefs.setString(PreferenceHelper.PREFS_KEY_REF, "0")
+                sharedPrefs.setString(PreferenceHelper.USERID,"0")
+                sharedPrefs.setString(PreferenceHelper.USERPW, "0")
 
                 startActivity<LoginActivity>()
                 finish()

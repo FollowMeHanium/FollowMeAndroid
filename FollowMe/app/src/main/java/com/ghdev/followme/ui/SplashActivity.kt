@@ -38,7 +38,12 @@ class SplashActivity : AppCompatActivity() {
         val id = sharedPrefs.getID(PreferenceHelper.USERID, "0")
         val pw = sharedPrefs.getPW(PreferenceHelper.USERPW, "0")
 
-         getLoginResponse(id, pw)
+        if(id == "0" || pw == "0"){
+            startActivity<LoginActivity>()
+            finish()
+        }else {
+            getLoginResponse(id,pw)
+        }
     }
 
      fun getLoginResponse(input_email: String, input_pw: String) {

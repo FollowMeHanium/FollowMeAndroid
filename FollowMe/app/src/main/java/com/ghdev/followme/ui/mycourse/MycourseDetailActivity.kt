@@ -136,6 +136,7 @@ class MycourseDetailActivity : AppCompatActivity(), OnMapReadyCallback, View.OnC
                 //마커 세팅
                 val marker = Marker()
                 marker.position = path.coords[path.coords.size-1]
+                Log.d("onmap_course", "marker.position: " + path.coords[path.coords.size-1])
                 marker.captionText = "Hello"
                 //marker.icon = OverlayImage.fromResource(R.drawable.icon_location)
                 //marker.map = naverMap

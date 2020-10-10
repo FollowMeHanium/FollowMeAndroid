@@ -197,11 +197,7 @@ class MypageMypickActivity : AppCompatActivity(), View.OnClickListener{
         val temp : String = cancleList.toString().replace("[", "")
         val input_cancleList : String = temp.replace("]","")
 
-        Log.d("getlike", "input1: " + cancleList.toString())
-        Log.d("getlike", "input2: " + input_cancleList)
-
         //마지막으로 좋아요 list보내기.. -> 좋아요 취소된 배열 모아서 보내기?
-        //postShopUnLikeResponse(input_cancleList)
         postShopUnLikeResponse(cancleList)
         cancleList.clear()
 
@@ -209,28 +205,23 @@ class MypageMypickActivity : AppCompatActivity(), View.OnClickListener{
 
     private fun postShopUnLikeResponse(input_cancleList : ArrayList<Int>) {
 
-        Log.d("like_un_fun", "숫자넣기0: " + input_cancleList.toString())
         var jsonObject = JSONObject()
         var jsonArray = JSONArray()
 
         for(j in input_cancleList){
             jsonArray.put(j)
-            Log.d("like_un_fun", "숫자넣기1: " + jsonArray.toString())
         }
 
         jsonObject.put("id", jsonArray)
-        Log.d("like_un_fun", "숫자넣기2: " + jsonObject.toString())
 
         val gsonObject = JsonParser().parse(jsonObject.toString()) as JsonObject
-
-        Log.d("like_un_fun: ", "gson")
 
         val postShopUnLikeResponse : Call<PostCodeAndMessageResponse> =
             networkService.postShopUnLikeResponse(sharedPrefs.getString(PreferenceHelper.PREFS_KEY_ACCESS, "0"), gsonObject)
 
         postShopUnLikeResponse.enqueue(object : Callback<PostCodeAndMessageResponse>{
             override fun onFailure(call: Call<PostCodeAndMessageResponse>, t: Throwable) {
-                Log.e("like_un_fun: ", t.toString())
+                Log.e("like_un_my: ", t.toString())
             }
 
             override fun onResponse(
@@ -238,16 +229,16 @@ class MypageMypickActivity : AppCompatActivity(), View.OnClickListener{
                 response: Response<PostCodeAndMessageResponse>
             ) {
                 if(response.isSuccessful){
-                    Log.d("like_un_fun: ", "성공")
+                    Log.d("like_un_fmy: ", "성공")
 
                     if(response.body()!!.code == 200){
-                        Log.d("like_un_fun: ", response.body()!!.message)
-                        Log.d("like_un_fun: ", response.body()!!.code.toString())
+                        Log.d("like_un_my: ", response.body()!!.message)
+                        Log.d("like_un_my: ", response.body()!!.code.toString())
                         toast("찜 리스트에서 삭제되었습니다.")
 
                     }else{
-                        Log.d("like_fun: ", "fail/" + response.body()!!.message)
-                        Log.d("like_fun", "fail/" + response.body()!!.code.toString())
+                        Log.d("like_un_my: ", "fail/" + response.body()!!.message)
+                        Log.d("like_un_my", "fail/" + response.body()!!.code.toString())
                     }
                 }
 

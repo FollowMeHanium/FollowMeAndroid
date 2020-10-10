@@ -42,6 +42,11 @@ class MyPickPlaceRecyclerViewAdapter (
         holder.star.rating = info.grade_avg.toFloat()
 
 
+        if(info.main_photo.startsWith("h"))
+            Glide.with(holder.itemView.context).load(info.main_photo).into(holder.imgurl)
+        else if(info.main_photo == null)
+            holder.imgurl.setBackgroundResource(R.drawable.ic_restaurant_menu_black_24dp)
+        else
         Glide.with(holder.itemView.context).load(url + info.main_photo).into(holder.imgurl)
 
         holder.container.setOnClickListener {

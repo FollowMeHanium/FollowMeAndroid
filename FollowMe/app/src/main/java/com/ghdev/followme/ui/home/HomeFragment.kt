@@ -8,11 +8,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ghdev.followme.R
-import com.ghdev.followme.network.get.GetRecommendListInfo
 import com.ghdev.followme.db.PreferenceHelper
 import com.ghdev.followme.network.ApplicationController
 import com.ghdev.followme.network.NetworkService
 import com.ghdev.followme.network.get.Course
+import com.ghdev.followme.network.get.GetRecommendListInfo
 import com.ghdev.followme.network.get.Shop
 import com.ghdev.followme.ui.mycourse.CourseRecyclerViewAdapter
 import kotlinx.android.synthetic.main.fragment_home.*
@@ -89,33 +89,40 @@ class HomeFragment : Fragment() {
                 response: Response<GetRecommendListInfo>
             ) {
                 if(response.isSuccessful){
-                    val hot = response.body()!!.hot
-                    val courses = response.body()!!.courses
-                    val food = response.body()!!.food
 
-                    if(hot.size > 0){
-                        hotPlaceRV()
-                        val position = hotPlaceRecyclerViewAdapter.itemCount
-                        hotPlaceRecyclerViewAdapter.dataList.addAll(hot)
-                        hotPlaceRecyclerViewAdapter.notifyItemChanged(position)
-                    }
-                    if(courses.size > 0) {
-                        courseRV()
-                        val position = courseRecyclerViewAdapter.itemCount
-                        courseRecyclerViewAdapter.dataList.addAll(courses)
-                        courseRecyclerViewAdapter.notifyItemChanged(position)
-                    }
-                    if(food.size > 0) {
-                        foodPlaceRV()
-                        val position = hotPlaceRecyclerViewAdapter.itemCount
-                        hotPlaceRecyclerViewAdapter.dataList.addAll(food)
-                        hotPlaceRecyclerViewAdapter.notifyItemChanged(position)
+                    Log.d("getReco", "성공")
+                    val temp = response.body()!!.hot
+
+                    if(temp.isNullOrEmpty()) {
+                        Log.d("getReco", "null값")
                     }
                     else{
+                        val hot = response.body()!!.hot
+                        val courses = response.body()!!.courses
+                        val food = response.body()!!.food
 
+                        if(hot.size > 0){
+                            hotPlaceRV()
+                            val position = hotPlaceRecyclerViewAdapter.itemCount
+                            hotPlaceRecyclerViewAdapter.dataList.addAll(hot)
+                            hotPlaceRecyclerViewAdapter.notifyItemChanged(position)
+
+                        }
+                        if(courses.size > 0) {
+                            courseRV()
+                            val position = courseRecyclerViewAdapter.itemCount
+                            courseRecyclerViewAdapter.dataList.addAll(courses)
+                            courseRecyclerViewAdapter.notifyItemChanged(position)
+                        }
+                        if(food.size > 0) {
+                            foodPlaceRV()
+                            val position = hotPlaceRecyclerViewAdapter.itemCount
+                            hotPlaceRecyclerViewAdapter.dataList.addAll(food)
+                            hotPlaceRecyclerViewAdapter.notifyItemChanged(position)
+                        }
                     }
-                }
             }
-        })
-    }
+        }
+    })
+}
 }

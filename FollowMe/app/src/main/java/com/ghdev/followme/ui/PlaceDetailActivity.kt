@@ -1,13 +1,16 @@
 package com.ghdev.followme.ui
 
 import android.app.AlertDialog
+import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.MotionEvent
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.RatingBar
+import androidx.annotation.UiThread
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -24,12 +27,11 @@ import com.ghdev.followme.network.get.Review
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
 import com.naver.maps.geometry.LatLng
-import com.naver.maps.map.CameraUpdate
-import com.naver.maps.map.MapFragment
-import com.naver.maps.map.NaverMap
-import com.naver.maps.map.OnMapReadyCallback
+import com.naver.maps.map.*
 import com.naver.maps.map.overlay.Marker
+import com.naver.maps.map.overlay.OverlayImage
 import com.naver.maps.map.overlay.PathOverlay
+import com.naver.maps.map.util.MarkerIcons
 import kotlinx.android.synthetic.main.activity_place_detail.*
 import kotlinx.android.synthetic.main.dialog_review_insert.*
 import kotlinx.android.synthetic.main.dialog_review_insert.view.*
@@ -56,7 +58,6 @@ class PlaceDetailActivity : AppCompatActivity(), View.OnClickListener, OnMapRead
     //naver map
     //key값 넣어야 함! (안넣음)
     val mapCoords = mutableListOf<LatLng>()
-    lateinit var path: PathOverlay
     private var naverMap: NaverMap? = null
 
     //recyclerview로부터 받은 shop id
@@ -92,7 +93,7 @@ class PlaceDetailActivity : AppCompatActivity(), View.OnClickListener, OnMapRead
         init()
         getShopInfoResponse(place_info)
         getShopReviewListResponse(place_info)
-        loadCoordinateDatas()
+        //loadCoordinateDatas()
         PlaceReviewRecycler()
     }
 
@@ -114,6 +115,7 @@ class PlaceDetailActivity : AppCompatActivity(), View.OnClickListener, OnMapRead
                 iv_place_detail_anim_mypick.visibility = View.VISIBLE
             }
         })
+
     }
 
     override fun onClick(v: View?) {
@@ -158,6 +160,14 @@ class PlaceDetailActivity : AppCompatActivity(), View.OnClickListener, OnMapRead
                             tv_place_detail_watch.text = response.body()!!.operating_time
                             tv_place_detail_address.text = response.body()!!.address
 
+                            //지도 만들기
+                            mapCoords.clear()
+                            mapCoords.add(LatLng(response.body()!!.latitude, response.body()!!.longitude))
+                            Log.d("getshop", "위도경도: " + response.body()!!.latitude.toString() + "/" + response.body()!!.longitude.toString())
+                            Log.d("getshop", "위도경도/map: " + mapCoords)
+                            settingMap()
+
+
                             //좋아요버튼 이미지
                             if(response.body()!!.like == 0){
                                 btn_place_detail_add_mypick.setImageResource(R.drawable.btn_add_mypick)
@@ -171,14 +181,17 @@ class PlaceDetailActivity : AppCompatActivity(), View.OnClickListener, OnMapRead
                             //가게 이미지 갱신
                             val getphoto = response.body()!!.main_photo - 1
                             Log.d("getshop", getphoto.toString() + "/" + response.body()!!.photos[0])
-                            Glide.with(getApplicationContext()).load(url + response.body()!!.photos[getphoto]).into(iv_place_detail_main)
+                            if(response.body()!!.photos[getphoto].startsWith("h"))
+                                Glide.with(getApplicationContext()).load(response.body()!!.photos[getphoto]).into(iv_place_detail_main)
+                            else
+                                Glide.with(getApplicationContext()).load(url + response.body()!!.photos[getphoto]).into(iv_place_detail_main)
 
                             //가게 이미지들 넣기
                             val getphotos = response.body()!!.photos
                             if(getphotos.isNullOrEmpty()){
                                 Log.d("getshop", "가게 이미지들이 없습니당.")
                             }
-                            else{
+                            else {
                                 val position = placePictureRecyclerViewAdapter.itemCount
                                 placePictureRecyclerViewAdapter.dataList.addAll(getphotos)
                                 placePictureRecyclerViewAdapter.notifyItemInserted(position)
@@ -187,6 +200,7 @@ class PlaceDetailActivity : AppCompatActivity(), View.OnClickListener, OnMapRead
                             //가게 메뉴 넣기
                             try{
                                 var jsonObject = JSONObject(response.body()!!.menu)
+
                                 val i = jsonObject.keys().iterator()
 
                                 //반복자를 사용하여 json의 key값을 다 가지고 옴
@@ -456,16 +470,27 @@ class PlaceDetailActivity : AppCompatActivity(), View.OnClickListener, OnMapRead
     /****************************지도 API*********************************/
     override fun onMapReady(p0: NaverMap) {
         this.naverMap = p0
+        Log.d("onmap", "동작!")
 
-        if(mapCoords.size >=2){
-            path = PathOverlay()
-            path.coords = mapCoords
+
+        if(mapCoords.size >0){
+            //마커 세팅
+            val marker = Marker()
 
             naverMap?.let{
-                path.map = it
-                val marker = Marker()
-                marker.position = path.coords[path.coords.size-1]
-                marker.captionText = "Hello"
+
+                var pos = it.cameraPosition
+                Log.d("onmap", "camerPosition: " + pos.toString())
+
+                pos  = CameraPosition(mapCoords[mapCoords.size-1], 16.0)
+                it.cameraPosition = pos
+                Log.d("onmap", "camerPosition: " + pos.toString())
+
+                marker.position = mapCoords[mapCoords.size-1]
+                Log.d("onmap", "marker.position: " + marker.position.toString())
+                marker.icon = MarkerIcons.BLACK
+                marker.iconTintColor = Color.RED
+                marker.map = it
 
                 var la : Double = 0.0
                 var lo : Double = 0.0
@@ -476,7 +501,7 @@ class PlaceDetailActivity : AppCompatActivity(), View.OnClickListener, OnMapRead
                 }
 
                 val map = mutableListOf<LatLng>()
-                map.add(LatLng(la/3, lo/3))
+                map.add(LatLng(la, lo))
 
                 val coord = map[0]
                 it.moveCamera(CameraUpdate.scrollTo(coord))
@@ -486,17 +511,6 @@ class PlaceDetailActivity : AppCompatActivity(), View.OnClickListener, OnMapRead
 
     }
 
-    fun loadCoordinateDatas() {
-        /* val coordsDoubleArr =
-         for (coord in coordsDoubleArr) {
-             mapCoords.add(LatLng(coord.latitude, coord.longitude))
-         }*/
-
-        //##서버에서 좌표 받아오면 됨
-
-        mapCoords.add(LatLng(37.57152, 126.97714))
-        settingMap()
-    }
 
     fun settingMap() {
         //NaverMap 객체 얻어오기

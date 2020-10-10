@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.util.Log
 
-//SharedPreference 에서 쓰기/읽기를 관리하는 클래스
 class PreferenceHelper(context: Context) {
 
     companion object {

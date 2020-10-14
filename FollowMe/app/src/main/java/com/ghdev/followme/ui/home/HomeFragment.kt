@@ -1,5 +1,6 @@
 package com.ghdev.followme.ui.home
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -15,6 +16,7 @@ import com.ghdev.followme.network.get.Course
 import com.ghdev.followme.network.get.GetRecommendListInfo
 import com.ghdev.followme.network.get.Shop
 import com.ghdev.followme.ui.mycourse.CourseRecyclerViewAdapter
+import com.ghdev.followme.ui.search.SearchActivity
 import kotlinx.android.synthetic.main.fragment_home.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -41,6 +43,17 @@ class HomeFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_home, container, false)
+    }
+
+    // 검색 버튼 구현
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        btn_add_course_frag.setOnClickListener {
+            //FirebaseAuth.getInstance().signOut()
+            val intent = Intent (getActivity(), SearchActivity::class.java)
+            getActivity()?.startActivity(intent)
+        }
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {

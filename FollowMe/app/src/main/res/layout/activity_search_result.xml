@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.search.SearchResultActivity">
+
+    <ImageView
+        android:id="@+id/btn_search_back"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/btn_search_cat"
+        app:layout_constraintEnd_toStartOf="@+id/tv_search_result"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/btn_back" />
+
+    <ImageView
+        android:id="@+id/btn_search_search"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/rv_shop_result"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/tv_search_result"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@drawable/btn_search" />
+
+    <TextView
+        android:id="@+id/tv_search_result"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="32dp"
+        android:paddingTop="4dp"
+        android:paddingBottom="4dp"
+        android:text="홍대덮밥"
+        android:textAlignment="center"
+        android:textColor="@color/colorMain"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/btn_search_back"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!--    <Button-->
+    <!--        android:id="@+id/btn_search_theme"-->
+    <!--        style="@style/Widget.AppCompat.Button"-->
+    <!--        android:layout_width="0dp"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_marginTop="61dp"-->
+    <!--        android:background="@drawable/search_btn_theme"-->
+    <!--        android:textStyle="bold"-->
+    <!--        android:stateListAnimator="@null"-->
+    <!--        android:text="테마"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        app:layout_constraintStart_toEndOf="@+id/btn_search_cat"-->
+    <!--        app:layout_constraintTop_toTopOf="parent" />-->
+
+    <!--    <Button-->
+    <!--        android:id="@+id/btn_search_cat"-->
+    <!--        android:layout_width="0dp"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_marginTop="8dp"-->
+    <!--        android:background="@drawable/search_btn_cat"-->
+    <!--        android:stateListAnimator="@null"-->
+    <!--        android:text="카테고리"-->
+    <!--        android:textStyle="bold"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        app:layout_constraintStart_toStartOf="parent"-->
+    <!--        app:layout_constraintTop_toBottomOf="@+id/textView" />-->
+
+    <View
+        android:id="@+id/search_place_top_line"
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
+        android:background="@color/colorMain"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_search_result" />
+
+    <TextView
+        android:id="@+id/tv_shop_result"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="6dp"
+        android:text="맛집 검색결과"
+        android:textColor="@color/colorBlack"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/search_place_top_line" />
+
+    <View
+        android:id="@+id/search_place_bot_line"
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
+        android:layout_marginTop="4dp"
+        android:background="@color/colorWhite"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_shop_result" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_shop_result"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.176"
+        app:layout_constraintStart_toEndOf="@+id/btn_search_cat"
+        app:layout_constraintTop_toBottomOf="@+id/tv_shop_result" />
+
+    <View
+        android:id="@+id/search_more_top_line"
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
+        android:background="@color/colorMain"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rv_shop_result" />
+
+    <!--    <Button-->
+<!--        android:id="@+id/btn_more"-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:background="@color/colorWhite"-->
+<!--        android:text="더 보기"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/rv_shop_result" />-->
+
+<!--    <View-->
+<!--        android:id="@+id/search_more_bot_line"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="1dp"-->
+<!--        android:background="@color/colorMain"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintHorizontal_bias="0.0"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/btn_more" />-->
+
+</androidx.constraintlayout.widget.ConstraintLayout>

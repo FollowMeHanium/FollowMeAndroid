@@ -8,5 +8,6 @@ data class SearchResultResponseItem(
     val menu: String,
     val photo: String,
     val score: Double,
-    val shopname: String
+    val shopname: String,
+    val id: Int
 )
